@@ -1,0 +1,106 @@
+#+TITLE: A. Lloyd Flanagan User-Specific Settings
+#+OPTIONS: toc:2 num:nil ^:nil
+
+** Windows-specific setup
+  :PROPERTIES:
+  :CUSTOM_ID: windows-specific
+  :END:
+
+#+name: windows-specific-setup
+#+begin_src emacs-lisp
+;; html-mode fails on windows if sgml-mode not already present
+(when (equal system-type 'windows-nt)
+  ;; we could do this in hook, etc. but wth...
+  (require 'sgml-mode))
+#+end_src
+
+** Personally useful packages
+We need to include some ubiquitous packages that are my preferences,
+but shouldn't be in the starter-kit. To make this more stand-alone, we
+first need to verify that cask is initialized:
+#+name: check-cask-setup
+#+begin_src emacs-lisp
+  (when (not (member 'cask features))
+      (require 'cask "~/.cask/cask.el" t)
+      (declare-function cask-initialize "cask" (&optional project-path))
+      (cask-initialize user-emacs-directory))
+#+end_src
+
+#+name: personal-requires
+#+begin_src emacs-lisp
+(require 'quack nil t)
+(require 'kv) ;; hidden requirement of pinboard
+(require 'pinboard)
+#+end_src
+
+** Possible site-specific setup
+
+Might move this elsewhere.
+
+#+name: site-specific-setup
+#+begin_src emacs-lisp
+(set-frame-size (selected-frame) 132 45)
+#+end_src
+
+** Enable additional substitutions with pretty-symbol
+#+begin_src emacs-lisp
+  (defun setup-elisp-pretty ()
+    "Add to words auto-converted to unicode symbols."
+    ;; if we've got pretty-symbols-mode, enable multiple categories
+    (if (boundp 'pretty-symbol-categories)
+        (setq pretty-symbol-categories '(lambda relational logical)))
+    ;; prettify-symbols-alist is part of prog-mode, but only
+    ;; on recent versions of emacs, so check
+    (if (boundp 'prettify-symbols-alist)
+        (progn  ;; it's automatically buffer-local, so add to mode hook
+          (push '("<=" . ?≤) prettify-symbols-alist)
+          (push '(">=" . ?≥) prettify-symbols-alist))))
+
+
+#+end_src
+
+** Set up various hooks
+We define a useful macro to add a function to a hook that will execute
+a given function only if it
+exists. Just using `add-hook` would add the function name to the hook,
+and lead to a run-time error when the hook is executed.
+
+#+name: define-hook-macro
+#+begin_src emacs-lisp
+  (defmacro add-hook-if-exists (a-hook a-function &rest args)
+     "Add to hook A-HOOK a call to (A-FUNCTION ARGS) with a check to ensure A-FUNCTION is defined."
+     `(add-hook ,a-hook (lambda () (if (functionp ,a-function)
+                                  (funcall ,a-function ,@args)))))
+#+end_src
+
+Using `add-hook-if-exists` as needed, we can set up hooks for various
+modes without generating error messages if the package with the
+function is not available. (One can make an argument that you should
+*want* error messages, or at least a message-and-continue
+strategy. I don't want a missing function to abort switching to a
+requested mode.)
+
+#+begin_src emacs-lisp
+  (defun add-hooks-for-packages ()
+    "Set up hooks which depend on packages that need to be initialized by package system."
+    (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil))) ;; Use spaces, not tabs.
+    (add-hook 'emacs-lisp-mode-hook #'auto-complete-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'flycheck-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'semantic-mode)
+    (add-hook-if-exists 'python-mode-hook #'flycheck-mode)
+    (add-hook-if-exists 'python-mode-hook #'auto-complete-mode)
+    (add-hook-if-exists 'python-mode-hook #'hs-minor-mode)
+    (add-hook-if-exists 'python-mode-hook #'semantic-mode)
+    (add-hook 'python-mode-hook (lambda () (add-hook 'before-save-hook  'delete-trailing-whitespace nil t)))
+    ;; because ido-ubiquitous doesn't get options right
+    (add-hook-if-exists 'ert-simple-view-mode-hook #'ido-ubiquitous-mode)
+    (add-hook 'emacs-lisp-mode-hook #'setup-elisp-prettify)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'pretty-symbols-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'ipretty-mode)
+    (add-hook-if-exists 'js2-mode-hook #'pretty-symbols-mode)
+    (add-hook-if-exists 'js2-mode-hook #'electric-pair-mode))
+
+  (add-hook 'after-init-hook #'add-hooks-for-packages)
+
+#+end_src

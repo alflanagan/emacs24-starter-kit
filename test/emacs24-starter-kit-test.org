@@ -1,0 +1,14 @@
+#+TITLE: Emacs Starter Kit Tests
+#+OPTIONS: toc:2 num:nil ^:nil
+
+* Basic Tests for Emacs Starter Kit
+
+#+begin_src emacs-lisp  :tangle yes
+  ;; -*- lexical-binding: t; coding: utf-8; -*-
+
+  (require 'ert)
+
+  (ert-deftest basic-tests ()
+    "Currently just a placeholder"
+    (should t))
+#+end_src
