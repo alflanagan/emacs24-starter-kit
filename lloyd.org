@@ -18,28 +18,13 @@
 We need to include some ubiquitous packages that are my preferences,
 but shouldn't be in the starter-kit. To make this more stand-alone, we
 first need to verify that cask is initialized:
-#+name: check-cask-setup
-#+begin_src emacs-lisp
-  (when (not (member 'cask features))
-      (require 'cask "~/.cask/cask.el" t)
-      (declare-function cask-initialize "cask" (&optional project-path))
-      (cask-initialize user-emacs-directory))
-#+end_src
 
 #+name: personal-requires
 #+begin_src emacs-lisp
+(starter-kit-install-if-needed 'quack 'kv 'pinboard)
 (require 'quack nil t)
 (require 'kv) ;; hidden requirement of pinboard
 (require 'pinboard)
-#+end_src
-
-** Possible site-specific setup
-
-Might move this elsewhere.
-
-#+name: site-specific-setup
-#+begin_src emacs-lisp
-(set-frame-size (selected-frame) 132 45)
 #+end_src
 
 ** Enable additional substitutions with pretty-symbol
