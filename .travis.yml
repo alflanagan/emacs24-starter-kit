@@ -5,6 +5,7 @@ env:
 # don't neeed emacs-git-snapshot, don't want to add dependencies
 # that are not part of standard Emacs install
 - EVM_EMACS=emacs-24.3-bin
+- EMBATCH="emacs --batch --eval \"(require 'org)\""
 install:
 - sudo mkdir /usr/local/evm
 - sudo chown $(id -u):$(id -g) /usr/local/evm
@@ -14,9 +15,9 @@ install:
 # verify that we're using the right f'ing Emacs
 - emacs --version
 - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
-- emacs --batch --eval "(starter-kit-install-if-needed 'ert-runner)"
+- ${EMBATCH} --eval '(org-babel-load-file "install-ert-runner.org")'
 - cd test
 - make
 - cd ..
 script:
-- cask exec ert-runner
+- emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "execute-ert-runner.org")'

@@ -1,0 +1,12 @@
+
+
+#+begin_src emacs-lisp :tangle yes
+  (load (concat user-emacs-directory "init.el"))
+
+  (run-hooks 'after-init-hook)
+
+  (ert-run-tests-batch-and-exit)
+
+#+end_src
+
+
