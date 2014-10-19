@@ -7,6 +7,7 @@ env:
 - EVM_EMACS=emacs-24.3-bin
 install:
 - export EMBATCH="emacs --batch --eval \"(require 'org)\""
+- echo $SHELL
 - sudo mkdir /usr/local/evm
 - sudo chown $(id -u):$(id -g) /usr/local/evm
 - curl -fsSkL https://raw.github.com/rejeep/evm/master/go | bash
@@ -15,9 +16,9 @@ install:
 # verify that we're using the right f'ing Emacs
 - emacs --version
 - ln -s ~/emacs24-starter-kit ~/.emacs.d
-- ${EMBATCH} --eval \'(princ "install-ert-runner.org\n")\'
-- ${EMBATCH} --eval '(princ (concat (file-exists-p "install-ert-runner.org") "\n"))'
-- ${EMBATCH} --eval '(org-babel-load-file "install-ert-runner.org")'
+- emacs --batch --eval "(require 'org)" --eval '(princ "install-ert-runner.org\n")'
+- emacs --batch --eval "(require 'org)" --eval '(princ (concat (file-exists-p "install-ert-runner.org") "\n"))'
+- emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "install-ert-runner.org")'
 - cd test
 - make
 - cd ..
