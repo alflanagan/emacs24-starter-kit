@@ -1,6 +1,58 @@
 #+TITLE: A. Lloyd Flanagan User-Specific Settings
 #+OPTIONS: toc:2 num:nil ^:nil
 
+** Install additional packages
+There are a whole bunch of packages I use which may not be useful to
+everybody.
+
+#+name: my-installed-packages
+#+begin-src emacs-lisp
+(starter-kit-install-if-needed
+    'auto-complete
+    'bind-key
+    'coffee-fof
+    'coffee-mode
+    'creole ;; for emacswiki
+    'creole-mode
+    'dash ;; esential functional programming lib
+    'drag-stuff
+    'e2wm  ;; emacs window manager -- somewhat experimental
+    'e2wm-bookmark
+    'e2wm-direx
+    'easy-kill
+    'elpy
+    'ert-runner
+    'exec-path-from-shell ;; utility funcs to get environment variables
+    'expand-region ;; expand selected region semantically
+    'f  ;; file system utilities
+    'flycheck
+    'flycheck-cask
+    'idle-highlight-mode ;; highlight word point is on
+    'ipretty ;; interactive lisp pretty-print
+    'js2-mode ;; improved JavaScript support
+    'json-mode
+    'kv ;; should be specified by pinboard, but isn't
+    'literate-coffee-mode
+    'magit
+    'markdown-mode
+    'paradox ;; enhanced package listing, future std.
+    'pony-mode ;; django-admin interaction (nice)
+    'pretty-symbols ;; draw tokens as Unicode glyphs
+    'quack
+    's
+    'smex  ;; M-x interface with Ido-style fuzzy matching.
+    'sphinx-doc
+    'undo-tree
+    'web
+    'web-beautify
+    'web-mode
+    'yasnippet)
+
+# (starter-kit-install-if-needed     'pinboard ;; display pinboard entries in buffer
+#     'pinboard-api  ;; call pinboard API from emacs lisp
+# )
+#+end_src
+
 ** Windows-specific setup
   :PROPERTIES:
   :CUSTOM_ID: windows-specific
@@ -12,19 +64,6 @@
 (when (equal system-type 'windows-nt)
   ;; we could do this in hook, etc. but wth...
   (require 'sgml-mode))
-#+end_src
-
-** Personally useful packages
-We need to include some ubiquitous packages that are my preferences,
-but shouldn't be in the starter-kit. To make this more stand-alone, we
-first need to verify that cask is initialized:
-
-#+name: personal-requires
-#+begin_src emacs-lisp
-(starter-kit-install-if-needed 'quack 'kv 'pinboard)
-(require 'quack nil t)
-(require 'kv) ;; hidden requirement of pinboard
-(require 'pinboard)
 #+end_src
 
 ** Enable additional substitutions with pretty-symbol
