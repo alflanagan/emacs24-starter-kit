@@ -5,8 +5,8 @@ env:
 # don't neeed emacs-git-snapshot, don't want to add dependencies
 # that are not part of standard Emacs install
 - EVM_EMACS=emacs-24.3-bin
-- EMBATCH="emacs --batch --eval \"(require 'org)\""
 install:
+- export EMBATCH="emacs --batch --eval \"(require 'org)\""
 - sudo mkdir /usr/local/evm
 - sudo chown $(id -u):$(id -g) /usr/local/evm
 - curl -fsSkL https://raw.github.com/rejeep/evm/master/go | bash
