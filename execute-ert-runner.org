@@ -5,6 +5,10 @@
 
   (run-hooks 'after-init-hook)
 
+  (mapc (lambda (dir)
+          (org-babel-load-file (concat "test/" dir)))
+        (directory-files "test" nil ".+test.org"))
+
   (ert-run-tests-batch-and-exit)
 
 #+end_src
