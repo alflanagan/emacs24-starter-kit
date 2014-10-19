@@ -15,7 +15,7 @@ install:
 # verify that we're using the right f'ing Emacs
 - emacs --version
 - ln -s ~/emacs24-starter-kit ~/.emacs.d
-- ${EMBATCH} --eval '(princ "install-ert-runner.org\n")'
+- ${EMBATCH} --eval \'(princ "install-ert-runner.org\n")\'
 - ${EMBATCH} --eval '(princ (concat (file-exists-p "install-ert-runner.org") "\n"))'
 - ${EMBATCH} --eval '(org-babel-load-file "install-ert-runner.org")'
 - cd test
