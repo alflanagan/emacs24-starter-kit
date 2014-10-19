@@ -257,7 +257,6 @@ interested in the actual code implementing the starter kit.
   session.
   #+name: starter-kit-load-on-startup
   #+begin_src emacs-lisp
-    (require 'cl)
     (require 'cl-lib)
     (require 'saveplace)
     (require 'ffap)
