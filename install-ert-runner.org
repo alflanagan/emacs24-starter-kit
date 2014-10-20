@@ -1,26 +1,36 @@
 #+TITLE: Batch File to Install ert-runner Package
 #+OPTIONS: toc:2 num:nil ^:nil
 
-* Implementation
+This program installs the "ert-runner" package in the elpa
+subdirectory, so that we can use it to run tests without loading
+everything and the kitchen sink.
 
-#+name: install-ert-runner
+* Implementation
+Check for local 'org package and load it if found.
+#+begin_src emacs-lisp :tangle yes
+(when (getenv "ORG_HOME")
+  (let ((org-lisp-dir (expand-file-name "lisp" (getenv "ORG_HOME"))))
+    (when (file-directory-p org-lisp-dir)
+      (add-to-list 'load-path org-lisp-dir)
+      (require 'org))))
+#+end_src
+
+We need some setup for package module to get things in the right
+place.
 #+begin_src emacs-lisp :tangle yes
   (setq starter-kit-dir user-emacs-directory)
-
-  (let ((elisp-dir (expand-file-name "src" starter-kit-dir)))
-    ;; add the src directory to the load path
-    (add-to-list 'load-path elisp-dir)
-    ;; load specific files
-    (when (file-exists-p elisp-dir)
-      (let ((default-directory elisp-dir))
-        (normal-top-level-add-subdirs-to-load-path))))
 
   (setq package-user-dir (concat starter-kit-dir "elpa"))
   (setq package-archives
         '(("gnu"         . "http://elpa.gnu.org/packages/")
-          ("melpa"       . "http://melpa.milkbox.net/packages/")))
-  (package-initialize)
-  (package-install 'ert-runner)
+          ("melpa"       . "http://melpa.milkbox.net/packages/")
+          ("marmalade"   . "http://marmalade-repo.org/packages/")))
+#+end_src
 
+#+name: install-ert-runner
+#+begin_src emacs-lisp :tangle yes
+  (package-initialize)
+  (unless (package-installed-p 'ert-runner)
+    (package-install 'ert-runner))
 
 #+end_src
