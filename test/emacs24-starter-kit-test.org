@@ -7,7 +7,7 @@ Verify most of all that all the startup .org files got tangled and loaded.
     ;; -*- lexical-binding: t; coding: utf-8; -*-
 
     (require 'ert)
-    (load-file "../init.el")
+    (load-file "init.el")
 
     (princ "init.el loaded.\n")
     (run-hooks 'after-init-hook)
