@@ -29,8 +29,10 @@ place.
 
 #+name: install-ert-runner
 #+begin_src emacs-lisp :tangle yes
+  (princ (concat "package-user-dir is " package-user-dir ".\n"))
   (package-initialize)
   (unless (package-installed-p 'ert-runner)
+    (princ "Trying to install ert-runner.\n")
     (package-install 'ert-runner))
 
 #+end_src
