@@ -50,14 +50,18 @@ everybody.
     "The set of packages to be automatically installed for me."
   )
 
-  (mapc 'starter-kit-install-if-needed 
-        lloyds-installed-packages)
+  (add-hook 'after-init-hook
+            (lambda ()
+              (mapc 'starter-kit-install-if-needed 
+                    lloyds-installed-packages)
+              (princ (format "lloyds-installed-packages has length %d.\n"
+                             (length lloyds-installed-packages)))))
+
   ;; (starter-kit-install-if-needed     'pinboard ;; display pinboard entries in buffer
   ;;     'pinboard-api  ;; call pinboard API from emacs lisp
   ;; )
 
-  (princ (format "lloyds-installed-packages has length %d.\n"
-                 (length lloyds-installed-packages)))
+
 #+end_src
 
 ** Windows-specific setup
@@ -67,10 +71,11 @@ everybody.
 
 #+name: windows-specific-setup
 #+begin_src emacs-lisp :tangle yes
-;; html-mode fails on windows if sgml-mode not already present
-(when (equal system-type 'windows-nt)
-  ;; we could do this in hook, etc. but wth...
-  (require 'sgml-mode))
+  (add-hook 'after-init-hook
+            (lambda ()
+              ;; html-mode fails on windows if sgml-mode not already present
+              (when (equal system-type 'windows-nt)
+                (require 'sgml-mode))))
 #+end_src
    
 ** Enable additional substitutions with pretty-symbol
@@ -86,8 +91,6 @@ everybody.
         (progn  ;; it's automatically buffer-local, so add to mode hook
           (push '("<=" . ?≤) prettify-symbols-alist)
           (push '(">=" . ?≥) prettify-symbols-alist))))
-
-
 #+end_src
 
 ** Set up various hooks
