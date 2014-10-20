@@ -6,51 +6,52 @@ There are a whole bunch of packages I use which may not be useful to
 everybody.
 
 #+name: my-installed-packages
-#+begin-src emacs-lisp
-(starter-kit-install-if-needed
-    'auto-complete
-    'bind-key
-    'coffee-fof
-    'coffee-mode
-    'creole ;; for emacswiki
-    'creole-mode
-    'dash ;; esential functional programming lib
-    'drag-stuff
-    'e2wm  ;; emacs window manager -- somewhat experimental
-    'e2wm-bookmark
-    'e2wm-direx
-    'easy-kill
-    'elpy
-    'ert-runner
-    'exec-path-from-shell ;; utility funcs to get environment variables
-    'expand-region ;; expand selected region semantically
-    'f  ;; file system utilities
-    'flycheck
-    'flycheck-cask
-    'idle-highlight-mode ;; highlight word point is on
-    'ipretty ;; interactive lisp pretty-print
-    'js2-mode ;; improved JavaScript support
-    'json-mode
-    'kv ;; should be specified by pinboard, but isn't
-    'literate-coffee-mode
-    'magit
-    'markdown-mode
-    'paradox ;; enhanced package listing, future std.
-    'pony-mode ;; django-admin interaction (nice)
-    'pretty-symbols ;; draw tokens as Unicode glyphs
-    'quack
-    's
-    'smex  ;; M-x interface with Ido-style fuzzy matching.
-    'sphinx-doc
-    'undo-tree
-    'web
-    'web-beautify
-    'web-mode
-    'yasnippet)
+#+begin_src emacs-lisp :tangle yes
+  (starter-kit-install-if-needed
+      'auto-complete
+      'bind-key
+      'coffee-fof
+      'coffee-mode
+      'creole ;; for emacswiki
+      'creole-mode
+      'dash ;; esential functional programming lib
+      'drag-stuff
+      'e2wm  ;; emacs window manager -- somewhat experimental
+      'e2wm-bookmark
+      'e2wm-direx
+      'easy-kill
+      'elpy
+      'ert-runner
+      'exec-path-from-shell ;; utility funcs to get environment variables
+      'expand-region ;; expand selected region semantically
+      'f  ;; file system utilities
+      'flycheck
+      'flycheck-cask
+      'idle-highlight-mode ;; highlight word point is on
+      'ipretty ;; interactive lisp pretty-print
+      'js2-mode ;; improved JavaScript support
+      'json-mode
+      'kv ;; should be specified by pinboard, but isn't
+      'literate-coffee-mode
+      'magit
+      'markdown-mode
+      'paradox ;; enhanced package listing, future std.
+      'pony-mode ;; django-admin interaction (nice)
+      'pretty-symbols ;; draw tokens as Unicode glyphs
+      'quack
+      's
+      'smex  ;; M-x interface with Ido-style fuzzy matching.
+      'sphinx-doc
+      'undo-tree
+      'web
+      'web-beautify
+      'web-mode
+      'yasnippet)
 
-# (starter-kit-install-if-needed     'pinboard ;; display pinboard entries in buffer
-#     'pinboard-api  ;; call pinboard API from emacs lisp
-# )
+  ;; (starter-kit-install-if-needed     'pinboard ;; display pinboard entries in buffer
+  ;;     'pinboard-api  ;; call pinboard API from emacs lisp
+  ;; )
+
 #+end_src
 
 ** Windows-specific setup
@@ -59,15 +60,15 @@ everybody.
   :END:
 
 #+name: windows-specific-setup
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
 ;; html-mode fails on windows if sgml-mode not already present
 (when (equal system-type 'windows-nt)
   ;; we could do this in hook, etc. but wth...
   (require 'sgml-mode))
 #+end_src
-
+   
 ** Enable additional substitutions with pretty-symbol
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun setup-elisp-pretty ()
     "Add to words auto-converted to unicode symbols."
     ;; if we've got pretty-symbols-mode, enable multiple categories
@@ -90,7 +91,7 @@ exists. Just using `add-hook` would add the function name to the hook,
 and lead to a run-time error when the hook is executed.
 
 #+name: define-hook-macro
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defmacro add-hook-if-exists (a-hook a-function &rest args)
      "Add to hook A-HOOK a call to (A-FUNCTION ARGS) with a check to ensure A-FUNCTION is defined."
      `(add-hook ,a-hook (lambda () (if (functionp ,a-function)
@@ -104,7 +105,7 @@ function is not available. (One can make an argument that you should
 strategy. I don't want a missing function to abort switching to a
 requested mode.)
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun add-hooks-for-packages ()
     "Set up hooks which depend on packages that need to be initialized by package system."
     (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil))) ;; Use spaces, not tabs.
