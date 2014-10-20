@@ -6,15 +6,6 @@ subdirectory, so that we can use it to run tests without loading
 everything and the kitchen sink.
 
 * Implementation
-Check for local 'org package and load it if found.
-#+begin_src emacs-lisp :tangle yes
-  (when (getenv "ORG_HOME")
-    (let ((org-lisp-dir (expand-file-name "lisp" (getenv "ORG_HOME"))))
-      (when (file-directory-p org-lisp-dir)
-        (add-to-list 'load-path org-lisp-dir)
-        (require 'org))))
-#+end_src
-
 We need some setup for package module to get things in the right
 place.
 #+begin_src emacs-lisp :tangle yes
@@ -27,6 +18,8 @@ place.
           ("marmalade"   . "http://marmalade-repo.org/packages/")))
 #+end_src
 
+Do the actual work in `after-init-hook` so that everything is
+(hopefully) set up correctly.
 #+name: install-ert-runner
 #+begin_src emacs-lisp :tangle yes
   (add-hook 'after-init-hook

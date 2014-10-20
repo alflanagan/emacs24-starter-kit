@@ -1,16 +1,27 @@
-
+#+TITLE: Batch File to Execute ERT Tests
+#+OPTIONS: toc:2 num:nil ^:nil
+To begin with, we need to load everything, since emacs won't run
+"init.el" automatically in batch mode.
 
 #+begin_src emacs-lisp :tangle yes
-  (load (concat user-emacs-directory "init.el"))
+  (load-file "./init.el")
+#+end_src
 
+All the startup code was added to `after-init-hook`, which also won't
+trigger automatically.
+
+#+begin_src emacs-lisp :tangle yes
   (run-hooks 'after-init-hook)
+#+end_src
 
+Now we're set up. Load all the test files from test/, and execute
+tests.
+
+#+begin_src emacs-lisp :tangle yes
   (mapc (lambda (dir)
           (org-babel-load-file (concat "test/" dir)))
         (directory-files "test" nil ".+test.org"))
 
   (ert-run-tests-batch-and-exit)
-
 #+end_src
-
 
