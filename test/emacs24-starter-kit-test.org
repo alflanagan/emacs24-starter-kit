@@ -2,11 +2,18 @@
 #+OPTIONS: toc:2 num:nil ^:nil
 
 * Basic Tests for Emacs Starter Kit
-
+Verify most of all that all the startup .org files got tangled and loaded.
 #+begin_src emacs-lisp  :tangle yes
   ;; -*- lexical-binding: t; coding: utf-8; -*-
 
   (require 'ert)
+
+  (princ features)
+  (princ "\n")
+
+  (ert-deftest verify-installed-packages ()
+    (mapc (lambda (x) (should (member x features)))
+          lloyds-installed-packages))
 
   (ert-deftest basic-tests ()
     "Currently just a placeholder"

@@ -7,47 +7,50 @@ everybody.
 
 #+name: my-installed-packages
 #+begin_src emacs-lisp :tangle yes
-  (starter-kit-install-if-needed
-      'auto-complete
-      'bind-key
-      'coffee-fof
-      'coffee-mode
-      'creole ;; for emacswiki
-      'creole-mode
-      'dash ;; esential functional programming lib
-      'drag-stuff
-      'e2wm  ;; emacs window manager -- somewhat experimental
-      'e2wm-bookmark
-      'e2wm-direx
-      'easy-kill
-      'elpy
-      'ert-runner
-      'exec-path-from-shell ;; utility funcs to get environment variables
-      'expand-region ;; expand selected region semantically
-      'f  ;; file system utilities
-      'flycheck
-      'flycheck-cask
-      'idle-highlight-mode ;; highlight word point is on
-      'ipretty ;; interactive lisp pretty-print
-      'js2-mode ;; improved JavaScript support
-      'json-mode
-      'kv ;; should be specified by pinboard, but isn't
-      'literate-coffee-mode
-      'magit
-      'markdown-mode
-      'paradox ;; enhanced package listing, future std.
-      'pony-mode ;; django-admin interaction (nice)
-      'pretty-symbols ;; draw tokens as Unicode glyphs
-      'quack
-      's
-      'smex  ;; M-x interface with Ido-style fuzzy matching.
-      'sphinx-doc
-      'undo-tree
-      'web
-      'web-beautify
-      'web-mode
-      'yasnippet)
+  (defvar lloyds-installed-packages
+    "The set of packages to be automatically installed for me."
+    ('auto-complete
+     'bind-key
+     'coffee-fof
+     'coffee-mode
+     'creole ;; for emacswiki
+     'creole-mode
+     'dash ;; esential functional programming lib
+     'drag-stuff
+     'e2wm  ;; emacs window manager -- somewhat experimental
+     'e2wm-bookmark
+     'e2wm-direx
+     'easy-kill
+     'elpy
+     'ert-runner
+     'exec-path-from-shell ;; utility funcs to get environment variables
+     'expand-region ;; expand selected region semantically
+     'f  ;; file system utilities
+     'flycheck
+     'flycheck-cask
+     'idle-highlight-mode ;; highlight word point is on
+     'ipretty ;; interactive lisp pretty-print
+     'js2-mode ;; improved JavaScript support
+     'json-mode
+     'kv ;; should be specified by pinboard, but isn't
+     'literate-coffee-mode
+     'magit
+     'markdown-mode
+     'paradox ;; enhanced package listing, future std.
+     'pony-mode ;; django-admin interaction (nice)
+     'pretty-symbols ;; draw tokens as Unicode glyphs
+     'quack
+     's
+     'smex  ;; M-x interface with Ido-style fuzzy matching.
+     'sphinx-doc
+     'undo-tree
+     'web
+     'web-beautify
+     'web-mode
+     'yasnippet))
 
+  (mapc starter-kit-install-if-needed 
+        lloyds-installed-packages)
   ;; (starter-kit-install-if-needed     'pinboard ;; display pinboard entries in buffer
   ;;     'pinboard-api  ;; call pinboard API from emacs lisp
   ;; )
