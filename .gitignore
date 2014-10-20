@@ -9,6 +9,8 @@ places
 .svn
 .DS_Store
 tramp
+.smex-items
+*.dat
 
 ## directories
 backups/*
@@ -51,4 +53,3 @@ secret.org
 .emacs.desktop*
 .*~
 agent/*
-.smex-items
