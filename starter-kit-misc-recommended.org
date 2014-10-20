@@ -35,3 +35,6 @@ Set this to whatever browser you use e.g...
 : ;; (setq browse-url-browser-function 'browse-default-w3m)
 : ;; (setq browse-url-browser-function 'browse-url-generic
 : ;;       browse-url-generic-program "conkeror")
+#+begin_src emacs-lisp
+  (setq browse-url-browser-function 'browse-url-firefox)
+#+end_src
