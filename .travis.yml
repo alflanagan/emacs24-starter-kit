@@ -15,10 +15,12 @@ install:
 - evm install $EVM_EMACS --use > /dev/null
 # verify that we're using the right f'ing Emacs
 - emacs --version
-- ln -s ~/emacs24-starter-kit ~/.emacs.d
 - emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "install-ert-runner.org")'
 - cd test
 - make
 - cd ..
+# user-specific files need to be under name of travis user
+- cp lloyd.org $(whoami).org
+- cp lloyd.el $(whoami).org
 script:
 - emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "execute-ert-runner.org")'
