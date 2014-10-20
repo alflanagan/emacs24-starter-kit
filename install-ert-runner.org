@@ -8,11 +8,11 @@ everything and the kitchen sink.
 * Implementation
 Check for local 'org package and load it if found.
 #+begin_src emacs-lisp :tangle yes
-(when (getenv "ORG_HOME")
-  (let ((org-lisp-dir (expand-file-name "lisp" (getenv "ORG_HOME"))))
-    (when (file-directory-p org-lisp-dir)
-      (add-to-list 'load-path org-lisp-dir)
-      (require 'org))))
+  (when (getenv "ORG_HOME")
+    (let ((org-lisp-dir (expand-file-name "lisp" (getenv "ORG_HOME"))))
+      (when (file-directory-p org-lisp-dir)
+        (add-to-list 'load-path org-lisp-dir)
+        (require 'org))))
 #+end_src
 
 We need some setup for package module to get things in the right
@@ -29,10 +29,12 @@ place.
 
 #+name: install-ert-runner
 #+begin_src emacs-lisp :tangle yes
-  (princ (concat "package-user-dir is " package-user-dir ".\n"))
-  (package-initialize)
-  (unless (package-installed-p 'ert-runner)
-    (princ "Trying to install ert-runner.\n")
-    (package-install 'ert-runner))
+  (add-hook 'after-init-hook
+            (lambda ()
+              (princ (concat "package-user-dir is " package-user-dir ".\n"))
+              (package-initialize)
+              (unless (package-installed-p 'ert-runner)
+                (princ "Trying to install ert-runner.\n")
+                (package-install 'ert-runner))))
 
 #+end_src
