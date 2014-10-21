@@ -29,15 +29,25 @@ much more comfortable experience.  This is especially useful in
 combination with the sexp movement functions (=C-M-f= forward, =C-M-b=
 back, =C-M-u= up, =C-M-d= down)
 
+[[https://github.com/Fuco1/smartparens/wiki][Smartparens]] is a newer package that replaces paredit and a number of
+other related packages. If you're used to paredit, check out the wiki
+page on [[https://github.com/Fuco1/smartparens/wiki/Paredit-and-smartparens][Paredit and SmartParens]].
 
 #+begin_src emacs-lisp
-(starter-kit-install-if-needed 'paredit)
+;; (starter-kit-install-if-needed 'paredit)
+(starter-kit-install-if-needed 'smartparens)
 #+end_src
 
 #+begin_src emacs-lisp
-(require 'paredit)
-(defun turn-on-paredit ()
-  (paredit-mode +1))
+  ;; (require 'paredit)
+  ;; (defun turn-on-paredit ()
+  ;;   (paredit-mode +1))
+  (require 'smartparens)
+  (defun turn-on-paredit ()
+    "Really we're turning on smartparens, but haven't changed function name yet."
+    (smartparens-mode +1)
+    ;; also emulate paredit's refusal to delete one delimiter in a pair
+    (smartparens-strict-mode +1))
 #+end_src
 
 : ;; (eval-after-load 'paredit
