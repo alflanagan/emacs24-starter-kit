@@ -76,7 +76,6 @@ everybody.
 
 #+end_src
    
-
 ** Activate optional parts of starter-kit
 
 #+begin_src emacs-lisp :tangle yes
@@ -115,26 +114,12 @@ These functions set up various aspects of the system.
           (push '(">=" . ?≥) prettify-symbols-alist))))
 #+end_src
 
-*** Set up paradox package listing features
-#+begin_src emacs-lisp :tangle yes
-  (defun set-up-paradox-variables ()
-    "Set up config variables for paradox package ratings."
-    (require 'paradox)
-    (require 'secret-data)
-    (when (functionp 'paradox-list-packages)
-      (defvar paradox-github-token)
-      (defvar paradox-automatically-star)
-      ;; token "paradox emacs packages" (github.com)
-      (setq paradox-github-token (secret-data-get-key "paradox-github-token"))
-      (setq paradox-automatically-star nil)))
-#+end_src
-
 *** Start emacs server process if not already started
 #+begin_src emacs-lisp :tangle yes
+  (require 'server)
   (defun start-server-if-none ()
     "Start the server processes, unless another process already has."
     ;; test copied from server.el
-    (require 'server)
     (let ((file (expand-file-name "server"
                                   (if server-use-tcp
                                       server-auth-dir
@@ -163,10 +148,36 @@ switching to a major mode.
     `(condition-case err-data
          ,body
        ;; extract most useful info from err-data structure
-       ((error debug) (message "[init] failure! type %s, msg %s in %s."
-                               (car err-data)
-                               (cdr err-data)
-                               (car ',body)))))
+       (error (message "[init] failure! type %s, msg %s in %s."
+                       (car err-data)
+                       (cdr err-data)
+                       (car ',body)))))
+#+end_src
+
+*** Load my local emacs-lisp Org files
+So far the only local file is =secret-data.org=. That file implements
+a "hidden file" key-data store which could probably be done better
+with an existing package.
+
+#+begin_src emacs-lisp :tangle yes
+  (error-into-message (load-file (org-babel-tangle-file "secret-data.org")))
+#+end_src
+*** Set up paradox package listing features
+Paradox supports starring packages on [[http://github.com]] if the user
+has an appropriate github token. Load that token from our secret data
+file and set up the paradox environment.
+
+#+begin_src emacs-lisp :tangle yes
+  (defun set-up-paradox-variables ()
+    "Set up config variables for paradox package ratings."
+    (require 'paradox)
+    (require 'secret-data)
+    (when (functionp 'paradox-list-packages)
+      (defvar paradox-github-token)
+      (defvar paradox-automatically-star)
+      ;; token "paradox emacs packages" (github.com)
+      (setq paradox-github-token (secret-data-get-key "paradox-github-token"))
+      (setq paradox-automatically-star nil)))
 #+end_src
 
 *** Set up elpy mode for python programming
@@ -174,7 +185,8 @@ switching to a major mode.
 in the background, you have to enable it. I also set it up to replace
 the flymake checker with flycheck.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
+  (require 'elpy nil t)
   (defun set-up-elpy ()
     "Enable `elpy` package and set up options."
     (when (functionp 'elpy-enable)
@@ -197,19 +209,19 @@ the flymake checker with flycheck.
 
 #+end_src
 
-** Enable cua-mode, unfortunately.
+** Enable cua-mode
 Every other program uses CUA mode keys for cut and paste. If only IBM
 had just adopted Emacs key bindings as a standard.
+
 #+begin_src emacs-lisp :tangle yes
   (cua-mode)
 #+end_src
 
-
 ** Set up major mode hooks
 We define a useful macro to add a function to a hook that will execute
-a given function only if it
-exists. Just using `add-hook` would add the function name to the hook,
-and lead to a run-time error when the hook is executed.
+a given function only if it exists. Just using `add-hook` would add
+the function name to the hook, and lead to a run-time error when the
+hook is executed.
 
 #+name: define-hook-macro
 #+begin_src emacs-lisp :tangle yes
