@@ -24,6 +24,7 @@ elpa/*
 src/*
 themes/*
 url/*
+semanticdb/*
 
 ## exported and encrypted files
 *gpg
