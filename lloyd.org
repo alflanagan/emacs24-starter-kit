@@ -1,6 +1,9 @@
 #+TITLE: A. Lloyd Flanagan User-Specific Settings
 #+OPTIONS: toc:2 num:nil ^:nil
 
+This file is loaded by starter-kit during execution of
+`after-init-hook`.
+
 ** Install additional packages
 There are a whole bunch of packages I use which may not be useful to
 everybody.
@@ -8,54 +11,53 @@ everybody.
 #+name: my-installed-packages
 #+begin_src emacs-lisp :tangle yes
   (defvar lloyds-installed-packages
-    '('auto-complete
-      'bind-key
-      'coffee-fof
-      'coffee-mode
-      'creole ;; for emacswiki
-      'creole-mode
-      'dash ;; esential functional programming lib
-      'drag-stuff
-      'e2wm  ;; emacs window manager -- somewhat experimental
-      'e2wm-bookmark
-      'e2wm-direx
-      'easy-kill
-      'elpy
-      'ert-runner
-      'exec-path-from-shell ;; utility funcs to get environment variables
-      'expand-region ;; expand selected region semantically
-      'f  ;; file system utilities
-      'flycheck
-      'flycheck-cask
-      'idle-highlight-mode ;; highlight word point is on
-      'ipretty ;; interactive lisp pretty-print
-      'js2-mode ;; improved JavaScript support
-      'json-mode
-      'kv ;; should be specified by pinboard, but isn't
-      'literate-coffee-mode
-      'magit
-      'markdown-mode
-      'paradox ;; enhanced package listing, future std.
-      'pony-mode ;; django-admin interaction (nice)
-      'pretty-symbols ;; draw tokens as Unicode glyphs
-      'quack
-      's
-      'smex  ;; M-x interface with Ido-style fuzzy matching.
-      'sphinx-doc
-      'undo-tree
-      'web
-      'web-beautify
-      'web-mode
-      'yasnippet)
+    '(auto-complete
+      bind-key
+      coffee-fof
+      coffee-mode
+      creole ;; for emacswiki
+      creole-mode
+      dash ;; esential functional programming lib
+      drag-stuff
+      e2wm  ;; emacs window manager -- somewhat experimental
+      e2wm-bookmark
+      e2wm-direx
+      easy-kill
+      elpy
+      ert-runner
+      exec-path-from-shell ;; utility funcs to get environment variables
+      expand-region ;; expand selected region semantically
+      f  ;; file system utilities
+      flycheck
+      flycheck-cask
+      idle-highlight-mode ;; highlight word point is on
+      ipretty ;; interactive lisp pretty-print
+      js2-mode ;; improved JavaScript support
+      json-mode
+      kv ;; should be specified by pinboard, but isn't
+      literate-coffee-mode
+      magit
+      markdown-mode
+      paradox ;; enhanced package listing, future std.
+      pony-mode ;; django-admin interaction (nice)
+      pretty-symbols ;; draw tokens as Unicode glyphs
+      quack
+      s  ;; The long lost Emacs string manipulation library.
+      smartparens ;; paredit plus
+      smex  ;; M-x interface with Ido-style fuzzy matching.
+      sphinx-doc
+      undo-tree
+      web
+      web-beautify
+      web-mode
+      yasnippet)
     "The set of packages to be automatically installed for me."
   )
 
-  (add-hook 'after-init-hook
-            (lambda ()
-              (mapc 'starter-kit-install-if-needed 
-                    lloyds-installed-packages)
-              (princ (format "lloyds-installed-packages has length %d.\n"
-                             (length lloyds-installed-packages)))))
+  (mapc 'starter-kit-install-if-needed 
+        lloyds-installed-packages)
+  (message (format "lloyds-installed-packages has length %d.\n"
+                   (length lloyds-installed-packages)))
 
   ;; (starter-kit-install-if-needed     'pinboard ;; display pinboard entries in buffer
   ;;     'pinboard-api  ;; call pinboard API from emacs lisp
@@ -71,16 +73,15 @@ everybody.
 
 #+name: windows-specific-setup
 #+begin_src emacs-lisp :tangle yes
-  (add-hook 'after-init-hook
-            (lambda ()
-              ;; html-mode fails on windows if sgml-mode not already present
-              (when (equal system-type 'windows-nt)
-                (require 'sgml-mode))))
+  ;; html-mode fails on windows if sgml-mode not already present
+  (when (equal system-type 'windows-nt)
+    (require 'sgml-mode))
+
 #+end_src
    
 ** Enable additional substitutions with pretty-symbol
 #+begin_src emacs-lisp :tangle yes
-  (defun setup-elisp-pretty ()
+  (defun setup-elisp-prettify ()
     "Add to words auto-converted to unicode symbols."
     ;; if we've got pretty-symbols-mode, enable multiple categories
     (if (boundp 'pretty-symbol-categories)
@@ -122,6 +123,7 @@ requested mode.)
     (add-hook-if-exists 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
     (add-hook-if-exists 'emacs-lisp-mode-hook #'flycheck-mode)
     (add-hook-if-exists 'emacs-lisp-mode-hook #'semantic-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'smartparens)
     (add-hook-if-exists 'python-mode-hook #'flycheck-mode)
     (add-hook-if-exists 'python-mode-hook #'auto-complete-mode)
     (add-hook-if-exists 'python-mode-hook #'hs-minor-mode)
@@ -135,6 +137,6 @@ requested mode.)
     (add-hook-if-exists 'js2-mode-hook #'pretty-symbols-mode)
     (add-hook-if-exists 'js2-mode-hook #'electric-pair-mode))
 
-  (add-hook 'after-init-hook #'add-hooks-for-packages)
+  (add-hooks-for-packages)
 
 #+end_src
