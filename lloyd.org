@@ -36,21 +36,18 @@ everybody.
       json-mode
       kv ;; should be specified by pinboard, but isn't
       literate-coffee-mode
-      magit
       markdown-mode
       paradox ;; enhanced package listing, future std.
       pony-mode ;; django-admin interaction (nice)
       pretty-symbols ;; draw tokens as Unicode glyphs
       quack
       s  ;; The long lost Emacs string manipulation library.
-      smartparens ;; paredit plus
       smex  ;; M-x interface with Ido-style fuzzy matching.
       sphinx-doc
       undo-tree
       web
       web-beautify
-      web-mode
-      yasnippet)
+      web-mode)
     "The set of packages to be automatically installed for me."
   )
 
@@ -79,6 +76,19 @@ everybody.
 
 #+end_src
    
+
+** Activate optional parts of starter-kit
+
+#+begin_src emacs-lisp :tangle yes
+  (starter-kit-load "python")
+  (starter-kit-load "eshell")
+  (starter-kit-load "js")
+  (starter-kit-load "lisp")
+  (starter-kit-load "misc-recommended")
+  (starter-kit-load "org")
+  (starter-kit-load "yasnippet")
+#+end_src
+
 ** Enable additional substitutions with pretty-symbol
 #+begin_src emacs-lisp :tangle yes
   (defun setup-elisp-prettify ()
