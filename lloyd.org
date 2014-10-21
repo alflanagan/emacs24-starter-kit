@@ -89,7 +89,18 @@ everybody.
   (starter-kit-load "yasnippet")
 #+end_src
 
-** Enable additional substitutions with pretty-symbol
+** Setup functions
+These functions set up various aspects of the system.
+*** Enable undo-tree globally
+#+begin_src emacs-lisp :tangle yes
+  (defun set-up-global-undo-tree ()
+    "Enable `undo-tree` mode wherever it makes sense."
+    (when (functionp 'global-undo-tree-mode)
+      (global-undo-tree-mode)))
+
+#+end_src
+
+*** Enable additional substitutions with pretty-symbol
 #+begin_src emacs-lisp :tangle yes
   (defun setup-elisp-prettify ()
     "Add to words auto-converted to unicode symbols."
@@ -104,7 +115,97 @@ everybody.
           (push '(">=" . ?≥) prettify-symbols-alist))))
 #+end_src
 
-** Set up various hooks
+*** Set up paradox package listing features
+#+begin_src emacs-lisp :tangle yes
+  (defun set-up-paradox-variables ()
+    "Set up config variables for paradox package ratings."
+    (require 'paradox)
+    (require 'secret-data)
+    (when (functionp 'paradox-list-packages)
+      (defvar paradox-github-token)
+      (defvar paradox-automatically-star)
+      ;; token "paradox emacs packages" (github.com)
+      (setq paradox-github-token (secret-data-get-key "paradox-github-token"))
+      (setq paradox-automatically-star nil)))
+#+end_src
+
+*** Start emacs server process if not already started
+#+begin_src emacs-lisp :tangle yes
+  (defun start-server-if-none ()
+    "Start the server processes, unless another process already has."
+    ;; test copied from server.el
+    (require 'server)
+    (let ((file (expand-file-name "server"
+                                  (if server-use-tcp
+                                      server-auth-dir
+                                    server-socket-dir))))
+      (if (not (file-exists-p file))
+          (server-start))))
+#+end_src
+
+*** Enable undo-tree globally.
+#+begin_src emacs-lisp :tangle yes
+  (defun set-up-global-undo-tree ()
+    "Enable `undo-tree` mode wherever it makes sense."
+    (when (functionp 'global-undo-tree-mode)
+      (global-undo-tree-mode)))
+#+end_src
+
+*** Useful macro for startup functions
+This macro is used to run a function, and catch any errors and display
+them as messages. The motivation is that a startup function that
+errors may prevent proper startup of emacs, or visiting a file, or
+switching to a major mode.
+
+#+begin_src emacs-lisp :tangle yes
+  (defmacro error-into-message (body)
+    "Catch error in BODY, write message."
+    `(condition-case err-data
+         ,body
+       ;; extract most useful info from err-data structure
+       ((error debug) (message "[init] failure! type %s, msg %s in %s."
+                               (car err-data)
+                               (cdr err-data)
+                               (car ',body)))))
+#+end_src
+
+*** Set up elpy mode for python programming
+"elpy" mode is great for python programming. Because it runs a server
+in the background, you have to enable it. I also set it up to replace
+the flymake checker with flycheck.
+
+#+begin_src emacs-lisp
+  (defun set-up-elpy ()
+    "Enable `elpy` package and set up options."
+    (when (functionp 'elpy-enable)
+      (declare-function elpy-enable "elpy"  (&optional skip-initialize-variables))
+      (elpy-enable))
+      ;;(elpy-use-ipython)
+
+    ;;https://github.com/jorgenschaefer/elpy/issues/137
+    (when (and (boundp 'elpy-default-minor-modes) (functionp 'flycheck-mode))
+      (setq elpy-default-minor-modes (delete 'flymake-mode elpy-default-minor-modes))
+      (add-to-list 'elpy-default-minor-modes 'flycheck-mode)))
+#+end_src
+
+*** Actually call the setup functions
+#+begin_src emacs-lisp :tangle yes
+  (error-into-message (start-server-if-none))
+  (error-into-message (set-up-paradox-variables))
+  (error-into-message (set-up-global-undo-tree))
+  (error-into-message (set-up-elpy))
+
+#+end_src
+
+** Enable cua-mode, unfortunately.
+Every other program uses CUA mode keys for cut and paste. If only IBM
+had just adopted Emacs key bindings as a standard.
+#+begin_src emacs-lisp :tangle yes
+  (cua-mode)
+#+end_src
+
+
+** Set up major mode hooks
 We define a useful macro to add a function to a hook that will execute
 a given function only if it
 exists. Just using `add-hook` would add the function name to the hook,
@@ -126,24 +227,30 @@ strategy. I don't want a missing function to abort switching to a
 requested mode.)
 
 #+begin_src emacs-lisp :tangle yes
-  (defun add-hooks-for-packages ()
-    "Set up hooks which depend on packages that need to be initialized by package system."
+  (defun add-elisp-mode-hooks ()
+    "Add various things to `emacs-lisp-mode-hook`."
     (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil))) ;; Use spaces, not tabs.
     (add-hook 'emacs-lisp-mode-hook #'auto-complete-mode)
-    (add-hook-if-exists 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
     (add-hook-if-exists 'emacs-lisp-mode-hook #'flycheck-mode)
-    (add-hook-if-exists 'emacs-lisp-mode-hook #'semantic-mode)
-    (add-hook-if-exists 'emacs-lisp-mode-hook #'smartparens)
-    (add-hook-if-exists 'python-mode-hook #'flycheck-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'ipretty-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'pretty-symbols-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'semantic-mode))
+
+  (defun add-python-mode-hooks ()
+    "Add various useful things to `python-mode-hook`"
     (add-hook-if-exists 'python-mode-hook #'auto-complete-mode)
+    (add-hook-if-exists 'python-mode-hook #'flycheck-mode)
     (add-hook-if-exists 'python-mode-hook #'hs-minor-mode)
     (add-hook-if-exists 'python-mode-hook #'semantic-mode)
-    (add-hook 'python-mode-hook (lambda () (add-hook 'before-save-hook  'delete-trailing-whitespace nil t)))
+    (add-hook 'python-mode-hook (lambda () (add-hook 'before-save-hook  'delete-trailing-whitespace nil t))))
+
+  (defun add-hooks-for-packages ()
+    "Set up hooks which depend on packages that need to be initialized by package system."
+    (add-elisp-mode-hooks)
+    (add-python-mode-hooks)
     ;; because ido-ubiquitous doesn't get options right
     (add-hook-if-exists 'ert-simple-view-mode-hook #'ido-ubiquitous-mode)
-    (add-hook 'emacs-lisp-mode-hook #'setup-elisp-prettify)
-    (add-hook-if-exists 'emacs-lisp-mode-hook #'pretty-symbols-mode)
-    (add-hook-if-exists 'emacs-lisp-mode-hook #'ipretty-mode)
     (add-hook-if-exists 'js2-mode-hook #'pretty-symbols-mode)
     (add-hook-if-exists 'js2-mode-hook #'electric-pair-mode))
 
