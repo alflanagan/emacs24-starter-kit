@@ -24,6 +24,7 @@ everybody.
       e2wm-direx
       easy-kill
       elpy
+      el-spice ;; extra functions -- TODO: fix key overlaps
       ert-runner
       exec-path-from-shell ;; utility funcs to get environment variables
       expand-region ;; expand selected region semantically
@@ -44,6 +45,7 @@ everybody.
       s  ;; The long lost Emacs string manipulation library.
       smex  ;; M-x interface with Ido-style fuzzy matching.
       sphinx-doc
+      thingatpt+
       undo-tree
       web
       web-beautify
@@ -59,7 +61,6 @@ everybody.
   ;; (starter-kit-install-if-needed     'pinboard ;; display pinboard entries in buffer
   ;;     'pinboard-api  ;; call pinboard API from emacs lisp
   ;; )
-
 
 #+end_src
 
