@@ -22,7 +22,6 @@ elpa/*
 src/*
 themes/*
 url/*
-snippets/*
 
 ## exported and encrypted files
 *gpg
