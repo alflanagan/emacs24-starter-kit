@@ -25,6 +25,7 @@ src/*
 themes/*
 url/*
 semanticdb/*
+.cask/*
 
 ## exported and encrypted files
 *gpg
