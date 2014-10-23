@@ -51,13 +51,14 @@ everybody.
       web-beautify
       web-mode)
     "The set of packages to be automatically installed for me."
-  )
+    )
 
-  (mapc 'starter-kit-install-if-needed 
+  (mapc 'starter-kit-install-if-needed
         lloyds-installed-packages)
 
-  (starter-kit-install-if-needed     'pinboard ;; display pinboard entries in buffer
-                                     'pinboard-api)  ;; call pinboard API from emacs lisp                                   
+  (starter-kit-install-if-needed
+   'pinboard ;; display pinboard entries in buffer
+   'pinboard-api)  ;; call pinboard API from emacs lisp
 #+end_src
 
 ** Windows-specific setup
@@ -72,7 +73,7 @@ everybody.
     (require 'sgml-mode))
 
 #+end_src
-   
+
 ** Activate optional parts of starter-kit
 
 #+begin_src emacs-lisp :tangle yes
@@ -133,7 +134,7 @@ These functions set up various aspects of the system.
       (global-undo-tree-mode)))
 #+end_src
 
-*** Useful macro for startup functions
+*** Macro to catch errors, turn them into messages
 This macro is used to run a function, and catch any errors and display
 them as messages. The motivation is that a startup function that
 errors may prevent proper startup of emacs, or visiting a file, or
@@ -142,13 +143,13 @@ switching to a major mode.
 #+begin_src emacs-lisp :tangle yes
   (defmacro error-into-message (body)
     "Catch error in BODY, write message."
-    `(condition-case err-data
+    `(condition-case-unless-debug err-data
          ,body
        ;; extract most useful info from err-data structure
-       (error (message "[init] failure! type %s, msg %s in %s."
-                       (car err-data)
-                       (cdr err-data)
-                       (car ',body)))))
+       (error  (message "[init] failure! type %s, msg %s in %s."
+                          (car err-data)
+                          (cdr err-data)
+                          (car ',body)))))
 #+end_src
 
 *** Load my local emacs-lisp Org files
@@ -157,7 +158,7 @@ a "hidden file" key-data store which could probably be done better
 with an existing package.
 
 #+begin_src emacs-lisp :tangle yes
-  (error-into-message (load-file (org-babel-tangle-file "secret-data.org")))
+  (error-into-message (org-babel-load-file "secret-data.org"))
 #+end_src
 *** Set up paradox package listing features
 Paradox supports starring packages on [[http://github.com]] if the user
@@ -168,7 +169,6 @@ file and set up the paradox environment.
   (defun set-up-paradox-variables ()
     "Set up config variables for paradox package ratings."
     (require 'paradox)
-    (require 'secret-data)
     (when (functionp 'paradox-list-packages)
       (defvar paradox-github-token)
       (defvar paradox-automatically-star)
@@ -265,5 +265,4 @@ requested mode.)
     (add-hook-if-exists 'js2-mode-hook #'electric-pair-mode))
 
   (add-hooks-for-packages)
-
 #+end_src
