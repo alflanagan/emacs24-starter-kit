@@ -55,13 +55,9 @@ everybody.
 
   (mapc 'starter-kit-install-if-needed 
         lloyds-installed-packages)
-  (message (format "lloyds-installed-packages has length %d.\n"
-                   (length lloyds-installed-packages)))
 
-  ;; (starter-kit-install-if-needed     'pinboard ;; display pinboard entries in buffer
-  ;;     'pinboard-api  ;; call pinboard API from emacs lisp
-  ;; )
-
+  (starter-kit-install-if-needed     'pinboard ;; display pinboard entries in buffer
+                                     'pinboard-api)  ;; call pinboard API from emacs lisp                                   
 #+end_src
 
 ** Windows-specific setup
@@ -207,6 +203,7 @@ the flymake checker with flycheck.
   (error-into-message (set-up-paradox-variables))
   (error-into-message (set-up-global-undo-tree))
   (error-into-message (set-up-elpy))
+  (error-into-message (setup-elisp-prettify))
 
 #+end_src
 
