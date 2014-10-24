@@ -157,8 +157,10 @@ So far the only local file is =secret-data.org=. That file implements
 a "hidden file" key-data store which could probably be done better
 with an existing package.
 
-#+begin_src emacs-lisp :tangle yes
-  (error-into-message (org-babel-load-file "secret-data.org"))
+#+begin_src emacs-lisp
+  ;; (error-into-message (org-babel-load-file "secret-data.org"))
+  ;; added this to =starter-kit.org= instead, since that knows all about
+  ;; loading org files from the starter kit directory.
 #+end_src
 *** Set up paradox package listing features
 Paradox supports starring packages on [[http://github.com]] if the user

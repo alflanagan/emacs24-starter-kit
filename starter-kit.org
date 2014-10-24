@@ -429,6 +429,7 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
       (sk-load user-login-name)
       (if (not (string-match user-login-name "lloyd"))
           (sk-load "lloyd"))
+      (sk-load "secret-data")
       ;; load any files in the user's directory
       (when (file-exists-p user-dir)
         (add-to-list 'load-path user-dir)
