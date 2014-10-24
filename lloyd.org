@@ -233,6 +233,48 @@ hook is executed.
                                   (funcall ,a-function ,@args)))))
 #+end_src
 
+For JavaScript, we want to use js2-mode for files with an extension
+that would activate js-mode. And, we need js2-mode to be automatically
+selected if we edit a file with a she-bang (#!) line that specifies a
+JavaScript interpreter.
+
+First, we need a function to perform surgery on global variable
+'interpreter-mode-alist' to replace or add an interpreter/mode
+association:
+
+#+name: set-interpreter-mode
+#+begin_src emacs-lisp :tangle yes
+  (defun lloyd-set-interpreter-mode (interpreter-string major-mode)
+    "When a file's interpreter is INTERPRETER-STRING, set MAJOR-MODE.
+
+  See Info node `(elisp)Auto Major Mode' and variable `interpreter-mode-alist'."
+    (if (assoc interpreter-string interpreter-mode-alist)
+        ;; already in list, replace its value
+        (setf (cdr (assoc interpreter-string interpreter-mode-alist)) major-mode)
+      ;; not in, so add it
+      (setq interpreter-mode-alist
+              (append interpreter-mode-alist
+                      (list (cons interpreter-string major-mode))))))
+
+#+end_src
+
+Then, if js2-mode has loaded successfully, call the function for a
+list of "known" JavaScript command-line interpreters. And, replace
+associations for file extensions.
+
+#+name: set-up-javascript
+#+begin_src emacs-lisp :tangle yes
+  (if (functionp 'js2-mode)
+      (let ((interp-list '("node" "nodejs" "gjs" "rhino")))
+        (mapc (lambda (interp-name)
+                (lloyd-set-interpreter-mode (purecopy interp-name) 'js2-mode))
+              interp-list)
+        ;; replace all the existing file extension associations with 'js2-mode
+        (while (rassoc 'javascript-mode auto-mode-alist)
+          (setf (cdr (rassoc 'javascript-mode auto-mode-alist)) 'js2-mode))))
+
+#+end_src
+
 Using `add-hook-if-exists` as needed, we can set up hooks for various
 modes without generating error messages if the package with the
 function is not available. (One can make an argument that you should
