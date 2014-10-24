@@ -79,7 +79,9 @@ everybody.
 #+begin_src emacs-lisp :tangle yes
   (starter-kit-load "python")
   (starter-kit-load "eshell")
-  (starter-kit-load "js")
+  ;;starter-kit-js.org still refers to js-mode as "espresso", not valid
+  ;;for later versions of emacs
+  ;;(starter-kit-load "js")
   (starter-kit-load "lisp")
   (starter-kit-load "misc-recommended")
   (starter-kit-load "org")
