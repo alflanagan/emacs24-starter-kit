@@ -173,6 +173,7 @@ file and set up the paradox environment.
   (defun set-up-paradox-variables ()
     "Set up config variables for paradox package ratings."
     (require 'paradox)
+    (require 'secret-data (expand-file-name "secret-data.el" starter-kit-dir))
     (when (functionp 'paradox-list-packages)
       (defvar paradox-github-token)
       (defvar paradox-automatically-star)
