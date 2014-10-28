@@ -1,0 +1,377 @@
+#+TITLE: A. Lloyd Flanagan User-Specific Settings
+#+OPTIONS: toc:2 num:nil ^:nil
+
+This file is loaded by starter-kit during execution of
+`after-init-hook`.
+* Global Properties
+We can set up some of the headers for org-mode tangling to new
+defaults. There's no code for exposition (yet), so turn tangling on by
+default.
+
+'noweb' support is enabled; there's no Lisp construct that would
+confuse it, so might as well.
+
+  :PROPERTIES:
+  :tangle:   yes
+  :comments: noweb
+  :noweb:    yes
+  :END:
+
+** Install additional packages
+There are a whole bunch of packages I use which may not be useful to
+everybody.
+
+#+name: my-installed-packages
+#+begin_src emacs-lisp
+  (defvar lloyds-installed-packages
+    '(auto-complete
+      bind-key
+      coffee-fof
+      coffee-mode
+      creole ;; for emacswiki
+      creole-mode
+      dash ;; esential functional programming lib
+      drag-stuff
+      e2wm  ;; emacs window manager -- somewhat experimental
+      e2wm-bookmark
+      e2wm-direx
+      easy-kill
+      elpy
+      el-spice ;; extra functions -- TODO: fix key overlaps
+      ert-runner
+      exec-path-from-shell ;; utility funcs to get environment variables
+      expand-region ;; expand selected region semantically
+      f  ;; file system utilities
+      flycheck
+      flycheck-cask
+      idle-highlight-mode ;; highlight word point is on
+      ipretty ;; interactive lisp pretty-print
+      js2-mode ;; improved JavaScript support
+      json-mode
+      kv ;; should be specified by pinboard, but isn't
+      literate-coffee-mode
+      markdown-mode
+      paradox ;; enhanced package listing, future std.
+      pony-mode ;; django-admin interaction (nice)
+      pretty-symbols ;; draw tokens as Unicode glyphs
+      quack
+      s  ;; The long lost Emacs string manipulation library.
+      smex  ;; M-x interface with Ido-style fuzzy matching.
+      sphinx-doc
+      thingatpt+
+      undo-tree
+      web
+      web-beautify
+      web-mode)
+    "The set of packages to be automatically installed for me."
+    )
+
+  (mapc 'starter-kit-install-if-needed
+        lloyds-installed-packages)
+
+  (starter-kit-install-if-needed
+   'pinboard ;; display pinboard entries in buffer
+   'pinboard-api)  ;; call pinboard API from emacs lisp
+#+end_src
+
+** Windows-specific setup
+  :PROPERTIES:
+  :CUSTOM_ID: windows-specific
+  :END:
+
+#+name: windows-specific-setup
+#+begin_src emacs-lisp
+  ;; html-mode fails on windows if sgml-mode not already present
+  (when (equal system-type 'windows-nt)
+    (require 'sgml-mode))
+
+#+end_src
+
+** Activate optional parts of starter-kit
+
+#+begin_src emacs-lisp
+  (starter-kit-load "python")
+  (starter-kit-load "eshell")
+  ;;starter-kit-js.org still refers to js-mode as "espresso", not valid
+  ;;for later versions of emacs
+  ;;(starter-kit-load "js")
+  (starter-kit-load "lisp")
+  (starter-kit-load "misc-recommended")
+  (starter-kit-load "org")
+  (starter-kit-load "yasnippet")
+#+end_src
+
+** Setup functions
+These functions set up various aspects of the system.
+*** Enable undo-tree globally
+#+begin_src emacs-lisp
+  (defun set-up-global-undo-tree ()
+    "Enable `undo-tree` mode wherever it makes sense."
+    (when (functionp 'global-undo-tree-mode)
+      (global-undo-tree-mode)))
+
+#+end_src
+
+*** Enable additional substitutions with pretty-symbol
+#+begin_src emacs-lisp
+  (defun set-up-elisp-prettify ()
+    "Add to words auto-converted to unicode symbols."
+    ;; if we've got pretty-symbols-mode, enable multiple categories
+    (if (boundp 'pretty-symbol-categories)
+        (setq pretty-symbol-categories '(lambda relational logical)))
+    ;; prettify-symbols-alist is part of prog-mode, but only
+    ;; on recent versions of emacs, so check
+    (if (boundp 'prettify-symbols-alist)
+        (progn  ;; it's automatically buffer-local, so add to mode hook
+          (push '("<=" . ?≤) prettify-symbols-alist)
+          (push '(">=" . ?≥) prettify-symbols-alist))))
+#+end_src
+
+*** Start emacs server process if not already started
+#+begin_src emacs-lisp
+  (require 'server)
+  (defun start-server-if-none ()
+    "Start the server processes, unless another process already has."
+    ;; test copied from server.el
+    (let ((file (expand-file-name "server"
+                                  (if server-use-tcp
+                                      server-auth-dir
+                                    server-socket-dir))))
+      (if (not (file-exists-p file))
+          (server-start))))
+#+end_src
+
+*** Enable undo-tree globally.
+#+begin_src emacs-lisp
+  (defun set-up-global-undo-tree ()
+    "Enable `undo-tree` mode wherever it makes sense."
+    (when (functionp 'global-undo-tree-mode)
+      (global-undo-tree-mode)))
+#+end_src
+
+*** Macro to catch errors, turn them into messages
+This macro is used to run a function, and catch any errors and display
+them as messages. The motivation is that a startup function that
+errors may prevent proper startup of emacs, or visiting a file, or
+switching to a major mode.
+
+#+begin_src emacs-lisp
+  (defmacro error-into-message (body)
+    "Catch error in BODY, write message."
+    `(condition-case-unless-debug err-data
+         ,body
+       ;; extract most useful info from err-data structure
+       (error  (message "[init] failure! type %s, msg %s in %s."
+                          (car err-data)
+                          (cdr err-data)
+                          (car ',body)))))
+#+end_src
+
+*** Load my local emacs-lisp Org files
+So far the only local file is =secret-data.org=. That file implements
+a "hidden file" key-data store which could probably be done better
+with an existing package.
+
+#+begin_src emacs-lisp
+  ;; (error-into-message (org-babel-load-file "secret-data.org"))
+  ;; added this to =starter-kit.org= instead, since that knows all about
+  ;; loading org files from the starter kit directory.
+#+end_src
+
+*** Load constants and set up keys
+#+begin_src emacs-lisp
+  (defun set-up-constants ()
+    (require 'constants (expand-file-name "constants.el" starter-kit-dir))
+    ;;
+    (autoload 'constants-insert "constants" "Insert constants into source." t)
+    (autoload 'constants-get "constants" "Get the value of a constant." t)
+    (autoload 'constants-replace "constants" "Replace name of a constant." t)
+    (define-key global-map "\C-cci" 'constants-insert)
+    (define-key global-map "\C-ccg" 'constants-get)
+    (define-key global-map "\C-ccr" 'constants-replace)
+    (setq constants-unit-system 'SI)   ;  this is the default
+
+    ;;   ;; Use "cc" as the standard variable name for speed of light,
+    ;;   ;; "bk" for Boltzmann's constant, and "hp" for Planck's constant
+    (setq constants-rename '(("cc" . "c") ("bk" . "k") ("hp" . "h")))
+    ;;
+    ;; A default list of constants to insert when none are specified
+    (setq constants-default-list "cc,bk,hp"))
+#+end_src
+
+*** Set up paradox package listing features
+Paradox supports starring packages on [[http://github.com]] if the user
+has an appropriate github token. Load that token from our secret data
+file and set up the paradox environment.
+
+#+begin_src emacs-lisp
+  (defun set-up-paradox-variables ()
+    "Set up config variables for paradox package ratings."
+    (require 'paradox)
+    (require 'secret-data (expand-file-name "secret-data.el" starter-kit-dir))
+    (when (functionp 'paradox-list-packages)
+      (defvar paradox-github-token)
+      (defvar paradox-automatically-star)
+      ;; token "paradox emacs packages" (github.com)
+      (setq paradox-github-token (secret-data-get-key "paradox-github-token"))
+      (setq paradox-automatically-star nil)))
+#+end_src
+
+*** Set up elpy mode for python programming
+"elpy" mode is great for python programming. Because it runs a server
+in the background, you have to enable it. I also set it up to replace
+the flymake checker with flycheck.
+
+#+begin_src emacs-lisp
+  (require 'elpy nil t)
+  (defun set-up-elpy ()
+    "Enable `elpy` package and set up options."
+    (when (functionp 'elpy-enable)
+      (declare-function elpy-enable "elpy"  (&optional skip-initialize-variables))
+      (elpy-enable))
+      ;;(elpy-use-ipython)
+
+    ;;https://github.com/jorgenschaefer/elpy/issues/137
+    (when (and (boundp 'elpy-default-minor-modes) (functionp 'flycheck-mode))
+      (setq elpy-default-minor-modes (delete 'flymake-mode elpy-default-minor-modes))
+      (add-to-list 'elpy-default-minor-modes 'flycheck-mode)))
+#+end_src
+*** Set up web-beautify hotkeys
+The `web-beautify` package provides a useful function for several
+modes. For each one, we bind it to "Ctrl-C b".
+
+#+begin_src emacs-lisp
+  (defun set-up-web-beautify ()
+    "Set up keys to invoke web-beautify in appropriate modes."
+    (eval-after-load 'js2-mode
+      (lambda ()
+        (if (boundp 'js2-mode-map)
+            (define-key js2-mode-map (kbd "C-c b") 'web-beautify-js))))
+    (eval-after-load 'json-mode
+      (lambda ()
+        (if (boundp 'json-mode-map)
+            (define-key json-mode-map (kbd "C-c b") 'web-beautify-js))))
+    (eval-after-load 'sgml-mode
+      (lambda ()
+        (if (boundp 'html-mode-map)
+            (define-key html-mode-map (kbd "C-c b") 'web-beautify-html))))
+    (eval-after-load 'css-mode
+      (lambda ()
+        (if (boundp 'css-mode-map)
+            (define-key css-mode-map (kbd "C-c b") 'web-beautify-css)))))
+
+#+end_src
+
+*** Actually call the setup functions
+#+begin_src emacs-lisp
+  (error-into-message (start-server-if-none))
+  (error-into-message (set-up-paradox-variables))
+  (error-into-message (set-up-global-undo-tree))
+  (error-into-message (set-up-elpy))
+  (error-into-message (set-up-elisp-prettify))
+  (error-into-message (set-up-web-beautify))
+  (error-into-message (set-up-constants))
+  (error-into-message (smex-initialize))
+#+end_src
+
+** Enable cua-mode
+Every other program uses CUA mode keys for cut and paste. If only IBM
+had just adopted Emacs key bindings as a standard.
+
+#+begin_src emacs-lisp
+  (cua-mode)
+#+end_src
+
+** Set up major mode hooks
+We define a useful macro to add a function to a hook that will execute
+a given function only if it exists. Just using `add-hook` would add
+the function name to the hook, and lead to a run-time error when the
+hook is executed.
+
+#+name: define-hook-macro
+#+begin_src emacs-lisp
+  (defmacro add-hook-if-exists (a-hook a-function &rest args)
+     "Add to hook A-HOOK a call to (A-FUNCTION ARGS) with a check to ensure A-FUNCTION is defined."
+     `(add-hook ,a-hook (lambda () (if (functionp ,a-function)
+                                  (funcall ,a-function ,@args)))))
+#+end_src
+
+For JavaScript, we want to use js2-mode for files with an extension
+that would activate js-mode. And, we need js2-mode to be automatically
+selected if we edit a file with a she-bang (#!) line that specifies a
+JavaScript interpreter.
+
+First, we need a function to perform surgery on global variable
+'interpreter-mode-alist' to replace or add an interpreter/mode
+association:
+
+#+name: set-interpreter-mode
+#+begin_src emacs-lisp
+  (defun lloyd-set-interpreter-mode (interpreter-string major-mode)
+    "When a file's interpreter is INTERPRETER-STRING, set MAJOR-MODE.
+
+  See Info node `(elisp)Auto Major Mode' and variable `interpreter-mode-alist'."
+    (if (assoc interpreter-string interpreter-mode-alist)
+        ;; already in list, replace its value
+        (setf (cdr (assoc interpreter-string interpreter-mode-alist)) major-mode)
+      ;; not in, so add it
+      (setq interpreter-mode-alist
+              (append interpreter-mode-alist
+                      (list (cons interpreter-string major-mode))))))
+
+#+end_src
+
+Then, if js2-mode has loaded successfully, call the function for a
+list of "known" JavaScript command-line interpreters. And, replace
+associations for file extensions.
+
+#+name: set-up-javascript
+#+begin_src emacs-lisp
+  (if (functionp 'js2-mode)
+      (let ((interp-list '("node" "nodejs" "gjs" "rhino")))
+        (mapc (lambda (interp-name)
+                (lloyd-set-interpreter-mode (purecopy interp-name) 'js2-mode))
+              interp-list)
+        ;; replace all the existing file extension associations with 'js2-mode
+        (while (rassoc 'javascript-mode auto-mode-alist)
+          (setf (cdr (rassoc 'javascript-mode auto-mode-alist)) 'js2-mode))))
+
+#+end_src
+
+Using `add-hook-if-exists` as needed, we can set up hooks for various
+modes without generating error messages if the package with the
+function is not available. (One can make an argument that you should
+*want* error messages, or at least a message-and-continue
+strategy. I don't want a missing function to abort switching to a
+requested mode.)
+
+#+begin_src emacs-lisp
+  (defun add-elisp-mode-hooks ()
+    "Add various things to `emacs-lisp-mode-hook`."
+    (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil))) ;; Use spaces, not tabs.
+    (add-hook 'emacs-lisp-mode-hook #'auto-complete-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'flycheck-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'ipretty-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'pretty-symbols-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+    (add-hook-if-exists 'emacs-lisp-mode-hook #'semantic-mode))
+
+  (defun add-python-mode-hooks ()
+    "Add various useful things to `python-mode-hook`"
+    (add-hook-if-exists 'python-mode-hook #'auto-complete-mode)
+    (add-hook-if-exists 'python-mode-hook #'flycheck-mode)
+    (add-hook-if-exists 'python-mode-hook #'hs-minor-mode)
+    (add-hook-if-exists 'python-mode-hook #'semantic-mode)
+    (add-hook 'python-mode-hook (lambda () (add-hook 'before-save-hook  'delete-trailing-whitespace nil t))))
+
+  (defun add-hooks-for-packages ()
+    "Set up hooks which depend on packages that need to be initialized by package system."
+    (add-elisp-mode-hooks)
+    (add-python-mode-hooks)
+    ;; because ido-ubiquitous doesn't get options right
+    (add-hook-if-exists 'ert-simple-view-mode-hook #'ido-ubiquitous-mode)
+    (add-hook-if-exists 'js2-mode-hook #'pretty-symbols-mode)
+    (add-hook-if-exists 'js2-mode-hook #'electric-pair-mode))
+
+  (add-hooks-for-packages)
+#+end_src

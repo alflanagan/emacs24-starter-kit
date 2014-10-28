@@ -1,0 +1,25 @@
+language: ruby
+# ruby is default language; doesn't matter until github supports
+# emacs-lisp
+env:
+# don't neeed emacs-git-snapshot, don't want to add dependencies
+# that are not part of standard Emacs install
+- EVM_EMACS=emacs-24.3-bin
+install:
+- export EMBATCH="emacs --batch --eval \"(require 'org)\""
+- echo $SHELL
+- sudo mkdir /usr/local/evm
+- sudo chown $(id -u):$(id -g) /usr/local/evm
+- curl -fsSkL https://raw.github.com/rejeep/evm/master/go | bash
+- export PATH="$HOME/.evm/bin:$PATH"
+- evm install $EVM_EMACS --use > /dev/null
+# verify that we're using the right f'ing Emacs
+- emacs --version
+- emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "install-ert-runner.org")'
+- cd test
+- make
+- cd ..
+# user-specific files need to be under name of travis user
+- cp lloyd.org $(whoami).org
+script:
+- emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "execute-ert-runner.org")'
