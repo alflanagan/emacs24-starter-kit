@@ -3,13 +3,26 @@
 
 This file is loaded by starter-kit during execution of
 `after-init-hook`.
+* Global Properties
+We can set up some of the headers for org-mode tangling to new
+defaults. There's no code for exposition (yet), so turn tangling on by
+default.
+
+'noweb' support is enabled; there's no Lisp construct that would
+confuse it, so might as well.
+
+  :PROPERTIES:
+  :tangle:   yes
+  :comments: noweb
+  :noweb:    yes
+  :END:
 
 ** Install additional packages
 There are a whole bunch of packages I use which may not be useful to
 everybody.
 
 #+name: my-installed-packages
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defvar lloyds-installed-packages
     '(auto-complete
       bind-key
@@ -67,7 +80,7 @@ everybody.
   :END:
 
 #+name: windows-specific-setup
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   ;; html-mode fails on windows if sgml-mode not already present
   (when (equal system-type 'windows-nt)
     (require 'sgml-mode))
@@ -76,7 +89,7 @@ everybody.
 
 ** Activate optional parts of starter-kit
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (starter-kit-load "python")
   (starter-kit-load "eshell")
   ;;starter-kit-js.org still refers to js-mode as "espresso", not valid
@@ -91,7 +104,7 @@ everybody.
 ** Setup functions
 These functions set up various aspects of the system.
 *** Enable undo-tree globally
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defun set-up-global-undo-tree ()
     "Enable `undo-tree` mode wherever it makes sense."
     (when (functionp 'global-undo-tree-mode)
@@ -100,8 +113,8 @@ These functions set up various aspects of the system.
 #+end_src
 
 *** Enable additional substitutions with pretty-symbol
-#+begin_src emacs-lisp :tangle yes
-  (defun setup-elisp-prettify ()
+#+begin_src emacs-lisp
+  (defun set-up-elisp-prettify ()
     "Add to words auto-converted to unicode symbols."
     ;; if we've got pretty-symbols-mode, enable multiple categories
     (if (boundp 'pretty-symbol-categories)
@@ -115,7 +128,7 @@ These functions set up various aspects of the system.
 #+end_src
 
 *** Start emacs server process if not already started
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (require 'server)
   (defun start-server-if-none ()
     "Start the server processes, unless another process already has."
@@ -129,7 +142,7 @@ These functions set up various aspects of the system.
 #+end_src
 
 *** Enable undo-tree globally.
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defun set-up-global-undo-tree ()
     "Enable `undo-tree` mode wherever it makes sense."
     (when (functionp 'global-undo-tree-mode)
@@ -142,7 +155,7 @@ them as messages. The motivation is that a startup function that
 errors may prevent proper startup of emacs, or visiting a file, or
 switching to a major mode.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defmacro error-into-message (body)
     "Catch error in BODY, write message."
     `(condition-case-unless-debug err-data
@@ -164,12 +177,34 @@ with an existing package.
   ;; added this to =starter-kit.org= instead, since that knows all about
   ;; loading org files from the starter kit directory.
 #+end_src
+
+*** Load constants and set up keys
+#+begin_src emacs-lisp
+  (defun set-up-constants ()
+    (require 'constants (expand-file-name "constants.el" starter-kit-dir))
+    ;;
+    (autoload 'constants-insert "constants" "Insert constants into source." t)
+    (autoload 'constants-get "constants" "Get the value of a constant." t)
+    (autoload 'constants-replace "constants" "Replace name of a constant." t)
+    (define-key global-map "\C-cci" 'constants-insert)
+    (define-key global-map "\C-ccg" 'constants-get)
+    (define-key global-map "\C-ccr" 'constants-replace)
+    (setq constants-unit-system 'SI)   ;  this is the default
+
+    ;;   ;; Use "cc" as the standard variable name for speed of light,
+    ;;   ;; "bk" for Boltzmann's constant, and "hp" for Planck's constant
+    (setq constants-rename '(("cc" . "c") ("bk" . "k") ("hp" . "h")))
+    ;;
+    ;; A default list of constants to insert when none are specified
+    (setq constants-default-list "cc,bk,hp"))
+#+end_src
+
 *** Set up paradox package listing features
 Paradox supports starring packages on [[http://github.com]] if the user
 has an appropriate github token. Load that token from our secret data
 file and set up the paradox environment.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defun set-up-paradox-variables ()
     "Set up config variables for paradox package ratings."
     (require 'paradox)
@@ -187,7 +222,7 @@ file and set up the paradox environment.
 in the background, you have to enable it. I also set it up to replace
 the flymake checker with flycheck.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (require 'elpy nil t)
   (defun set-up-elpy ()
     "Enable `elpy` package and set up options."
@@ -201,22 +236,49 @@ the flymake checker with flycheck.
       (setq elpy-default-minor-modes (delete 'flymake-mode elpy-default-minor-modes))
       (add-to-list 'elpy-default-minor-modes 'flycheck-mode)))
 #+end_src
+*** Set up web-beautify hotkeys
+The `web-beautify` package provides a useful function for several
+modes. For each one, we bind it to "Ctrl-C b".
+
+#+begin_src emacs-lisp
+  (defun set-up-web-beautify ()
+    "Set up keys to invoke web-beautify in appropriate modes."
+    (eval-after-load 'js2-mode
+      (lambda ()
+        (if (boundp 'js2-mode-map)
+            (define-key js2-mode-map (kbd "C-c b") 'web-beautify-js))))
+    (eval-after-load 'json-mode
+      (lambda ()
+        (if (boundp 'json-mode-map)
+            (define-key json-mode-map (kbd "C-c b") 'web-beautify-js))))
+    (eval-after-load 'sgml-mode
+      (lambda ()
+        (if (boundp 'html-mode-map)
+            (define-key html-mode-map (kbd "C-c b") 'web-beautify-html))))
+    (eval-after-load 'css-mode
+      (lambda ()
+        (if (boundp 'css-mode-map)
+            (define-key css-mode-map (kbd "C-c b") 'web-beautify-css)))))
+
+#+end_src
 
 *** Actually call the setup functions
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (error-into-message (start-server-if-none))
   (error-into-message (set-up-paradox-variables))
   (error-into-message (set-up-global-undo-tree))
   (error-into-message (set-up-elpy))
-  (error-into-message (setup-elisp-prettify))
-
+  (error-into-message (set-up-elisp-prettify))
+  (error-into-message (set-up-web-beautify))
+  (error-into-message (set-up-constants))
+  (error-into-message (smex-initialize))
 #+end_src
 
 ** Enable cua-mode
 Every other program uses CUA mode keys for cut and paste. If only IBM
 had just adopted Emacs key bindings as a standard.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (cua-mode)
 #+end_src
 
@@ -227,7 +289,7 @@ the function name to the hook, and lead to a run-time error when the
 hook is executed.
 
 #+name: define-hook-macro
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defmacro add-hook-if-exists (a-hook a-function &rest args)
      "Add to hook A-HOOK a call to (A-FUNCTION ARGS) with a check to ensure A-FUNCTION is defined."
      `(add-hook ,a-hook (lambda () (if (functionp ,a-function)
@@ -244,7 +306,7 @@ First, we need a function to perform surgery on global variable
 association:
 
 #+name: set-interpreter-mode
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defun lloyd-set-interpreter-mode (interpreter-string major-mode)
     "When a file's interpreter is INTERPRETER-STRING, set MAJOR-MODE.
 
@@ -264,7 +326,7 @@ list of "known" JavaScript command-line interpreters. And, replace
 associations for file extensions.
 
 #+name: set-up-javascript
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (if (functionp 'js2-mode)
       (let ((interp-list '("node" "nodejs" "gjs" "rhino")))
         (mapc (lambda (interp-name)
@@ -283,7 +345,7 @@ function is not available. (One can make an argument that you should
 strategy. I don't want a missing function to abort switching to a
 requested mode.)
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defun add-elisp-mode-hooks ()
     "Add various things to `emacs-lisp-mode-hook`."
     (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil))) ;; Use spaces, not tabs.
