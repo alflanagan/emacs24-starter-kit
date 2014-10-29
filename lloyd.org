@@ -1,21 +1,16 @@
 #+TITLE: A. Lloyd Flanagan User-Specific Settings
 #+OPTIONS: toc:2 num:nil ^:nil
 
-This file is loaded by starter-kit during execution of
-`after-init-hook`.
-* Global Properties
-We can set up some of the headers for org-mode tangling to new
-defaults. There's no code for exposition (yet), so turn tangling on by
-default.
-
-'noweb' support is enabled; there's no Lisp construct that would
-confuse it, so might as well.
-
+* Emacs Setup and Initialization
   :PROPERTIES:
   :tangle:   yes
   :comments: noweb
   :noweb:    yes
   :END:
+
+This file is loaded by starter-kit during execution of
+`after-init-hook`. It contains setup of options and packages which are
+specific to this user, and not necessarily broadly applicable.
 
 ** Install additional packages
 There are a whole bunch of packages I use which may not be useful to
