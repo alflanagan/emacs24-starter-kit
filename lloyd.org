@@ -25,7 +25,7 @@ everybody.
       coffee-mode
       creole ;; for emacswiki
       creole-mode
-      dash ;; esential functional programming lib
+      dash ;; essential functional programming lib
       drag-stuff
       e2wm  ;; emacs window manager -- somewhat experimental
       e2wm-bookmark
@@ -272,6 +272,9 @@ modes. For each one, we bind it to "Ctrl-C b".
 ** Enable cua-mode
 Every other program uses CUA mode keys for cut and paste. If only IBM
 had just adopted Emacs key bindings as a standard.
+
+Although, of course, cua-mode interferes with key bindings in some
+other modes — like org mode, for example. Arggg.
 
 #+begin_src emacs-lisp
   (cua-mode)
