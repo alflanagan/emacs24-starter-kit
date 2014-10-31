@@ -1,7 +1,16 @@
 n#+TITLE: Emacs Starter Kit Tests
 #+OPTIONS: toc:2 num:nil ^:nil
 
-* Basic Tests for Emacs Starter Kit
+* Emacs Starter Kit Tests
+  :PROPERTIES:
+  :comments: noweb
+  :noweb:    yes
+  :tangle:   yes
+  :END:
+
+** Basic Tests for Emacs Starter Kit
+
+*** Test Run Global Setup
 Because we're running in batch mode, we have to explicitly load
 "init.el" and run the functions on `after-init-hook`.
 #+begin_src emacs-lisp
@@ -15,8 +24,12 @@ Because we're running in batch mode, we have to explicitly load
 
 #+end_src
 
-Verify most of all that all the startup .org files got tangled and loaded.
-#+begin_src emacs-lisp  :tangle yes
+*** Tests
+**** Verify installed packages
+
+Verify first that all the startup .org files got tangled and loaded.
+
+#+begin_src emacs-lisp
   ;; ert ewoc debug flyspell ispell paren info magit-key-mode magit
   ;; cl-macs gv iswitchb ido esh-var esh-io esh-cmd esh-opt esh-ext
   ;; esh-proc esh-arg eldoc esh-groups eshell esh-module esh-mode
@@ -57,10 +70,13 @@ Verify most of all that all the startup .org files got tangled and loaded.
   ;; multi-tty emacs
 
   (ert-deftest verify-installed-packages ()
-    (princ (format "lloyds-installed-packages has %d members.\n" (length lloyds-installed-packages))))
-    ;; (mapc (lambda (x) (should (member x features)))
-    ;;       lloyds-installed-packages)
+    (princ (format "lloyds-installed-packages has %d members.\n" (length lloyds-installed-packages)))
+    (mapc (lambda (x) (should (member x features)))
+          lloyds-installed-packages))
+#+end_src
 
+**** Basic tests
+#+begin_src emacs-lisp
   (ert-deftest basic-tests ()
     "Currently just a placeholder"
     (should t))
