@@ -1,0 +1,33 @@
+#+TITLE: Batch File to Install ert-runner Package
+#+OPTIONS: toc:2 num:nil ^:nil
+
+This program installs the "ert-runner" package in the elpa
+subdirectory, so that we can use it to run tests without loading
+everything and the kitchen sink.
+
+* Implementation
+We need some setup for package module to get things in the right
+place.
+#+begin_src emacs-lisp :tangle yes
+  (setq starter-kit-dir user-emacs-directory)
+
+  (setq package-user-dir (concat starter-kit-dir "elpa"))
+  (setq package-archives
+        '(("gnu"         . "http://elpa.gnu.org/packages/")
+          ("melpa"       . "http://melpa.milkbox.net/packages/")
+          ("marmalade"   . "http://marmalade-repo.org/packages/")))
+#+end_src
+
+Do the actual work in `after-init-hook` so that everything is
+(hopefully) set up correctly.
+#+name: install-ert-runner
+#+begin_src emacs-lisp :tangle yes
+  (add-hook 'after-init-hook
+            (lambda ()
+              (princ (concat "package-user-dir is " package-user-dir ".\n"))
+              (package-initialize)
+              (unless (package-installed-p 'ert-runner)
+                (princ "Trying to install ert-runner.\n")
+                (package-install 'ert-runner))))
+
+#+end_src

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8; -*-
+for OFILE in *.org
+do
+    EFILE=${OFILE%.org}.el
+    if [[ -f ${EFILE} ]]; then
+        if [[ ${OFILE} -nt ${EFILE} ]]; then
+            echo ${OFILE}
+        fi
+    fi
+done

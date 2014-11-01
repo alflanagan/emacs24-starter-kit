@@ -9,6 +9,8 @@ places
 .svn
 .DS_Store
 tramp
+.smex-items
+*.dat
 
 ## directories
 backups/*
@@ -22,6 +24,8 @@ elpa/*
 src/*
 themes/*
 url/*
+semanticdb/*
+.cask/*
 
 ## exported and encrypted files
 *gpg

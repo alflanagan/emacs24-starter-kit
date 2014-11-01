@@ -1,0 +1,45 @@
+#+TITLE: Starter Kit NodeJS
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+
+* Starter kit NodeJS
+
+Support for the Node server-side JavaScript environment
+
+** Check Dependencies
+
+Determine whether required packages are installed. If not, use
+cask/ELPA to install them.
+#+begin_src emacs-lisp
+  (starter-kit-install-if-needed 'node-repl 'nvm)
+#+end_src
+
+** Enable JavaScript Mode for Server-Side Files
+
+Select the "best" javascript mode based on what's available.
+#+begin_src emacs-lisp
+(setq starter-kit-preferred-js-mode
+  (if (functionp 'js2-mode)
+     'js2-mode
+     'js-mode))
+#+end_src
+
+Configure emacs to recognize major server-side JavaScript
+interpreters.
+#+begin_src emacs-lisp
+(let ((interp-list '("node" "nodejs" "gjs" "rhino")))
+     (mapc (lambda (interp-name)
+                (file-mode-exp-set-interpreter-mode 
+                   (purecopy interp-name) 
+                   starter-kit-preferred-js-mode))
+           interp-list)
+#+end_src
+
+Configure Emacs to use the preferred JavaScript mode instead of
+js-mode, if needed.
+#+begin_src emacs-lisp
+;; all the existing associations use 'javascript-mode instead
+;; of the equivalent 'js-mode
+(while (rassoc 'javascript-mode auto-mode-alist)
+      (setf (cdr (rassoc 'javascript-mode auto-mode-alist)) 'js2-mode)))))
