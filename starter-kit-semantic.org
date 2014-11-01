@@ -1,0 +1,11 @@
+#+TITLE: Starter Kit Semantic Mode
+#+OPTIONS: toc:2 num:nil ^:nil
+
+This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+
+* Customizations for Semantic Mode
+#+begin_src emacs-lisp
+  (setq semantic-default-submodes
+        (append semantic-default-submodes
+                '(global-semantic-idle-completions-mode global-semantic-stickyfunc-mode)))
+#+end_src

@@ -46,9 +46,9 @@ to use this file:
        displayed in your Group buffer when you have new mail
 
 6) /customize/ Gnus has unrivalled capacity for customization.  Once
-   your comfortable with basic usage, take some time to browse through
-   the very readable [[http://www.gnu.org/software/emacs/manual/html_node/gnus/index.html][Gnus Manual]] to learn untold tricks (see also
-   [[file:starter-kit-gnus.org::#customization][Starter-kit-gnus:Customizations]]).
+   you're comfortable with basic usage, take some time to browse
+   through the very readable [[http://www.gnu.org/software/emacs/manual/html_node/gnus/index.html][Gnus Manual]] to learn untold tricks (see
+   also [[file:starter-kit-gnus.org::#customization][Starter-kit-gnus:Customizations]]).
 
 *** saving mail locally
 Where your mail will be saved locally default value will be =~/gmail=.
