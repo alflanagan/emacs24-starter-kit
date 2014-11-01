@@ -27,8 +27,4 @@
     ;; load up the starter kit
     (org-babel-load-file (expand-file-name "starter-kit.org" starter-kit-dir))))
 
-(add-hook 'after-init-hook
-          (lambda ()
-            (message "after-init-hook running")))
-
 ;;; init.el ends here
