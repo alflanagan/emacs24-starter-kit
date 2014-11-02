@@ -19,18 +19,20 @@ everybody.
 #+name: my-installed-packages
 #+begin_src emacs-lisp
   (defvar lloyds-installed-packages
-    '(auto-complete
-      bind-key
+    '(
+      arduino-mode
+      ;; auto-complete
+      ;; bind-key
       coffee-fof
       coffee-mode
       creole ;; for emacswiki
       creole-mode
       dash ;; essential functional programming lib
-      drag-stuff
-      e2wm  ;; emacs window manager -- somewhat experimental
-      e2wm-bookmark
-      e2wm-direx
-      easy-kill
+      ;; drag-stuff
+      ;; e2wm  ;; emacs window manager -- somewhat experimental
+      ;; e2wm-bookmark
+      ;; e2wm-direx
+      ;; easy-kill
       elpy
       el-spice ;; extra functions -- TODO: fix key overlaps
       ert-runner
@@ -38,9 +40,9 @@ everybody.
       expand-region ;; expand selected region semantically
       f  ;; file system utilities
       flycheck
-      flycheck-cask
-      idle-highlight-mode ;; highlight word point is on
-      ipretty ;; interactive lisp pretty-print
+      ;; flycheck-cask
+      ;; idle-highlight-mode ;; highlight word point is on
+      ;; ipretty ;; interactive lisp pretty-print
       js2-mode ;; improved JavaScript support
       json-mode
       kv ;; should be specified by pinboard, but isn't
@@ -52,7 +54,7 @@ everybody.
       quack
       s  ;; The long lost Emacs string manipulation library.
       smex  ;; M-x interface with Ido-style fuzzy matching.
-      sphinx-doc
+      ;; sphinx-doc
       thingatpt+
       undo-tree
       web
@@ -90,10 +92,12 @@ everybody.
   ;;starter-kit-js.org still refers to js-mode as "espresso", not valid
   ;;for later versions of emacs
   ;;(starter-kit-load "js")
+  (starter-kit-load "nodejs")
+  (starter-kit-load "semantic")
   (starter-kit-load "lisp")
   (starter-kit-load "misc-recommended")
   (starter-kit-load "org")
-  (starter-kit-load "yasnippet")
+  ;; (starter-kit-load "yasnippet")
 #+end_src
 
 ** Setup functions
@@ -203,7 +207,7 @@ file and set up the paradox environment.
   (defun set-up-paradox-variables ()
     "Set up config variables for paradox package ratings."
     (require 'paradox)
-    (require 'secret-data (expand-file-name "secret-data.el" starter-kit-dir))
+    ;; (require 'secret-data)
     (when (functionp 'paradox-list-packages)
       (defvar paradox-github-token)
       (defvar paradox-automatically-star)
@@ -260,7 +264,7 @@ modes. For each one, we bind it to "Ctrl-C b".
 *** Actually call the setup functions
 #+begin_src emacs-lisp
   (error-into-message (start-server-if-none))
-  (error-into-message (set-up-paradox-variables))
+  ;; (error-into-message (set-up-paradox-variables))
   (error-into-message (set-up-global-undo-tree))
   (error-into-message (set-up-elpy))
   (error-into-message (set-up-elisp-prettify))
