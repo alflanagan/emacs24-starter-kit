@@ -351,16 +351,16 @@ requested mode.)
   (defun add-elisp-mode-hooks ()
     "Add various things to `emacs-lisp-mode-hook`."
     (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil))) ;; Use spaces, not tabs.
-    (add-hook 'emacs-lisp-mode-hook #'auto-complete-mode)
+    ;; (add-hook 'emacs-lisp-mode-hook #'auto-complete-mode)
     (add-hook-if-exists 'emacs-lisp-mode-hook #'flycheck-mode)
-    (add-hook-if-exists 'emacs-lisp-mode-hook #'ipretty-mode)
+    ;; (add-hook-if-exists 'emacs-lisp-mode-hook #'ipretty-mode)
     (add-hook-if-exists 'emacs-lisp-mode-hook #'pretty-symbols-mode)
     (add-hook-if-exists 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
     (add-hook-if-exists 'emacs-lisp-mode-hook #'semantic-mode))
 
   (defun add-python-mode-hooks ()
     "Add various useful things to `python-mode-hook`"
-    (add-hook-if-exists 'python-mode-hook #'auto-complete-mode)
+    ;; (add-hook-if-exists 'python-mode-hook #'auto-complete-mode)
     (add-hook-if-exists 'python-mode-hook #'flycheck-mode)
     (add-hook-if-exists 'python-mode-hook #'hs-minor-mode)
     (add-hook-if-exists 'python-mode-hook #'semantic-mode)
