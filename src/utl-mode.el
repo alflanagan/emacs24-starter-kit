@@ -47,14 +47,24 @@
 ;; mode makes an attempt to deliberately ignore html and highlight only
 ;; UTL code.
 
-;; Since this is my first go at writing a major mode, this is pretty basic,
-;; and may very well contain bugs.
+;; It is based on smarty-mode.el by Benj Carson
 
-;;; Changelog:
-
-;; 0.1.0 Here goes nothing...  Note strings are not highlighted since I
-;;       have yet to figure out how to get them highlighted only within
-;;       { and }.
+;; From the townnews documentation "Language Differences"
+;; http://docs.townnews.com/kbpublisher/UTL-comparison-with-Smarty_3585.html
+;; Delimiters	[% ... %]	{ ... }
+;; Comments	[% /* ... */ %]	{* ... *}
+;; Variables	[% some_string %]	{$some_string}
+;; Indexed Arrays	[% some_array[4] %]	{$some_array[4]}
+;; Keyed Arrays using String	[% some_array.key %]	{$some_array.key}
+;; Keyed Arrays using Variable	[% some_array[key] %]	{$some_array.$key}
+;; Access Object Properties	[% some_object.property %]	{$some_object->property}
+;; Calling Object Methods	[% some_object.method %]	{$some_object->method()}
+;; Calling Functions	[% some_function( 'param': some_string ) %]	{some_function param=$some_string}
+;; Including Files	[% include 'some_file.inc' %]	{include file="some_file.inc"}
+;; Inline Assignment	[% some_string = 'Hello World!' %]	{assign var="some_string" value="Hello World!"}
+;; Foreach Loop	[% foreach some_array as item; item; end %]	{foreach from=$some_array item=item} {$item} {/foreach}
+;; If Statement	[% if x == 1 %] x is 1 [% end %]	{if $x == 1} x is 1 {/if}
+;; Filters	[% x | truncate(10, '...') %]	{$x|truncate:10:...}
 
 ;;; Code:
 
@@ -76,6 +86,11 @@
 	  (append
 	   '(("\\.utl\\'" . utl-mode))
 	   auto-mode-alist))
+
+;; The following is still very preliminary. Most of it is copied
+;; verbatim from smarty-mode.el, and it needs to be updated to the
+;; proper values for utl-mode. It's marginally more correct than
+;; smart-mode at this point.
 
 (defconst utl-functions
   (eval-when-compile

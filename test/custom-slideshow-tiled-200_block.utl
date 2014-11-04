@@ -1,0 +1,111 @@
+[% /* 	Name: core-slideshow-tiled
+		Version: v0-1 
+		Created: 4.07.2010 ~ rgriffin
+			NOTE: Uses the blox_title macro and all
+			related custom properties.
+		
+		Custom Property Options: (to be added with the slideshow functionality)
+		------------------------------------------------
+		'section_override'
+		 - set to true or false
+		when true - section1 - sectionx below will be 
+		used.
+		------------------------------------------------
+		'section1 - sectionx'
+		 This has no effect when the section_override
+		 property is not set to 'true'
+		 This sets which sections populate the block.
+		 content will come from specified section tags
+		 for example:
+		 section1 : /online_features/fashion_beauty_fitness
+		 section2 : /online_features/senior_living 
+		------------------------------------------------
+		'preview_size'
+		setting this numercal value will determine the
+		width in pixels of the image preview.
+		------------------------------------------------
+		'cycle_fx'
+		Changing 'cycle_fx' to one of the available
+		values will change the style in which the slide
+		show cycles. 
+			Available 'cycle_fx' options:
+			blindX, blindY, blindZ, cover, curtainX, 
+			curtainY, fade, fadeZoom, growX, growY, 
+			scrollUp, scrollDown, scrollLeft, 
+			scrollRight, scrollHorz, scrollVert, shuffle, 
+			slideX, slideY, toss, turnUp, turnDown, 
+			turnLeft, turnRight, uncover, wipe, zoom
+		* Default is 'fade'
+		------------------------------------------------
+		'cycle_speed'
+		setting this numercal value will determine the
+		speed of the slideshow
+		------------------------------------------------	*/ 	%]
+[% 
+	/* Load Online Features CSS, jquery and jqueryui*/
+	if !cms.component.load('core_base_library'); echo '<!--Failed to load core_base_library component.-->'; end;
+		core_base_library_load_online_features;
+	tBlock = this.block;
+	foreach tBlock.assets as first_asset;
+		sArray = first_asset.url | splittrim ('/' + first_asset.type);
+		first_asset_section = sArray[0] | regex('/^\//','');
+		break;
+	end;
+
+	first_asset = tBlock.assets[0];
+		foreach first_asset.tags('section') as first_asset_path, first_asset_tag;
+			first_section_array = first_asset_path | splittrim ('/');
+			first_section_title = first_section_array[1] | regex('/^\//','') | replace('_',' ');
+			break;
+		end;
+	first_asset_tag = first_asset_tag | replace('_',' ');
+%]
+
+<div class="core-slideshow-tiled">
+	[% if this.block.title %]
+        <div class="blox-title">
+            [% core_base_library_rss_link(tBlock : this.block);
+            core_base_library_title(tBlock : this.block) %]
+        </div>
+        [% core_base_library_sublinks(tBlock : this.block) %]
+    [% end %]
+
+<ul id="[%- target_id -%]" class="sections-list">
+[% foreach this.block.assets as asset %]
+	<li>
+		<h3 class="section-title"><a href="/[% first_asset_path %]">[% first_asset_tag | titlecase %]</a></h3>
+			[% foreach asset.items('type':'image') as child_image %]
+				[% if child_image | iterfirst %]
+					[% if this.block.custom.preview_size %]
+						<a href="[% asset.url %]"><span class="custom-image-wrapper">
+							<img src="[%- child_image.resource_url -%]" width="[% this.block.custom.preview_size %]" alt="[% child_image | strip_tags | html %]" /></span>
+						</a>
+					[% else %]
+						<a href="[% asset.url %]"><span class="custom-image-wrapper">
+							<img src="[% child_image.preview([200]).url %]" alt="[% child_image | strip_tags | html %]" /></span>
+						</a>
+					[% end %]
+				[% end %]
+			[% end %]
+			<h4><a href="[%- asset.url -%]">[% asset.title | strip_tags | html %]</a></h4>
+			<p class="custom-description-wrapper">
+				[% 
+					preview = ""; 
+                                        if asset.content;
+                                            foreach asset.content(0,6) as p; preview += p | strip_tags | autolink; end;
+                                            echo preview | truncate(150,"...");
+                                        else if asset.description;
+                                            preview = asset.description | strip_tags | autolink;
+                                            echo preview | truncate(150,"...");
+                                        else if asset.prologue;
+                                            preview = asset.prologue | strip_tags | autolink;
+                                            echo preview | truncate(150,"...");
+                                        end;
+				%]
+			</p>
+	</li>
+[% end %]	
+</ul>
+
+<div class="clear"></div>
+</div>
