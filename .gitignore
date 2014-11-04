@@ -10,7 +10,9 @@ places
 .DS_Store
 tramp
 .smex-items
+smex-items
 *.dat
+ido.last
 
 ## directories
 backups/*
