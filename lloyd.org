@@ -18,6 +18,8 @@ everybody.
 
 #+name: my-installed-packages
 #+begin_src emacs-lisp
+  (setq lloyd-org-orig-debug-on-error debug-on-error)
+  (setq debug-on-error t)
   (defvar lloyds-installed-packages
     '(
       arduino-mode
@@ -207,7 +209,7 @@ file and set up the paradox environment.
   (defun set-up-paradox-variables ()
     "Set up config variables for paradox package ratings."
     (require 'paradox)
-    ;; (require 'secret-data)
+    (org-babel-load-file (concat starter-kit-dir "/secret-data.org"))
     (when (functionp 'paradox-list-packages)
       (defvar paradox-github-token)
       (defvar paradox-automatically-star)
@@ -264,7 +266,7 @@ modes. For each one, we bind it to "Ctrl-C b".
 *** Actually call the setup functions
 #+begin_src emacs-lisp
   (error-into-message (start-server-if-none))
-  ;; (error-into-message (set-up-paradox-variables))
+  (error-into-message (set-up-paradox-variables))
   (error-into-message (set-up-global-undo-tree))
   (error-into-message (set-up-elpy))
   (error-into-message (set-up-elisp-prettify))
@@ -376,4 +378,5 @@ requested mode.)
     (add-hook-if-exists 'js2-mode-hook #'electric-pair-mode))
 
   (add-hooks-for-packages)
+  (setq debug-on-error lloyd-org-orig-debug-on-error)
 #+end_src
