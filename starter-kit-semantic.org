@@ -9,3 +9,10 @@ This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
         (append semantic-default-submodes
                 '(global-semantic-idle-completions-mode global-semantic-stickyfunc-mode)))
 #+end_src
+
+Set up special options for Arduino mode support.
+
+#+begin_src emacs-lisp
+
+#+end_src
+
