@@ -12,13 +12,29 @@ This file is loaded by starter-kit during execution of
 `after-init-hook`. It contains setup of options and packages which are
 specific to this user, and not necessarily broadly applicable.
 
+** Declare external functions
+To make compiler happy, declare functions defined in other files.
+
+#+name external-functions
+#+begin_src emacs-lisp
+  (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
+  (declare-function starter-kit-load "starter-kit" (&rest packages))
+  (declare-function secret-data-get-key "secret-data"  (some-key &optional file-name))
+  (declare-function smex-initialize "smex" nil)
+  (declare-function flycheck-mode "flycheck" (&optional arg))
+  (declare-function pretty-symbols-mode "pretty-symbols" (&optional arg))
+  ;;  ido-ubiquitous-mode
+
+#+end_src
+
 ** Install additional packages
 There are a whole bunch of packages I use which may not be useful to
 everybody.
 
 #+name: my-installed-packages
 #+begin_src emacs-lisp
-  (setq lloyd-org-orig-debug-on-error debug-on-error)
+  (defvar lloyd-org-orig-debug-on-error debug-on-error
+    "Stores locally value of `debug-on-error' so that it may be restored.")
   (setq debug-on-error t)
   (defvar lloyds-installed-packages
     '(
@@ -140,14 +156,6 @@ These functions set up various aspects of the system.
                                     server-socket-dir))))
       (if (not (file-exists-p file))
           (server-start))))
-#+end_src
-
-*** Enable undo-tree globally.
-#+begin_src emacs-lisp
-  (defun set-up-global-undo-tree ()
-    "Enable `undo-tree` mode wherever it makes sense."
-    (when (functionp 'global-undo-tree-mode)
-      (global-undo-tree-mode)))
 #+end_src
 
 *** Macro to catch errors, turn them into messages
@@ -283,7 +291,9 @@ Although, of course, cua-mode interferes with key bindings in some
 other modes — like org mode, for example. Arggg.
 
 #+begin_src emacs-lisp
-  (cua-mode)
+  ;; (cua-mode)
+  ;; sigh. once you start using a lot of modes, cua-mode interferes with
+  ;; too many of them.
 #+end_src
 
 ** Set up major mode hooks
