@@ -13,6 +13,7 @@ tramp
 smex-items
 *.dat
 ido.last
+bookmarks
 
 ## directories
 backups/*
@@ -28,6 +29,7 @@ themes/*
 url/*
 semanticdb/*
 .cask/*
+server/*
 
 ## exported and encrypted files
 *gpg
@@ -57,3 +59,5 @@ secret.org
 .emacs.desktop*
 .*~
 agent/*
+#local host files
+WME03370.org
