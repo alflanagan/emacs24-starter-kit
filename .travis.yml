@@ -8,6 +8,7 @@ env:
 install:
 - export EMBATCH="emacs --batch --eval \"(require 'org)\""
 - echo $SHELL
+- sudo apt-get install aspell  # for ispell
 - sudo mkdir /usr/local/evm
 - sudo chown $(id -u):$(id -g) /usr/local/evm
 - curl -fsSkL https://raw.github.com/rejeep/evm/master/go | bash
@@ -21,5 +22,6 @@ install:
 - cd ..
 # user-specific files need to be under name of travis user
 - cp lloyd.org $(whoami).org
+- echo -e "paradox-github-token=not_secret" > .emacs-secret
 script:
 - emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "execute-ert-runner.org")'
