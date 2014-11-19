@@ -280,6 +280,11 @@ modes. For each one, we bind it to "Ctrl-C b".
   (error-into-message (set-up-elisp-prettify))
   (error-into-message (set-up-web-beautify))
   (error-into-message (set-up-constants))
+#+end_src
+
+*** Initialize packages if necessary
+
+#+begin_src emacs-lisp
   (error-into-message (smex-initialize))
 #+end_src
 
