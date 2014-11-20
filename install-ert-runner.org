@@ -5,14 +5,28 @@ This program installs the "ert-runner" package in the elpa
 subdirectory, so that we can use it to run tests without loading
 everything and the kitchen sink.
 
-* Implementation
+* Installation
+  :PROPERTIES:
+  :tangle:   yes
+  :comments: noweb
+  :noweb:    yes
+  :END:
+
+** Load a bunch of crap so it's tangled
+
+#+begin_src emacs-lisp
+  (load-file "./init.el")
+#+end_src
+
 We need some setup for package module to get things in the right
 place.
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (setq starter-kit-dir user-emacs-directory)
 
   (setq package-user-dir (concat starter-kit-dir "elpa"))
 #+end_src
+
+** Implementation
 
 Do the actual work in `after-init-hook` so that everything is
 (hopefully) set up correctly.
