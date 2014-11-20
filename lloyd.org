@@ -35,7 +35,7 @@ everybody.
 #+begin_src emacs-lisp
   (defvar lloyd-org-orig-debug-on-error debug-on-error
     "Stores locally value of `debug-on-error' so that it may be restored.")
-  (setq debug-on-error t)
+  ;; (setq debug-on-error t)
   (defvar lloyds-installed-packages
     '(
       arduino-mode

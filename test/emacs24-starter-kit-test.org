@@ -30,44 +30,6 @@ Because we're running in batch mode, we have to explicitly load
 Verify first that all the startup .org files got tangled and loaded.
 
 #+begin_src emacs-lisp
-  ;; ert ewoc debug flyspell ispell paren info magit-key-mode magit
-  ;; cl-macs gv iswitchb ido esh-var esh-io esh-cmd esh-opt esh-ext
-  ;; esh-proc esh-arg eldoc esh-groups eshell esh-module esh-mode
-  ;; esh-util ediff-merg ediff-diff ediff-wind ediff-help ediff-util
-  ;; ediff-mult ediff-init ediff dired-x dired view tramp
-  ;; tramp-compat tramp-loaddefs shell help-mode grep epa epg
-  ;; epg-config diff-mode autorevert git-rebase-mode git-commit-mode
-  ;; magit-autoloads tar-mode log-edit pcvs-util add-log
-  ;; git-commit-mode-autoloads derived thingatpt server compile
-  ;; tool-bar git-rebase-mode-autoloads autoload finder-inf
-  ;; mail-utils network-stream starttls url-http tls mail-parse
-  ;; rfc2231 rfc2047 rfc2045 ietf-drums url-gw url-cache url-auth
-  ;; url url-proxy url-privacy url-expand url-methods url-history
-  ;; url-cookie url-domsuf url-util mailcap windmove edmacro kmacro
-  ;; package recentf tree-widget wid-edit uniquify ffap url-parse
-  ;; auth-source eieio mm-util mail-prsvr password-cache url-vars
-  ;; saveplace image-file image tabify vc-git org-wl org-w3m org-vm
-  ;; org-rmail org-mhe org-mew org-irc org-jsinfo org-infojs
-  ;; org-html org-exp ob-exp org-exp-blocks org-agenda org-info
-  ;; org-gnus gnus-util org-docview org-bibtex bibtex org-bbdb org
-  ;; byte-opt warnings bytecomp byte-compile cconv advice help-fns
-  ;; cl-lib advice-preload ob-tangle ob-ref ob-lob ob-table
-  ;; org-footnote org-src ob-comint ob-keys org-pcomplete pcomplete
-  ;; comint ansi-color ring org-list org-faces org-entities
-  ;; time-date noutline outline easy-mmode org-version ob-emacs-lisp
-  ;; ob org-compat org-macs ob-eval org-loaddefs format-spec
-  ;; find-func regexp-opt cal-menu easymenu calendar cal-loaddefs
-  ;; ediff-hook vc-hooks lisp-float-type tabulated-list newcomment
-  ;; lisp-mode register page menu-bar rfn-eshadow timer jit-lock
-  ;; font-lock syntax facemenu font-core frame cham georgian
-  ;; utf-8-lang misc-lang vietnamese tibetan thai tai-viet lao
-  ;; korean japanese hebrew greek romanian slovak czech european
-  ;; ethiopic indian cyrillic chinese case-table epa-hook
-  ;; jka-cmpr-hook help simple abbrev minibuffer loaddefs button
-  ;; faces cus-face macroexp files text-properties overlay sha1 md5
-  ;; base64 format env code-pages mule custom widget
-  ;; hashtable-print-readable backquote make-network-process
-  ;; multi-tty emacs
 
   (ert-deftest verify-installed-packages ()
     (princ (format "lloyds-installed-packages has %d members.\n" (length lloyds-installed-packages)))

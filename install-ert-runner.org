@@ -12,10 +12,6 @@ place.
   (setq starter-kit-dir user-emacs-directory)
 
   (setq package-user-dir (concat starter-kit-dir "elpa"))
-  (setq package-archives
-        '(("gnu"         . "http://elpa.gnu.org/packages/")
-          ("melpa"       . "http://melpa.milkbox.net/packages/")
-          ("marmalade"   . "http://marmalade-repo.org/packages/")))
 #+end_src
 
 Do the actual work in `after-init-hook` so that everything is
