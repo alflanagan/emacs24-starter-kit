@@ -23,7 +23,7 @@ install:
 - cp lloyd.org $(whoami).org
 - echo -e "paradox-github-token=not_secret" > .emacs-secret
 - emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "install-ert-runner.org")'
-- echo "==========================================================="
+- # ===========================================================
 - echo "Begin tests"
 - echo "==========================================================="
 script:

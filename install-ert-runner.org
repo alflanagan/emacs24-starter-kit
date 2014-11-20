@@ -12,12 +12,16 @@ everything and the kitchen sink.
   :noweb:    yes
   :END:
 
-** Load a bunch of crap so it's tangled
+** Preload and tangle all org files
+All the startup code was added to `after-init-hook`, which also won't
+trigger automatically.
 
 #+begin_src emacs-lisp
   (load-file "./init.el")
+  (run-hooks 'after-init-hook)
 #+end_src
 
+** Setup packages
 We need some setup for package module to get things in the right
 place.
 #+begin_src emacs-lisp
@@ -26,7 +30,7 @@ place.
   (setq package-user-dir (concat starter-kit-dir "elpa"))
 #+end_src
 
-** Implementation
+** Install ert-runner package
 
 Do the actual work in `after-init-hook` so that everything is
 (hopefully) set up correctly.
