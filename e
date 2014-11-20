@@ -1,22 +1,21 @@
 #!/usr/bin/env bash
-#if [[ $# -gt 0 ]]; then  #emacsclient requires file to visit
 
 # detect socket which tells us that an emacs instance is running as a
 # server
 find_server () {
-    local EMACSDIR
     for EMACSDIR in /tmp/emacs*
     do
-        local SOCKET=${EMACSDIR}/server
+        SOCKET=${EMACSDIR}/server
         if [[ -S ${SOCKET} ]]; then
-            return ${SOCKET}
+            return 1
         fi
     done
-    return ""
+    return 0
 }
 
-if [[ ! -z find_server ]]; then
-    echo server detected.
+find_server
+
+if [[ $? -eq 1 ]]; then
     if [[ $# -lt 1 ]]; then
         echo emacs is already running.
         exit 1
