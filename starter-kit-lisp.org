@@ -7,6 +7,37 @@ This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
 Support for editing list dialects including [[* Emacs Lisp][Emacs Lisp]], [[* Scheme][Scheme]],
 [[* Common Lisp][Common Lisp]], and [[* Clojure][Clojure]].
 
+** Make sure =starter-kit-install-if-needed= is defined.
+Gee, there should be a cleaner way to pull this in.
+#+begin_src emacs-lisp
+  (unless (fboundp 'starter-kit-install-if-needed)
+    (defun starter-kit-loadable-p (package)
+      "Check if PACKAGE is loadable from a directory in `load-path'."
+      (let ((load-file (concat (symbol-name package) ".el")))
+        (catch 'file-found
+          (dolist (dir load-path)
+            (let ((path (expand-file-name load-file dir)))
+              (when (file-exists-p path)
+                (throw 'file-found path)))))))
+
+    (setq package-archives
+          '(("gnu"         . "http://elpa.gnu.org/packages/")
+            ("org"         . "http://orgmode.org/elpa/")
+            ("melpa"       . "http://melpa.milkbox.net/packages/")
+            ("marmalade"   . "http://marmalade-repo.org/packages/")))
+    (package-initialize)
+
+    (defun starter-kit-install-if-needed (&rest packages)
+      "Install PACKAGES using ELPA if they are not loadable or installed locally."
+      (when packages
+        (unless package-archive-contents
+          (package-refresh-contents))
+        (dolist (package packages)
+          (unless (or (starter-kit-loadable-p package)
+                     (package-installed-p package))
+            (package-install package))))))
+#+end_src
+
 ** Define keys
    :PROPERTIES:
    :CUSTOM_ID: keys
@@ -35,13 +66,11 @@ combination with the sexp movement functions (=C-M-f= forward, =C-M-b=
 back, =C-M-u= up, =C-M-d= down)
 
 #+begin_src emacs-lisp
+  (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
   (starter-kit-install-if-needed 'smartparens)
 #+end_src
 
 #+begin_src emacs-lisp
-  ;; (require 'paredit)
-  ;; (defun turn-on-paredit ()
-  ;;   (paredit-mode +1))
   ;;smartparens-config is smartparens + default configuration
   (require 'smartparens-config)
   (defun turn-on-paredit ()
@@ -54,22 +83,33 @@ back, =C-M-u= up, =C-M-d= down)
 
 #+end_src
 
-: ;; (eval-after-load 'paredit
-: ;;      ;; Not sure why paredit behaves this way with comments; it's annoying
-: ;;   '(define-key paredit-mode-map (kbd ";")   'self-insert-command))
+** pretty-symbols
+Pretty-symbols is an enhanced mode for automatically replacing
+character strings with Unicode glyphs.
+
+#+begin_src emacs-lisp
+  (starter-kit-install-if-needed 'pretty-symbols)
+#+end_src
+
+It only replaces certain symbols by default, so turn on a couple of
+more categories.
+
+#+begin_src emacs-lisp
+  (setq pretty-symbol-categories '(lambda relational logical))
+#+end_src
 
 ** Non-obtrusive parenthesis faces
    :PROPERTIES:
    :CUSTOM_ID: parenthesis-faces
    :END:
 #+begin_src emacs-lisp
-(defface starter-kit-paren-face
-   '((((class color) (background dark))
-      (:foreground "grey50"))
-     (((class color) (background light))
-      (:foreground "grey55")))
-   "Face used to dim parentheses."
-   :group 'starter-kit-faces)
+  (defface starter-kit-paren-face
+     '((((class color) (background dark))
+        (:foreground "grey50"))
+       (((class color) (background light))
+        (:foreground "grey55")))
+     "Face used to dim parentheses."
+     :group 'starter-kit-faces)
 #+end_src
 
 ** Emacs Lisp
@@ -77,24 +117,37 @@ back, =C-M-u= up, =C-M-d= down)
    :CUSTOM_ID: emacs-lisp
    :END:
 
+*** Cleanup function for .elc files
 #+begin_src emacs-lisp
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'emacs-lisp-mode-hook 'run-starter-kit-coding-hook)
-(add-hook 'emacs-lisp-mode-hook 'starter-kit-remove-elc-on-save)
-;; (add-hook 'emacs-lisp-mode-hook 'idle-highlight)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-paredit)
-(define-key emacs-lisp-mode-map (kbd "C-c v") 'eval-buffer)
+  (defun starter-kit-remove-elc-on-save ()
+    "If you're saving an elisp file, likely the .elc is no longer valid."
+    (make-local-variable 'after-save-hook)
+    (add-hook 'after-save-hook
+              (lambda ()
+                (if (file-exists-p (concat buffer-file-name "c"))
+                    (delete-file (concat buffer-file-name "c"))))))
+#+end_src
 
-(defun starter-kit-remove-elc-on-save ()
-  "If you're saving an elisp file, likely the .elc is no longer valid."
-  (make-local-variable 'after-save-hook)
-  (add-hook 'after-save-hook
-            (lambda ()
-              (if (file-exists-p (concat buffer-file-name "c"))
-                  (delete-file (concat buffer-file-name "c"))))))
+*** emacs-list-mode-hook
+#+begin_src emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook (lambda () (eldoc-mode +1)))
+  (add-hook 'emacs-lisp-mode-hook #'run-starter-kit-coding-hook)
+  (add-hook 'emacs-lisp-mode-hook #'starter-kit-remove-elc-on-save)
+  ;; (add-hook 'emacs-lisp-mode-hook 'idle-highlight)
+  (add-hook 'emacs-lisp-mode-hook #'turn-on-paredit)
+  (define-key emacs-lisp-mode-map (kbd "C-c v") #'eval-buffer)
+  ;; for indentation, use spaces, not tabs
+  (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil)))
+  ;; (add-hook 'emacs-lisp-mode-hook #'auto-complete-mode)
+  (add-hook 'emacs-lisp-mode-hook (lambda () (pretty-symbols-mode +1)))
+  ;; (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'emacs-lisp-mode-hook (lambda () (semantic-mode +1)))
+#+end_src
 
-(font-lock-add-keywords 'emacs-lisp-mode
-			'(("(\\|)" . 'starter-kit-paren-face)))
+*** font-lock setup
+#+begin_src emacs-lisp
+  (font-lock-add-keywords 'emacs-lisp-mode
+                          '(("(\\|)" . 'starter-kit-paren-face)))
 #+end_src
 
 ** Clojure
