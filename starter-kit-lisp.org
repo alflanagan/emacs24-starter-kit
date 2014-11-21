@@ -47,6 +47,33 @@ standards and contain any needed copyright info. It should pass elint.
 
 #+end_src
 
+** Declare external variables and functions
+This is done to make the generated elisp file elint-clean. This in
+turns means that when elint finds a problem, we can assume it's a real
+problem, and not just "par for the course" with emacs-lisp
+programs. The tool is only useful if you don't get swamped with false
+positives.
+
+#+begin_src emacs-lisp
+    (eval-when-compile
+      (defvar read-expression-map)  ;; defined in simple.el
+      (defvar package-archives)  ;; package.el
+      (defvar package-archive-contents) ;;package.el
+      (defvar pretty-symbol-categories) ;; pretty-symbols.el
+      (defvar starter-kit-clojure-trace-face) ;; starter-kit-clojure.org
+      (defvar slime-lisp-implementations) ;; slime.el
+      ;; Stuff for swank, which isn't even in the package archives
+      (defvar swank-clojure-binary)
+      (defvar swank-clojure-jar-path)
+      (defvar swank-clojure-extra-classpaths)
+      (defvar  slime-lisp-implementations)
+      (defvar  slime-lisp-implementations))
+
+  (declare-function swank-clojure-cmd "swank.el" ())
+
+#+end_src
+
+
 ** Make sure =starter-kit-install-if-needed= is defined.
 Gee, there should be a cleaner way to pull this in.
 #+begin_src emacs-lisp
