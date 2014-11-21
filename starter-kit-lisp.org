@@ -7,6 +7,46 @@ This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
 Support for editing list dialects including [[* Emacs Lisp][Emacs Lisp]], [[* Scheme][Scheme]],
 [[* Common Lisp][Common Lisp]], and [[* Clojure][Clojure]].
 
+** Starter boilerplate for elisp file
+We want generated .el file to conform to emacs-lisp programming
+standards and contain any needed copyright info. It should pass elint.
+
+#+begin_src emacs-lisp
+  ;;; starter-kit-lisp.el --- set up modes for Lisp programming
+  ;; This file is part of Emacs starter kit.
+
+  ;; Copyright (c) 
+
+  ;; Author: 
+  ;; Version:
+  ;; Keywords:
+
+  ;; This file is not part of GNU Emacs.
+
+  ;; This file is free software; you can redistribute it and/or modify
+  ;; it under the terms of the GNU General Public License as published by
+  ;; the Free Software Foundation; either version 2, or (at your option)
+  ;; any later version.
+
+  ;; This file is distributed in the hope that it will be useful,
+  ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ;; GNU General Public License for more details.
+
+  ;; You should have received a copy of the GNU General Public License
+  ;; along with GNU Emacs; see the file COPYING.  If not, write to the
+  ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+  ;; Boston, MA 02111-1307, USA.
+
+  ;;---------------------------------------------------------------------------
+  ;;
+  ;;; Commentary:
+  ;;
+
+  ;;; Code:
+
+#+end_src
+
 ** Make sure =starter-kit-install-if-needed= is defined.
 Gee, there should be a cleaner way to pull this in.
 #+begin_src emacs-lisp
@@ -287,4 +327,10 @@ pretty \lambda's in clojure
 (add-hook 'lisp-mode-hook 'turn-on-paredit)
 (font-lock-add-keywords 'lisp-mode
 			'(("(\\|)" . 'starter-kit-paren-face)))
+#+end_src
+
+** End boilerplate for elisp file
+#+begin_src emacs-lisp
+  (provide 'starter-kit-lisp)
+  ;;; starter-kit-lisp ends here
 #+end_src
