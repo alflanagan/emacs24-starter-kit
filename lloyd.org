@@ -20,7 +20,7 @@ To make compiler happy, declare functions defined in other files.
   (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
   (declare-function starter-kit-load "starter-kit" (&rest packages))
   (declare-function secret-data-get-key "secret-data"  (some-key &optional file-name))
-  (declare-function smex-initialize "smex" nil)
+  ;; (declare-function smex-initialize "smex" nil)
   (declare-function flycheck-mode "flycheck" (&optional arg))
   (declare-function pretty-symbols-mode "pretty-symbols" (&optional arg))
   ;;  ido-ubiquitous-mode
@@ -76,7 +76,7 @@ everybody.
       pony-mode ;; django-admin interaction (nice)
       quack
       s  ;; The long lost Emacs string manipulation library.
-      smex  ;; M-x interface with Ido-style fuzzy matching.
+      ;; smex  ;; M-x interface with Ido-style fuzzy matching.
       ;; sphinx-doc
       thingatpt+
       undo-tree
@@ -258,7 +258,7 @@ modes. For each one, we bind it to "Ctrl-C b".
 *** Initialize packages if necessary
 
 #+begin_src emacs-lisp
-  (error-into-message (smex-initialize))
+  ;; (error-into-message (smex-initialize))
 #+end_src
     
 ** Set up major mode hooks
