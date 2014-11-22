@@ -39,6 +39,9 @@ Do the actual work in `after-init-hook` so that everything is
   (add-hook 'after-init-hook
             (lambda ()
               (princ (concat "package-user-dir is " package-user-dir ".\n"))
+              (setq package-archives
+                    '(("gnu"         . "http://elpa.gnu.org/packages/")
+                      ("melpa"       . "http://melpa.milkbox.net/packages/")))
               (package-initialize)
               (unless (package-installed-p 'ert-runner)
                 (princ "Trying to install ert-runner.\n")
