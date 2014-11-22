@@ -18,5 +18,6 @@ Set up special options for Arduino mode support.
 #+begin_src emacs-lisp
   (setq semantic-new-buffer-setup-functions
         (append semantic-new-buffer-setup-functions '((arduino-mode . semantic-default-c-setup))))
+  (semantic-add-system-include "/usr/share/arduino/libraries/" 'arduino-mode)
 #+end_src
 
