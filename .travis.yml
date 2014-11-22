@@ -16,15 +16,12 @@ install:
 - evm install $EVM_EMACS --use > /dev/null
 # verify that we're using the right f'ing Emacs
 - emacs --version
-- cd test
-- make
-- cd ..
 # user-specific files need to be under name of travis user
 - cp lloyd.org $(whoami).org
 - echo -e "paradox-github-token=not_secret" > .emacs-secret
 - emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "install-ert-runner.org")'
-- # ===========================================================
+- echo "==========================================================="
 - echo "Begin tests"
 - echo "==========================================================="
 script:
-- emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "execute-ert-runner.org")'
+- make test
