@@ -176,6 +176,15 @@ more categories.
      :group 'starter-kit-faces)
 #+end_src
 
+** SLIME
+Make sure [[http://common-lisp.net/project/slime/][SLIME]] (Superior Lisp Interaction Mode for Emacs) is
+available.
+
+#+begin_src emacs-lisp
+  (starter-kit-install-if-needed 'slime)
+
+#+end_src
+
 ** Emacs Lisp
    :PROPERTIES:
    :CUSTOM_ID: emacs-lisp
