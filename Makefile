@@ -39,7 +39,7 @@ doc/index.html:
 .PHONY : test clean
 
 test:
-	$(BATCH) --eval '(mapc (lambda (x) (org-babel-load-file (symbol-name x))) (quote ($(TEST_FILES))))'
+	$(BATCH) --eval '(org-babel-load-file "test/execute-ert-runner.org")'
 
 clean:
 	rm -f *.elc *.aux *.tex *.pdf starter-kit*.el starter-kit*.html doc/*html *~ .starter-kit*.part.org
