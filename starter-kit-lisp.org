@@ -23,20 +23,19 @@ standards and contain any needed copyright info. It should pass elint.
 
   ;; This file is not part of GNU Emacs.
 
-  ;; This file is free software; you can redistribute it and/or modify
-  ;; it under the terms of the GNU General Public License as published by
-  ;; the Free Software Foundation; either version 2, or (at your option)
-  ;; any later version.
+  ;; starter-kit-lisp.el is free software: you can redistribute it and/or
+  ;; modify it under the terms of the GNU General Public License as
+  ;; published by the Free Software Foundation, either version 3 of the
+  ;; License, or (at your option) any later version.
 
-  ;; This file is distributed in the hope that it will be useful,
-  ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ;; starter-kit-lisp.el is distributed in the hope that it will be
+  ;; useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+  ;; of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   ;; GNU General Public License for more details.
 
   ;; You should have received a copy of the GNU General Public License
-  ;; along with GNU Emacs; see the file COPYING.  If not, write to the
-  ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-  ;; Boston, MA 02111-1307, USA.
+  ;; along with starter-kit-lisp.el.  If not, see
+  ;; <http://www.gnu.org/licenses/>.
 
   ;;---------------------------------------------------------------------------
   ;;
@@ -62,17 +61,15 @@ positives.
       (defvar pretty-symbol-categories) ;; pretty-symbols.el
       (defvar starter-kit-clojure-trace-face) ;; starter-kit-clojure.org
       (defvar slime-lisp-implementations) ;; slime.el
-      ;; Stuff for swank, which isn't even in the package archives
-      (defvar swank-clojure-binary)
-      (defvar swank-clojure-jar-path)
-      (defvar swank-clojure-extra-classpaths)
-      (defvar  slime-lisp-implementations)
-      (defvar  slime-lisp-implementations))
+      (defvar swank-clojure-binary) ;; slime.el
+      (defvar swank-clojure-jar-path) ;; slime.el
+      (defvar swank-clojure-extra-classpaths) ;; slime.el
+      (defvar  slime-lisp-implementations) ;; slime.el
+      (defvar  slime-lisp-implementations)) ;; slime.el
 
   (declare-function swank-clojure-cmd "swank.el" ())
 
 #+end_src
-
 
 ** Make sure =starter-kit-install-if-needed= is defined.
 Gee, there should be a cleaner way to pull this in.
@@ -228,15 +225,16 @@ more categories.
 
 #+begin_src emacs-lisp
   (require 'clojure-mode)
+  (require 'cl-lib)
 
   (add-hook 'clojure-mode-hook 'run-starter-kit-coding-hook)
-  
+
   (font-lock-add-keywords 'clojure-mode
                           '(("(\\|)" . 'starter-kit-paren-face)))
-  
+
   (define-key clojure-mode-map (kbd "C-c v") 'slime-eval-buffer)
   (define-key clojure-mode-map (kbd "C-c C-v") 'slime-eval-buffer)
-  
+
   (defface starter-kit-clojure-trace-face
      '((((class color) (background dark))
         (:foreground "grey50"))
@@ -244,9 +242,9 @@ more categories.
         (:foreground "grey55")))
      "Face used to dim parentheses."
      :group 'starter-kit-faces)
-  
+
   (setq starter-kit-clojure-trace-face 'starter-kit-clojure-trace-face)
-  
+
   ;; This will make relevant lines stand out more in stack traces
   (defun sldb-font-lock ()
     (font-lock-add-keywords nil
@@ -258,9 +256,9 @@ more categories.
                                1 starter-kit-clojure-trace-face)
                               ("\\[\\([A-Z]+\\)\\]"
                                1 font-lock-function-name-face))))
-  
+
   (add-hook 'sldb-mode-hook 'sldb-font-lock)
-  
+
   (defun slime-jump-to-trace (&optional on)
     "Jump to the file/line that the current stack trace line references.
   Only works with files in your project root's src/, not in dependencies."
@@ -274,23 +272,23 @@ more categories.
         (find-file (format "%s/src/%s.clj" project-root
                            (mapconcat 'identity ns-path "/")))
         (goto-line line))))
-  
+
   (eval-after-load 'slime
     '(progn
        (defalias 'sldb-toggle-details 'slime-jump-to-trace)
        (defun sldb-prune-initial-frames (frames)
          "Show all stack trace lines by default."
          frames)))
-  
+
   (eval-after-load 'find-file-in-project
     '(add-to-list 'ffip-patterns "*.clj"))
-  
+
   ;; You might like this, but it's a bit disorienting at first:
   (add-hook 'clojure-mode-hook 'turn-on-paredit)
-  
+
   (defun clojure-project (path)
     "Setup classpaths for a clojure project and starts a new SLIME session.
-  
+
   Kills existing SLIME session, if any."
     (interactive (list
                   (ido-read-directory-name
@@ -311,11 +309,11 @@ more categories.
                         (directory-files lib t ".jar$"))))
           slime-lisp-implementations
           (cons `(clojure ,(swank-clojure-cmd) :init swank-clojure-init)
-                (remove-if #'(lambda (x) (eq (car x) 'clojure))
+                (cl-remove-if #'(lambda (x) (eq (car x) 'clojure))
                            slime-lisp-implementations)))
     (save-window-excursion
       (slime)))
-  
+
 #+end_src
 
 #+results:
