@@ -15,15 +15,11 @@ FILES = starter-kit.org				\
 	starter-kit-misc-recommended.org	\
 	starter-kit-org.org
 
-FILESO = $(FILES:.org=.el)
+EFILES = $(FILES:.org=.el)
 
 TEST_FILES = test/emacs24-starter-kit-test.org test/install-ert-runner.org test/execute-ert-runner.org
 
-TEST_FILES0 = $(TEST_FILES:.org=.el)
-
-all: $(FILES0)
-
-el: $(FILES)
+all: $(EFILES)
 
 %.el: %.org
 	$(BATCH) --eval '(org-babel-load-file "$<")'
@@ -47,4 +43,4 @@ test:
 
 clean:
 	rm -f *.elc *.aux *.tex *.pdf starter-kit*.el starter-kit*.html doc/*html *~ .starter-kit*.part.org
-	for FILE in *.org; do EFILE=${FILE%.org}.el; if [[ -f ${EFILE} ]]; then rm ${EFILE}; fi; done
+	for FILE in *.org; do EFILE=$${FILE%.org}.el; if [ -f $${EFILE} ]; then rm $${EFILE}; fi; done
