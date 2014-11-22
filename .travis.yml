@@ -1,10 +1,10 @@
-language: ruby
-# ruby is default language; doesn't matter until github supports
-# emacs-lisp
+language: emacs-lisp
+# until github supports elisp, actual "language" is ruby
 env:
 # don't neeed emacs-git-snapshot, don't want to add dependencies
 # that are not part of standard Emacs install
 - EVM_EMACS=emacs-24.3-bin
+- EVM_EMACS=emacs-24.4-bin
 install:
 - export EMBATCH="emacs --batch --eval \"(require 'org)\""
 - echo $SHELL
