@@ -27,15 +27,20 @@ To make compiler happy, declare functions defined in other files.
 
 #+end_src
 
+** Setup debug-on-error for my customizations
+#+begin_src emacs-lisp
+(defvar lloyd-org-orig-debug-on-error debug-on-error
+  "Stores locally value of `debug-on-error' so that it may be restored.")
+(setq debug-on-error t)
+
+#+end_src
+
 ** Install additional packages
 There are a whole bunch of packages I use which may not be useful to
 everybody.
 
 #+name: my-installed-packages
 #+begin_src emacs-lisp
-  (defvar lloyd-org-orig-debug-on-error debug-on-error
-    "Stores locally value of `debug-on-error' so that it may be restored.")
-  ;; (setq debug-on-error t)
   (defvar lloyds-installed-packages
     '(
       arduino-mode
@@ -58,7 +63,6 @@ everybody.
       expand-region ;; expand selected region semantically
       f  ;; file system utilities
       flycheck
-      ;; flycheck-cask
       ;; idle-highlight-mode ;; highlight word point is on
       ;; ipretty ;; interactive lisp pretty-print
       js2-mode ;; improved JavaScript support
@@ -67,8 +71,9 @@ everybody.
       literate-coffee-mode
       markdown-mode
       paradox ;; enhanced package listing, future std.
+      pinboard ;; display pinboard entries in buffer
+      pinboard-api ;; call pinboard API from emacs lisp
       pony-mode ;; django-admin interaction (nice)
-      pretty-symbols ;; draw tokens as Unicode glyphs
       quack
       s  ;; The long lost Emacs string manipulation library.
       smex  ;; M-x interface with Ido-style fuzzy matching.
@@ -83,10 +88,6 @@ everybody.
 
   (mapc 'starter-kit-install-if-needed
         lloyds-installed-packages)
-
-  (starter-kit-install-if-needed
-   'pinboard ;; display pinboard entries in buffer
-   'pinboard-api)  ;; call pinboard API from emacs lisp
 #+end_src
 
 ** Windows-specific setup
@@ -105,7 +106,6 @@ everybody.
 ** Activate optional parts of starter-kit
 
 #+begin_src emacs-lisp
-  (starter-kit-load "python")
   (starter-kit-load "eshell")
   ;;starter-kit-js.org still refers to js-mode as "espresso", not valid
   ;;for later versions of emacs
@@ -115,7 +115,6 @@ everybody.
   (starter-kit-load "lisp")
   (starter-kit-load "misc-recommended")
   (starter-kit-load "org")
-  ;; (starter-kit-load "yasnippet")
 #+end_src
 
 ** Setup functions
@@ -127,21 +126,6 @@ These functions set up various aspects of the system.
     (when (functionp 'global-undo-tree-mode)
       (global-undo-tree-mode)))
 
-#+end_src
-
-*** Enable additional substitutions with pretty-symbol
-#+begin_src emacs-lisp
-  (defun set-up-elisp-prettify ()
-    "Add to words auto-converted to unicode symbols."
-    ;; if we've got pretty-symbols-mode, enable multiple categories
-    (if (boundp 'pretty-symbol-categories)
-        (setq pretty-symbol-categories '(lambda relational logical)))
-    ;; prettify-symbols-alist is part of prog-mode, but only
-    ;; on recent versions of emacs, so check
-    (if (boundp 'prettify-symbols-alist)
-        (progn  ;; it's automatically buffer-local, so add to mode hook
-          (push '("<=" . ?≤) prettify-symbols-alist)
-          (push '(">=" . ?≥) prettify-symbols-alist))))
 #+end_src
 
 *** Start emacs server process if not already started
@@ -174,17 +158,6 @@ switching to a major mode.
                           (car err-data)
                           (cdr err-data)
                           (car ',body)))))
-#+end_src
-
-*** Load my local emacs-lisp Org files
-So far the only local file is =secret-data.org=. That file implements
-a "hidden file" key-data store which could probably be done better
-with an existing package.
-
-#+begin_src emacs-lisp
-  ;; (error-into-message (org-babel-load-file "secret-data.org"))
-  ;; added this to =starter-kit.org= instead, since that knows all about
-  ;; loading org files from the starter kit directory.
 #+end_src
 
 *** Load constants and set up keys
@@ -227,6 +200,7 @@ file and set up the paradox environment.
 #+end_src
 
 *** Set up elpy mode for python programming
+**** TODO Move this to starter-kit-python.org
 "elpy" mode is great for python programming. Because it runs a server
 in the background, you have to enable it. I also set it up to replace
 the flymake checker with flycheck.
@@ -277,7 +251,6 @@ modes. For each one, we bind it to "Ctrl-C b".
   (error-into-message (set-up-paradox-variables))
   (error-into-message (set-up-global-undo-tree))
   (error-into-message (set-up-elpy))
-  (error-into-message (set-up-elisp-prettify))
   (error-into-message (set-up-web-beautify))
   (error-into-message (set-up-constants))
 #+end_src
@@ -287,21 +260,9 @@ modes. For each one, we bind it to "Ctrl-C b".
 #+begin_src emacs-lisp
   (error-into-message (smex-initialize))
 #+end_src
-
-** Enable cua-mode
-Every other program uses CUA mode keys for cut and paste. If only IBM
-had just adopted Emacs key bindings as a standard.
-
-Although, of course, cua-mode interferes with key bindings in some
-other modes — like org mode, for example. Arggg.
-
-#+begin_src emacs-lisp
-  ;; (cua-mode)
-  ;; sigh. once you start using a lot of modes, cua-mode interferes with
-  ;; too many of them.
-#+end_src
-
+    
 ** Set up major mode hooks
+*** add-hook-if-exists
 We define a useful macro to add a function to a hook that will execute
 a given function only if it exists. Just using `add-hook` would add
 the function name to the hook, and lead to a run-time error when the
@@ -315,6 +276,8 @@ hook is executed.
                                   (funcall ,a-function ,@args)))))
 #+end_src
 
+*** JavaScript
+**** TODO Move this to starter-kit-js.org
 For JavaScript, we want to use js2-mode for files with an extension
 that would activate js-mode. And, we need js2-mode to be automatically
 selected if we edit a file with a she-bang (#!) line that specifies a
@@ -357,6 +320,7 @@ associations for file extensions.
 
 #+end_src
 
+*** Add hooks to various modes
 Using `add-hook-if-exists` as needed, we can set up hooks for various
 modes without generating error messages if the package with the
 function is not available. (One can make an argument that you should
@@ -365,16 +329,6 @@ strategy. I don't want a missing function to abort switching to a
 requested mode.)
 
 #+begin_src emacs-lisp
-  (defun add-elisp-mode-hooks ()
-    "Add various things to `emacs-lisp-mode-hook`."
-    (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil))) ;; Use spaces, not tabs.
-    ;; (add-hook 'emacs-lisp-mode-hook #'auto-complete-mode)
-    (add-hook-if-exists 'emacs-lisp-mode-hook #'flycheck-mode)
-    ;; (add-hook-if-exists 'emacs-lisp-mode-hook #'ipretty-mode)
-    (add-hook-if-exists 'emacs-lisp-mode-hook #'pretty-symbols-mode)
-    (add-hook-if-exists 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
-    (add-hook-if-exists 'emacs-lisp-mode-hook #'semantic-mode))
-
   (defun add-python-mode-hooks ()
     "Add various useful things to `python-mode-hook`"
     ;; (add-hook-if-exists 'python-mode-hook #'auto-complete-mode)
@@ -385,7 +339,6 @@ requested mode.)
 
   (defun add-hooks-for-packages ()
     "Set up hooks which depend on packages that need to be initialized by package system."
-    (add-elisp-mode-hooks)
     (add-python-mode-hooks)
     ;; because ido-ubiquitous doesn't get options right
     (add-hook-if-exists 'ert-simple-view-mode-hook #'ido-ubiquitous-mode)
