@@ -18,7 +18,7 @@ install:
 - emacs --version
 # user-specific files need to be under name of travis user
 - cp lloyd.org $(whoami).org
-- echo -e "paradox-github-token=not_secret" > .emacs-secret
+- echo -e "paradox-github-token=not_secret\n" > ~/.emacs-secret
 # we need ert-runner for testing, but don't want to require it for users
 - emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "test/install-ert-runner.org")'
 - echo "==========================================================="
