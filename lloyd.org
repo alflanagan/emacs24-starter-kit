@@ -43,7 +43,6 @@ everybody.
 #+begin_src emacs-lisp
   (defvar lloyds-installed-packages
     '(
-      arduino-mode
       ;; auto-complete
       ;; bind-key
       coffee-fof
@@ -107,11 +106,11 @@ everybody.
 
 #+begin_src emacs-lisp
   (starter-kit-load "eshell")
-  ;;starter-kit-js.org still refers to js-mode as "espresso", not valid
-  ;;for later versions of emacs
-  ;;(starter-kit-load "js")
+  ;; starter-kit-js.org still refers to js-mode as "espresso", not valid
+  ;; for later versions of emacs
+  ;; (starter-kit-load "js")
   (starter-kit-load "nodejs")
-  (starter-kit-load "semantic")
+  ;; (starter-kit-load "semantic")
   (starter-kit-load "lisp")
   (starter-kit-load "misc-recommended")
   (starter-kit-load "org")
@@ -262,20 +261,6 @@ modes. For each one, we bind it to "Ctrl-C b".
 #+end_src
     
 ** Set up major mode hooks
-*** add-hook-if-exists
-We define a useful macro to add a function to a hook that will execute
-a given function only if it exists. Just using `add-hook` would add
-the function name to the hook, and lead to a run-time error when the
-hook is executed.
-
-#+name: define-hook-macro
-#+begin_src emacs-lisp
-  (defmacro add-hook-if-exists (a-hook a-function &rest args)
-     "Add to hook A-HOOK a call to (A-FUNCTION ARGS) with a check to ensure A-FUNCTION is defined."
-     `(add-hook ,a-hook (lambda () (if (functionp ,a-function)
-                                  (funcall ,a-function ,@args)))))
-#+end_src
-
 *** JavaScript
 **** TODO Move this to starter-kit-js.org
 For JavaScript, we want to use js2-mode for files with an extension
@@ -321,29 +306,28 @@ associations for file extensions.
 #+end_src
 
 *** Add hooks to various modes
-Using `add-hook-if-exists` as needed, we can set up hooks for various
-modes without generating error messages if the package with the
-function is not available. (One can make an argument that you should
-*want* error messages, or at least a message-and-continue
-strategy. I don't want a missing function to abort switching to a
-requested mode.)
+Adds setup hooks to various modes that don't have a separate
+starter-kit file.
 
 #+begin_src emacs-lisp
   (defun add-python-mode-hooks ()
     "Add various useful things to `python-mode-hook`"
-    ;; (add-hook-if-exists 'python-mode-hook #'auto-complete-mode)
-    (add-hook-if-exists 'python-mode-hook #'flycheck-mode)
-    (add-hook-if-exists 'python-mode-hook #'hs-minor-mode)
-    (add-hook-if-exists 'python-mode-hook #'semantic-mode)
+    (if (fboundp 'flycheck-mode)
+        (add-hook 'python-mode-hook (lambda () flycheck-mode 1)))
+    (if (fboundp 'hs-minor-mode)
+        (add-hook 'python-mode-hook (lambda () (hs-minor-mode 1))))
     (add-hook 'python-mode-hook (lambda () (add-hook 'before-save-hook  'delete-trailing-whitespace nil t))))
 
   (defun add-hooks-for-packages ()
     "Set up hooks which depend on packages that need to be initialized by package system."
     (add-python-mode-hooks)
     ;; because ido-ubiquitous doesn't get options right
-    (add-hook-if-exists 'ert-simple-view-mode-hook #'ido-ubiquitous-mode)
-    (add-hook-if-exists 'js2-mode-hook #'pretty-symbols-mode)
-    (add-hook-if-exists 'js2-mode-hook #'electric-pair-mode))
+    (if (fboundp 'ido-ubiquitos-mode)
+        (add-hook 'ert-simple-view-mode-hook (lambda ()(ido-ubiquitous-mode 0))))
+    (if (fboundp 'pretty-symbols-mode)
+        (add-hook 'js2-mode-hook (lambda () (pretty-symbols-mode 1))))
+    (if (fboundp 'electric-pair-mode)
+        (add-hook 'js2-mode-hook (lambda () (electric-pair-mode 1)))))
 
   (add-hooks-for-packages)
   (setq debug-on-error lloyd-org-orig-debug-on-error)
