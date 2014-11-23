@@ -110,7 +110,6 @@ everybody.
   ;; for later versions of emacs
   ;; (starter-kit-load "js")
   (starter-kit-load "nodejs")
-  ;; (starter-kit-load "semantic")
   (starter-kit-load "lisp")
   (starter-kit-load "misc-recommended")
   (starter-kit-load "org")

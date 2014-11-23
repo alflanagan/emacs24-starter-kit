@@ -214,7 +214,6 @@ available.
   ;; (add-hook 'emacs-lisp-mode-hook #'auto-complete-mode)
   (add-hook 'emacs-lisp-mode-hook (lambda () (pretty-symbols-mode +1)))
   ;; (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'emacs-lisp-mode-hook (lambda () (semantic-mode +1)))
 #+end_src
 
 *** font-lock setup
