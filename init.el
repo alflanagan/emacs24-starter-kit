@@ -7,9 +7,11 @@
 
 ;; Load CEDET.
 ;; See cedet/common/cedet.info for configuration details.
-;; IMPORTANT: Tou must place this *before* any CEDET component (including
-;; EIEIO) gets activated by another package (Gnus, auth-source, ...).
-(load-file "/home/lloyd/Devel/cedet/cedet-devel-load.el")
+;; load from source when the CEDET_HOME environment variable is set
+(when (getenv "CEDET_HOME")
+  ;; IMPORTANT: Tou must place this *before* any CEDET component (including
+  ;; EIEIO) gets activated by another package (Gnus, auth-source, ...).
+  (load-file (expand-file-name "cedet-devel-load.el" (getenv "CEDET_HOME"))))
 
 ;; Add further minor-modes to be enabled by semantic-mode.
 ;; See doc-string of `semantic-default-submodes' for other things
