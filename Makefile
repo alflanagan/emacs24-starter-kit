@@ -21,6 +21,8 @@ TEST_FILES = test/emacs24-starter-kit-test.org test/install-ert-runner.org test/
 
 all: $(EFILES)
 
+bytes: $(EFILES:.el=.elc)
+
 %.el: %.org
 	$(BATCH) --eval '(org-babel-load-file "$<")'
 
@@ -36,7 +38,10 @@ doc/index.html:
 	cp doc/starter-kit.html doc/index.html
 	echo "Documentation published to doc/"
 
-.PHONY : test clean
+.PHONY : test clean TAGS
+
+TAGS:
+	find ~/.emacs.d -name '*.el' | etags -
 
 test:
 	$(BATCH) --eval '(org-babel-load-file "test/execute-ert-runner.org")'
