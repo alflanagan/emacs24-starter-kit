@@ -17,10 +17,10 @@ Because we're running in batch mode, we have to explicitly load
   ;; -*- lexical-binding: t; coding: utf-8; -*-
 
   (require 'ert)
-  (load-file "init.el")
+  ;; (load-file "init.el")
 
-  (princ "init.el loaded.\n")
-  (run-hooks 'after-init-hook)
+  ;; (princ "init.el loaded.\n")
+  ;; (run-hooks 'after-init-hook)
 
 #+end_src
 
@@ -30,11 +30,17 @@ Because we're running in batch mode, we have to explicitly load
 Verify first that all the startup .org files got tangled and loaded.
 
 #+begin_src emacs-lisp
+  (defun verify-installed-package-p (pname)
+    "If PNAME is not a  loaded feature, attempt to `require' it. Return PNAME if `require' fails."
+    (or (featurep pname)
+       (require pname (symbol-name pname) t)))
 
   (ert-deftest verify-installed-packages ()
     (princ (format "lloyds-installed-packages has %d members.\n" (length lloyds-installed-packages)))
-    (mapc (lambda (x) (should (member x features)))
-          lloyds-installed-packages))
+    (princ (format "features has %d members.\n" (length features)))
+    (and (mapcar #'verify-installed-package-p
+               lloyds-installed-packages))
+    )
 #+end_src
 
 **** Basic tests
