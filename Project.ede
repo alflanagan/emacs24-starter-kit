@@ -1,0 +1,11 @@
+;; Object emacs-init
+;; EDE Project Files are auto generated: Do Not Edit
+(ede-proj-project "emacs-init"
+  :file "Project.ede"
+  :name "emacs-init"
+  :targets
+  (list
+    (ede-proj-target-elisp "elisp-files"
+      :name "elisp-files"
+      :path ""
+      :source '("starter-kit-lisp.el" "lloyd.el" "ede-projects.el" "init.el"))))

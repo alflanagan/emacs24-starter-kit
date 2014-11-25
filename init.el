@@ -26,6 +26,20 @@
 ;; Enable EDE (Project Management) features
 (global-ede-mode 1)
 
+(add-hook 'after-init-hook
+          (lambda ()
+            (require 'dash)
+            (mapc (lambda (dirname) (semantic-add-system-include dirname 'c++-mode))
+                  (-difference  (directory-files "/usr/share/arduino/libraries") '("." "..")))
+            (semantic-add-system-include "/usr/share/arduino/hardware/arduino/cores/arduino" 'c++-mode)
+            (semantic-add-system-include "/usr/share/arduino/hardware/arduino/variants/standard" 'c++-mode)
+            ))
+
+
+(require 'semantic/bovine/c)
+(require 'semantic/bovine/gcc)
+(require 'semantic/bovine/el)
+
 ;; load Org-mode from source when the ORG_HOME environment variable is set
 (when (getenv "ORG_HOME")
   (let ((org-lisp-dir (expand-file-name "lisp" (getenv "ORG_HOME"))))
