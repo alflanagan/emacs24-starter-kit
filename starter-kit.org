@@ -434,7 +434,7 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
       (when (file-exists-p user-dir)
         (add-to-list 'load-path user-dir)
         (mapc #'sk-load
-              (remove-duplicates
+              (cl-remove-duplicates
                (mapcar #'remove-extension
                        (directory-files user-dir t ".*\.\\(org\\|el\\)\\(\\.gpg\\)?$"))
                :test #'string=)))))
