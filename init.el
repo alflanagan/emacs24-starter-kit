@@ -18,7 +18,8 @@
 ;; you can use here.
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
-(add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t)
+;; (if (boundp 'global-cedet-m3-minor-mode)
+;;     (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t))
 
 ;; Enable Semantic
 (semantic-mode 1)
@@ -28,13 +29,14 @@
 
 (add-hook 'after-init-hook
           (lambda ()
-            (require 'dash)
-            (mapc (lambda (dirname) (semantic-add-system-include dirname 'c++-mode))
-                  (-difference  (directory-files "/usr/share/arduino/libraries") '("." "..")))
-            (semantic-add-system-include "/usr/share/arduino/hardware/arduino/cores/arduino" 'c++-mode)
-            (semantic-add-system-include "/usr/share/arduino/hardware/arduino/variants/standard" 'c++-mode)
-            ))
-
+	    (let ((arduino-library-base "/usr/share/arduino/libraries"))
+	      ;; don't set up arduino if arduino libraries not present
+	      (when (file-directory-p arduino-library-base)
+		(require 'dash)
+		(mapc (lambda (dirname) (semantic-add-system-include dirname 'c++-mode))
+		      (-difference  (directory-files arduino-library-base) '("." "..")))
+		(semantic-add-system-include "/usr/share/arduino/hardware/arduino/cores/arduino" 'c++-mode)
+		(semantic-add-system-include "/usr/share/arduino/hardware/arduino/variants/standard" 'c++-mode)))))
 
 (require 'semantic/bovine/c)
 (require 'semantic/bovine/gcc)
