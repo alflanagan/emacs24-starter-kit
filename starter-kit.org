@@ -440,6 +440,15 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
                :test #'string=)))))
 #+end_src
 
+*** Byte-compile startup files -- so Emacs loads faster
+We need the whole environment set up before trying to byte-compile the
+starter-kit elisp files. So, do it here automatically, instead of
+trying to do it in --batch mode.
+
+#+begin_src emacs-lisp
+  (byte-recompile-directory starter-kit-dir 0)
+#+end_src
+
 *** Settings from M-x customize
 #+name: m-x-customize-customizations
 #+begin_src emacs-lisp
