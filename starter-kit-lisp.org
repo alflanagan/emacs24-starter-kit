@@ -53,53 +53,53 @@ problem, and not just "par for the course" with emacs-lisp
 programs. The tool is only useful if you don't get swamped with false
 positives.
 
-#+begin_src emacs-lisp
-    (eval-when-compile
-      (defvar read-expression-map)  ;; defined in simple.el
-      (defvar package-archives)  ;; package.el
-      (defvar package-archive-contents) ;;package.el
-      (defvar pretty-symbol-categories) ;; pretty-symbols.el
-      (defvar starter-kit-clojure-trace-face) ;; starter-kit-clojure.org
-      (defvar slime-lisp-implementations) ;; slime.el
-      (defvar swank-clojure-binary) ;; slime.el
-      (defvar swank-clojure-jar-path) ;; slime.el
-      (defvar swank-clojure-extra-classpaths) ;; slime.el
-      (defvar  slime-lisp-implementations) ;; slime.el
-      (defvar  slime-lisp-implementations)) ;; slime.el
+These are also useful if an expected package is not, in fact,
+installed.
 
-  (declare-function swank-clojure-cmd "swank.el" ())
+#+begin_src emacs-lisp
+  (require 'package)
+  (defvar read-expression-map)  ;; defined in simple.el
+  (defvar pretty-symbol-categories) ;; pretty-symbols.el
+  (defvar starter-kit-clojure-trace-face) ;; starter-kit-clojure.org
+  (defvar slime-lisp-implementations) ;; slime.el
+  (defvar swank-clojure-binary) ;; slime.el
+  (defvar swank-clojure-jar-path) ;; slime.el
+  (defvar swank-clojure-extra-classpaths) ;; slime.el
+  (defvar slime-lisp-implementations) ;; slime.el
+  (defvar slime-lisp-implementations) ;; slime.el
+  (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
 
 #+end_src
 
 ** Make sure =starter-kit-install-if-needed= is defined.
 Gee, there should be a cleaner way to pull this in.
 #+begin_src emacs-lisp
-  (unless (fboundp 'starter-kit-install-if-needed)
-    (defun starter-kit-loadable-p (package)
-      "Check if PACKAGE is loadable from a directory in `load-path'."
-      (let ((load-file (concat (symbol-name package) ".el")))
-        (catch 'file-found
-          (dolist (dir load-path)
-            (let ((path (expand-file-name load-file dir)))
-              (when (file-exists-p path)
-                (throw 'file-found path)))))))
+  ;; (unless (fboundp 'starter-kit-install-if-needed)
+  ;;   (defun starter-kit-loadable-p (package)
+  ;;     "Check if PACKAGE is loadable from a directory in `load-path'."
+  ;;     (let ((load-file (concat (symbol-name package) ".el")))
+  ;;       (catch 'file-found
+  ;;         (dolist (dir load-path)
+  ;;           (let ((path (expand-file-name load-file dir)))
+  ;;             (when (file-exists-p path)
+  ;;               (throw 'file-found path)))))))
 
-    (setq package-archives
-          '(("gnu"         . "http://elpa.gnu.org/packages/")
-            ("org"         . "http://orgmode.org/elpa/")
-            ("melpa"       . "http://melpa.milkbox.net/packages/")
-            ("marmalade"   . "http://marmalade-repo.org/packages/")))
-    (package-initialize)
+  ;;   (setq package-archives
+  ;;         '(("gnu"         . "http://elpa.gnu.org/packages/")
+  ;;           ("org"         . "http://orgmode.org/elpa/")
+  ;;           ("melpa"       . "http://melpa.milkbox.net/packages/")
+  ;;           ("marmalade"   . "http://marmalade-repo.org/packages/")))
+  ;;   (package-initialize)
 
-    (defun starter-kit-install-if-needed (&rest packages)
-      "Install PACKAGES using ELPA if they are not loadable or installed locally."
-      (when packages
-        (unless package-archive-contents
-          (package-refresh-contents))
-        (dolist (package packages)
-          (unless (or (starter-kit-loadable-p package)
-                     (package-installed-p package))
-            (package-install package))))))
+  ;;   (defun starter-kit-install-if-needed (&rest packages)
+  ;;     "Install PACKAGES using ELPA if they are not loadable or installed locally."
+  ;;     (when packages
+  ;;       (unless package-archive-contents
+  ;;         (package-refresh-contents))
+  ;;       (dolist (package packages)
+  ;;         (unless (or (starter-kit-loadable-p package)
+  ;;                    (package-installed-p package))
+  ;;           (package-install package))))))
 #+end_src
 
 ** Define keys
@@ -130,11 +130,32 @@ combination with the sexp movement functions (=C-M-f= forward, =C-M-b=
 back, =C-M-u= up, =C-M-d= down)
 
 #+begin_src emacs-lisp
-  (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
   (starter-kit-install-if-needed 'smartparens)
 #+end_src
 
 #+begin_src emacs-lisp
+  ;; (defun list-difference (a b)
+  ;;   "Returns a list composed of all elements of A not contained in B. Uses `equal' test."
+  ;;   (if (null a)
+  ;;       nil
+  ;;     (if (not (member (car a) b))
+  ;;         (cons  (car a) (list-difference (cdr a) b))
+  ;;       (list-difference (cdr a) b))))
+
+  ;; (defun directory-expanded-files (dir-name)
+  ;;   "Return the contents of directory DIR-NAME as fully-expanded names (omits . and ..)"
+  ;;   (mapcar (lambda (fname) (expand-file-name fname dir-name))
+  ;;           (list-difference  (directory-files dir-name) '("." ".."))))
+
+  ;; ;; add every subdirectory of "elpa" to `load-path'.
+  ;; ;; in normal startup, starter-kit-org did this; however, during
+  ;; ;; compile we need to be able to find installed packages.
+  ;; (require 'cl-lib)
+  ;; ;; does nothing if dirs already in `load-path'.
+  ;; (mapc (lambda (dir-name) (add-to-list 'load-path dir-name))
+  ;;       (cl-remove-if (lambda (fname) (not (file-directory-p fname)))
+  ;;                     (directory-expanded-files (expand-file-name "elpa" starter-kit-dir))))
+
   ;;smartparens-config is smartparens + default configuration
   (require 'smartparens-config)
   (defun turn-on-paredit ()
@@ -211,9 +232,7 @@ available.
   (define-key emacs-lisp-mode-map (kbd "C-c v") #'eval-buffer)
   ;; for indentation, use spaces, not tabs
   (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil)))
-  ;; (add-hook 'emacs-lisp-mode-hook #'auto-complete-mode)
   (add-hook 'emacs-lisp-mode-hook (lambda () (pretty-symbols-mode +1)))
-  ;; (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 #+end_src
 
 *** font-lock setup
