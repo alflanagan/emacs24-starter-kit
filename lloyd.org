@@ -18,7 +18,7 @@ To make compiler happy, declare functions defined in other files.
 #+name external-functions
 #+begin_src emacs-lisp
   (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
-  (declare-function starter-kit-load "starter-kit" (&rest packages))
+  (declare-function starter-kit-load "starter-kit" (file &optional header-or-tag))
   (declare-function secret-data-get-key "secret-data"  (some-key &optional file-name))
   ;; (declare-function smex-initialize "smex" nil)
   (declare-function flycheck-mode "flycheck" (&optional arg))
@@ -29,9 +29,9 @@ To make compiler happy, declare functions defined in other files.
 
 ** Setup debug-on-error for my customizations
 #+begin_src emacs-lisp
-(defvar lloyd-org-orig-debug-on-error debug-on-error
-  "Stores locally value of `debug-on-error' so that it may be restored.")
-(setq debug-on-error t)
+  (defvar lloyd-org-orig-debug-on-error debug-on-error
+    "Stores locally value of `debug-on-error' so that it may be restored.")
+  (setq debug-on-error t)
 
 #+end_src
 
@@ -312,7 +312,7 @@ starter-kit file.
   (defun add-python-mode-hooks ()
     "Add various useful things to `python-mode-hook`"
     (if (fboundp 'flycheck-mode)
-        (add-hook 'python-mode-hook (lambda () flycheck-mode 1)))
+        (add-hook 'python-mode-hook (lambda () (flycheck-mode 1))))
     (if (fboundp 'hs-minor-mode)
         (add-hook 'python-mode-hook (lambda () (hs-minor-mode 1))))
     (add-hook 'python-mode-hook (lambda () (add-hook 'before-save-hook  'delete-trailing-whitespace nil t))))
