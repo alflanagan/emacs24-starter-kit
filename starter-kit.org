@@ -440,44 +440,6 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
                :test #'string=)))))
 #+end_src
 
-*** Byte-compile startup files -- so Emacs loads faster
-We need the whole environment set up before trying to byte-compile the
-starter-kit elisp files. So, do it here automatically, instead of
-trying to do it in --batch mode.
-
-#+begin_src emacs-lisp
-  ;; OK, below will compile evrything in elpa/. Probably a bad idea,
-  ;; plus slow.
-  ;; (byte-recompile-directory starter-kit-dir 0)
-
-  ;;TODO: An implementation of list comprehension ala Python
-  ;;(function list-comprehension (form list condition))
-  ;; "Generate a list by applying FORM to each member of LIST that
-  ;;satisfies CONDITION."
-
-  (defun members-with-suffix (source-list suffix-string)
-    "Return a list composed of every member of SOURCE-LIST for which `string-suffix-p' detects suffix SUFFIX-STRING."
-    (let ((candidate (car source-list)))
-      (cond ((equal candidate nil) nil)
-            ((string-suffix-p suffix-string candidate)
-             (cons candidate (members-with-suffix (cdr  source-list)
-                                                  suffix-string)))
-            (t
-             (members-with-suffix (cdr source-list) suffix-string)))))
-
-  (defun file-name-paths (directory file-list)
-    "Return a list such that each member is a member of FILE-LIST expanded by DIRECTORY."
-    (mapcar (lambda (it) (expand-file-name it directory))
-            file-list))
-
-  (defun elisp-files-in (directory)
-    "Returns a list of the filenames in DIRECTORY which end with .el."
-    (file-name-paths directory (members-with-suffix (directory-files directory) ".el")))
-
-  (mapc (lambda (fname) (byte-compile-file fname))
-        (elisp-files-in starter-kit-dir))
-#+end_src
-
 *** Settings from M-x customize
 #+name: m-x-customize-customizations
 #+begin_src emacs-lisp
