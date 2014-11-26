@@ -23,6 +23,7 @@ To make compiler happy, declare functions defined in other files.
   ;; (declare-function smex-initialize "smex" nil)
   (declare-function flycheck-mode "flycheck" (&optional arg))
   (declare-function pretty-symbols-mode "pretty-symbols" (&optional arg))
+  (defvar starter-kit-dir)
   ;;  ido-ubiquitous-mode
 
 #+end_src
@@ -57,7 +58,6 @@ everybody.
       ;; easy-kill
       elpy
       el-spice ;; extra functions -- TODO: fix key overlaps
-      ert-runner
       exec-path-from-shell ;; utility funcs to get environment variables
       expand-region ;; expand selected region semantically
       f  ;; file system utilities
@@ -69,6 +69,8 @@ everybody.
       kv ;; should be specified by pinboard, but isn't
       literate-coffee-mode
       markdown-mode
+      org-bullets ;; replace bullets with pleasing UTF-8 chars
+      org-toc ;;table of contents for org-mode
       paradox ;; enhanced package listing, future std.
       pinboard ;; display pinboard entries in buffer
       pinboard-api ;; call pinboard API from emacs lisp
@@ -169,14 +171,10 @@ switching to a major mode.
     (define-key global-map "\C-cci" 'constants-insert)
     (define-key global-map "\C-ccg" 'constants-get)
     (define-key global-map "\C-ccr" 'constants-replace)
-    (setq constants-unit-system 'SI)   ;  this is the default
-
-    ;;   ;; Use "cc" as the standard variable name for speed of light,
-    ;;   ;; "bk" for Boltzmann's constant, and "hp" for Planck's constant
-    (setq constants-rename '(("cc" . "c") ("bk" . "k") ("hp" . "h")))
+    (defvar constants-unit-system 'SI)   ;  this is the default
     ;;
     ;; A default list of constants to insert when none are specified
-    (setq constants-default-list "cc,bk,hp"))
+    (defvar constants-default-list "cc,bk,hp"))
 #+end_src
 
 *** Set up paradox package listing features
@@ -321,8 +319,7 @@ starter-kit file.
     "Set up hooks which depend on packages that need to be initialized by package system."
     (add-python-mode-hooks)
     ;; because ido-ubiquitous doesn't get options right
-    (if (fboundp 'ido-ubiquitos-mode)
-        (add-hook 'ert-simple-view-mode-hook (lambda ()(ido-ubiquitous-mode 0))))
+    (add-hook 'ert-simple-view-mode-hook (lambda () (if (fboundp 'ido-ubiquitous-mode) (ido-ubiquitous-mode 0))))
     (if (fboundp 'pretty-symbols-mode)
         (add-hook 'js2-mode-hook (lambda () (pretty-symbols-mode 1))))
     (if (fboundp 'electric-pair-mode)
