@@ -47,7 +47,7 @@ sequence =C-c C-v h= (bound to `=org-babel-describe-bindings=') will
 display a list of the code blocks commands and their related keys.
 
 #+begin_src emacs-lisp
-  (setq org-use-speed-commands t)
+  (defvar org-use-speed-commands t)
 #+end_src
 
 ** Code blocks
@@ -82,8 +82,8 @@ using the major-mode of the code.  It also changes the behavior of
 that reading and editing code form inside of your Org-mode files is
 much more like reading and editing of code using its major mode.
 #+begin_src emacs-lisp
-  (setq org-src-fontify-natively t)
-  (setq org-src-tab-acts-natively t)
+  (defvar org-src-fontify-natively t)
+  (defvar org-src-tab-acts-natively t)
 #+end_src
 
 ** The Library of Babel

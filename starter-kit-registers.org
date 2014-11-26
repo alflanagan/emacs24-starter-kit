@@ -10,6 +10,11 @@ for this file) to jump to it.
 
 You should add registers here for the files you edit most often.
 
+#+begin_src emacs-lisp
+  ;; declare external variable
+  (defvar starter-kit-dir)
+#+end_src
+
 #+name: starter-kit-registers
 #+begin_src emacs-lisp :results silent
   (dolist
