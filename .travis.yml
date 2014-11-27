@@ -17,9 +17,9 @@ install:
 # verify that we're using the right f'ing Emacs
 - emacs --version
 # user-specific files need to be under name of travis user
-- cp lloyd.org $(id -u).org
+- cp lloyd.org $(whoami).org
 # emacs 24.3 will hang on confirmation dialog if semanticdb/ not present
-- mkdir /home/$(id -u)/.emacs.d/semanticdb/
+- mkdir /home/$(whoami)/.emacs.d/semanticdb/
 - echo -e "paradox-github-token=not_secret\n" > ~/.emacs-secret
 # we need ert-runner for testing, but don't want to require it for users
 - emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "test/install-ert-runner.org")'
