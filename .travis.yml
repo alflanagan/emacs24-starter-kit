@@ -22,7 +22,8 @@ install:
 - echo -e "paradox-github-token=not_secret\n" > ~/.emacs-secret
 # we need ert-runner for testing, but don't want to require it for users
 - emacs --batch --eval "(require 'org)" --eval '(org-babel-load-file "test/install-ert-runner.org")'
-- mkdir /home/$(whoami)/.emacs.d/semanticdb/
+- ls ${HOME}/.emacs.d
+- mkdir ${HOME}/.emacs.d/semanticdb/
 - echo "==========================================================="
 - echo "Begin tests"
 - echo "==========================================================="
