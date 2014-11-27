@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+for EFILE in *.el
+do   CFILE=${EFILE}c
+     if [[ -f ${CFILE} ]]; then
+         if [[ ${EFILE} -nt ${CFILE} ]]; then
+             echo ${EFILE}
+         fi
+     fi
+done
