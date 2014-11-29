@@ -40,9 +40,11 @@ To make compiler happy, declare functions defined in other files.
 There are a whole bunch of packages I use which may not be useful to
 everybody.
 
+*** TODO check for local install of arduino-mode and install from package if not present.
+
 #+name: my-installed-packages
 #+begin_src emacs-lisp
-  (defvar lloyds-installed-packages
+  (defconst lloyds-installed-packages
     '(
       ;; auto-complete
       ;; bind-key
