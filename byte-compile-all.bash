@@ -5,6 +5,9 @@ for ELDIR in ${ELDIRS}
 do
     for ELFILE in $(eval "ls ${ELDIR}/*.el")
     do
-        emacs --batch --eval "(byte-compile-file \"${ELFILE}\")"
+        #TODO: set up array of file names to skip
+        if [[ $(basename "${ELFILE}") != ede-projects.el ]]; then
+            emacs --batch -f batch-byte-compile "${ELFILE}"
+        fi
     done
 done
