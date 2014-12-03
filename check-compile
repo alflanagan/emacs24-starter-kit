@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# -*- coding: utf-8-unix; -*-
 for EFILE in *.el
 do   CFILE=${EFILE}c
      if [[ -f ${CFILE} ]]; then
