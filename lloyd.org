@@ -46,25 +46,19 @@ everybody.
 #+begin_src emacs-lisp
   (defconst lloyds-installed-packages
     '(
-      ;; auto-complete
-      ;; bind-key
-      coffee-fof
-      coffee-mode
+      coffee-fof ;; A coffee-mode configuration for `ff-find-other-file'.
+      coffee-mode ;; Major mode to edit CoffeeScript files in Emacs
       creole ;; for emacswiki
-      creole-mode
+      creole-mode ;; a markup mode for creole
       dash ;; essential functional programming lib
-      ;; drag-stuff
       ;; e2wm  ;; emacs window manager -- somewhat experimental
-      ;; e2wm-bookmark
-      ;; e2wm-direx
-      ;; easy-kill
-      elpy
+      elpy ;; Emacs Python Development Environment
       el-spice ;; extra functions -- TODO: fix key overlaps
       exec-path-from-shell ;; utility funcs to get environment variables
       expand-region ;; expand selected region semantically
       f  ;; file system utilities
       flycheck
-      ;; idle-highlight-mode ;; highlight word point is on
+      golden-ratio ;; resize windows, aesthetically
       ;; ipretty ;; interactive lisp pretty-print
       js2-mode ;; improved JavaScript support
       json-mode
@@ -77,15 +71,14 @@ everybody.
       pinboard ;; display pinboard entries in buffer
       pinboard-api ;; call pinboard API from emacs lisp
       pony-mode ;; django-admin interaction (nice)
-      quack
       s  ;; The long lost Emacs string manipulation library.
       ;; smex  ;; M-x interface with Ido-style fuzzy matching.
-      ;; sphinx-doc
+
       thingatpt+
-      undo-tree
-      web
-      web-beautify
-      web-mode)
+      undo-tree ;; Treat undo history as a tree (very nice)
+      web ;; useful HTTP client
+      web-beautify ;; Format HTML, CSS and JavaScript/JSON by js-beautify
+      web-mode) ;; major mode for editing html templates
     "The set of packages to be automatically installed for me."
     )
 
