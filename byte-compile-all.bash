@@ -5,6 +5,13 @@ for ELDIR in ${ELDIRS}
 do
     for ELFILE in $(eval "ls ${ELDIR}/*.el")
     do
-        emacs --batch --eval "(byte-compile-file \"${ELFILE}\")"
+        #TODO: set up array of file names to skip
+        if [[ $(basename "${ELFILE}") != ede-projects.el ]]; then
+            emacs --batch -f batch-byte-compile "${ELFILE}"
+            if [[ ${OS} == Windows_NT ]]; then
+                #apparently required??
+                chmod u+x ${ELFILE}c
+            fi
+        fi
     done
 done

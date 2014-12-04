@@ -55,6 +55,14 @@
       (add-to-list 'load-path org-lisp-dir)
       (require 'org))))
 
+;; a function I find useful in site-specific settings
+(defun set-frame-size-by-golden-ratio (width)
+  "Set the width of the current frame to WIDTH (in characters) and the height to a value that will result in a frame rectangle that approximates the golden ratio."
+  ;; our conversion factor is the golden ratio * the aspect ratio of a
+  ;; character position
+  ;;TODO: investigate get-frame-fringe, etc. for better values
+  (let ((conversion-factor (* 1.618  (/ (frame-char-height) (frame-char-width)))))
+    (set-frame-size (selected-frame) width (floor (/ width conversion-factor)))))
 
 ;; load the starter kit from the `after-init-hook' so all packages are loaded
 (add-hook 'after-init-hook
