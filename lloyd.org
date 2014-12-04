@@ -179,6 +179,11 @@ switching to a major mode.
     (defvar constants-default-list "cc,bk,hp"))
 #+end_src
 
+*** Set up my global key bindings
+#+begin_src emacs-lisp
+  (global-set-key [<F5>] 'semantic-ia-fast-jump)
+#+end_src
+
 *** Set up paradox package listing features
 Paradox supports starring packages on [[http://github.com]] if the user
 has an appropriate github token. Load that token from our secret data
@@ -250,7 +255,7 @@ modes. For each one, we bind it to "Ctrl-C b".
   (error-into-message (set-up-global-undo-tree))
   (error-into-message (set-up-elpy))
   (error-into-message (set-up-web-beautify))
-  (error-into-message (set-up-constants))
+  ;; (error-into-message (set-up-constants))
 #+end_src
 
 *** Initialize packages if necessary
@@ -309,24 +314,49 @@ Adds setup hooks to various modes that don't have a separate
 starter-kit file.
 
 #+begin_src emacs-lisp
+  (defun turn-on-flycheck ()
+    "Turns on `flycheck-mode.' Exists to prevent use of `lambda' in `add-hook'."
+    (flycheck-mode 1))
+
+  (defun turn-on-hs ()
+    "Enables `hs-minor-mode'. Exists to prevent use of `lambda' in `add-hook'."
+    (hs-minor-mode 1))
+
+  (defun enable-delete-trailing-ws ()
+    "Enables automatic deletion of trailing whitespace on save for current buffer."
+    (add-hook 'before-save-hook  'delete-trailing-whitespace nil t))
+
   (defun add-python-mode-hooks ()
     "Add various useful things to `python-mode-hook`"
     (if (fboundp 'flycheck-mode)
-        (add-hook 'python-mode-hook (lambda () (flycheck-mode 1))))
+        (add-hook 'python-mode-hook 'turn-on-flycheck))
     (if (fboundp 'hs-minor-mode)
-        (add-hook 'python-mode-hook (lambda () (hs-minor-mode 1))))
-    (add-hook 'python-mode-hook (lambda () (add-hook 'before-save-hook  'delete-trailing-whitespace nil t))))
+        (add-hook 'python-mode-hook 'turn-on-hs))
+    (add-hook 'python-mode-hook 'enable-delete-trailing-ws))
+
+  (defun turn-on-pretty-symbols ()
+    "Enables `pretty-symbols-mode' for current buffer."
+    (if (fboundp 'pretty-symbols-mode)
+        (pretty-symbols-mode 1)))
+
+  (defun turn-on-electric-pair-mode ()
+    "Enables `electric-pair-mode' for the current buffer."
+    (if (fboundp 'electric-pair-mode)
+        (electric-pair-mode 1)))
 
   (defun add-hooks-for-packages ()
     "Set up hooks which depend on packages that need to be initialized by package system."
     (add-python-mode-hooks)
     ;; because ido-ubiquitous doesn't get options right
     (add-hook 'ert-simple-view-mode-hook (lambda () (if (fboundp 'ido-ubiquitous-mode) (ido-ubiquitous-mode 0))))
-    (if (fboundp 'pretty-symbols-mode)
-        (add-hook 'js2-mode-hook (lambda () (pretty-symbols-mode 1))))
-    (if (fboundp 'electric-pair-mode)
-        (add-hook 'js2-mode-hook (lambda () (electric-pair-mode 1)))))
+    (add-hook 'js2-mode-hook 'turn-on-pretty-symbols)
+    (add-hook 'js2-mode-hook 'turn-on-electric-pair-mode))
 
   (add-hooks-for-packages)
+#+end_src
+
+*** Set `debug-on-error' back to original value.
+#+begin_src emacs-lisp
   (setq debug-on-error lloyd-org-orig-debug-on-error)
 #+end_src
+
