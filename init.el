@@ -41,10 +41,16 @@
 		(semantic-add-system-include "/usr/share/arduino/hardware/arduino/cores/arduino" 'c++-mode)
 		(semantic-add-system-include "/usr/share/arduino/hardware/arduino/variants/standard" 'c++-mode)))))
 
+(defun require-report-errors (feature &optional filename)
+ "If FEATURE is not loaded, load it from FILENAME. If an error occurs, report and continue"
+(report-errors (concat (format "[init] Error loading %s: " (symbol-name feature))
+                        "%s")
+           (require feature filename)))
+               
 (require 'semantic/bovine/c)
 (require 'semantic/bovine/gcc)
 (require 'semantic/bovine/el)
-(require 'semantic/wisent/python)
+(require-report-errors 'semantic/wisent/python)
 
 ;; load Org-mode from source when the ORG_HOME environment variable is set
 (when (getenv "ORG_HOME")
