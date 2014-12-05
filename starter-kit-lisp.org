@@ -58,6 +58,13 @@ installed.
 
 #+begin_src emacs-lisp
   (require 'package)
+  (require 'cl-lib)
+
+  ;; how do I get byte-compiler to set up load-path as it's done in
+  ;; =starter-kit.org= for requires?
+  (with-demoted-errors (require 'smartparens-config))
+  (with-demoted-errors (require 'clojure-mode))
+
   (defvar read-expression-map)  ;; defined in simple.el
   (defvar pretty-symbol-categories) ;; pretty-symbols.el
   (defvar starter-kit-clojure-trace-face) ;; starter-kit-clojure.org
@@ -157,7 +164,6 @@ back, =C-M-u= up, =C-M-d= down)
   ;;                     (directory-expanded-files (expand-file-name "elpa" starter-kit-dir))))
 
   ;;smartparens-config is smartparens + default configuration
-  (require 'smartparens-config)
   (defun turn-on-paredit ()
     "Really we're turning on smartparens, but haven't changed function name yet."
     (smartparens-mode +1)
@@ -251,9 +257,6 @@ available.
 #+end_src
 
 #+begin_src emacs-lisp
-  (require 'clojure-mode)
-  (require 'cl-lib)
-
   (add-hook 'clojure-mode-hook 'run-starter-kit-coding-hook)
 
   (font-lock-add-keywords 'clojure-mode
