@@ -13,6 +13,10 @@
   ;; EIEIO) gets activated by another package (Gnus, auth-source, ...).
   (load-file (expand-file-name "cedet-devel-load.el" (getenv "CEDET_HOME"))))
 
+(require 'package)
+(add-to-list 'package-archives
+             '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+
 ;; Add further minor-modes to be enabled by semantic-mode.
 ;; See doc-string of `semantic-default-submodes' for other things
 ;; you can use here.
