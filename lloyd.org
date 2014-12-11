@@ -51,6 +51,8 @@ everybody.
       creole ;; for emacswiki
       creole-mode ;; a markup mode for creole
       dash ;; essential functional programming lib
+      dash-functional ;; Collection of useful combinators for Emacs Lisp
+      dropdown-list ;; Drop-down menu interface
       ;; e2wm  ;; emacs window manager -- somewhat experimental
       elpy ;; Emacs Python Development Environment
       el-spice ;; extra functions -- TODO: fix key overlaps
@@ -190,6 +192,20 @@ file and set up the paradox environment.
       (setq paradox-automatically-star nil)))
 #+end_src
 
+*** Set up alternate interface for yas-snippet
+For whatever reason, currently the default interface for `yas-snippet'
+pops a window ever-so-briefly which then disappears. Useless. Set up
+to use `dropdown-list' instead.
+
+#+begin_src emacs-lisp
+  (defun set-up-yas-snippets ()
+    (require 'dropdown-list)
+    (setq yas-prompt-functions '(yas-dropdown-prompt
+                                 yas-ido-prompt
+                                 yas-completing-prompt)))
+#+end_src
+
+
 *** Set up elpy mode for python programming
 **** TODO Move this to starter-kit-python.org
 "elpy" mode is great for python programming. Because it runs a server
@@ -244,6 +260,7 @@ modes. For each one, we bind it to "Ctrl-C b".
   (error-into-message (set-up-elpy))
   (error-into-message (set-up-web-beautify))
   (error-into-message (set-up-constants))
+  (error-into-message (set-up-yas-snippets))
 #+end_src
 
 *** Initialize packages if necessary
