@@ -29,20 +29,6 @@
 ;; Enable EDE (Project Management) features
 (global-ede-mode 1)
 
-(declare-function -difference "dash.el" (list list2))
-(declare-function semantic-add-system-include "semantic/dep.el" (DIR &optional MODE))
-
-(add-hook 'after-init-hook
-          (lambda ()
-	    (let ((arduino-library-base "/usr/share/arduino/libraries"))
-	      ;; don't set up arduino if arduino libraries not present
-	      (when (file-directory-p arduino-library-base)
-                (require 'dash)
-                (mapc (lambda (dirname) (semantic-add-system-include dirname 'c++-mode))
-		      (-difference  (directory-files arduino-library-base) '("." "..")))
-		(semantic-add-system-include "/usr/share/arduino/hardware/arduino/cores/arduino" 'c++-mode)
-		(semantic-add-system-include "/usr/share/arduino/hardware/arduino/variants/standard" 'c++-mode)))))
-
 (require 'semantic/bovine/c)
 (require 'semantic/bovine/gcc)
 (require 'semantic/bovine/el)
@@ -55,14 +41,26 @@
       (add-to-list 'load-path org-lisp-dir)
       (require 'org))))
 
+(defun first-non-null (a-list &optional default)
+  "Return first member of A-LIST which is not `nil.' If all are `nil', return DEFAULT if provided."
+  (cond ((null a-list) default)
+        ((null (car a-list)) (first-non-null (cdr a-list) default))
+        (t  (car a-list))))
+
+;; (first-non-null '(nil nil 3))
+;; (first-non-null '(7 3 2 ))
+;; (first-non-null nil)
+;; (first-non-null '(nil nil nil) 7)
+
 ;; a function I find useful in site-specific settings
-(defun set-frame-size-by-golden-ratio (width)
-  "Set the width of the current frame to WIDTH (in characters) and the height to a value that will result in a frame rectangle that approximates the golden ratio."
+(defun set-frame-size-by-golden-ratio (width &optional frame)
+  "Set the width of the current frame to WIDTH (in characters) and the height to the golden ratio."
   ;; our conversion factor is the golden ratio * the aspect ratio of a
   ;; character position
   ;;TODO: investigate get-frame-fringe, etc. for better values
-  (let ((conversion-factor (* 1.618  (/ (frame-char-height) (frame-char-width)))))
-    (set-frame-size (selected-frame) width (floor (/ width conversion-factor)))))
+  (let ((the-frame (first-non-null (list frame (selected-frame))))
+        (conversion-factor (* 1.618  (/ (frame-char-height) (frame-char-width)))))
+    (set-frame-size the-frame width (floor (/ width conversion-factor)))))
 
 ;; load the starter kit from the `after-init-hook' so all packages are loaded
 (add-hook 'after-init-hook
