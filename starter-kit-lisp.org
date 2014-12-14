@@ -58,6 +58,14 @@ installed.
 
 #+begin_src emacs-lisp
   (require 'package)
+  (require 'cl-lib)
+
+  ;; package won't be initialized if we're compiling
+  (eval-when-compile (package-initialize))
+
+  (require 'smartparens-config)
+  (require 'clojure-mode)
+
   (defvar read-expression-map)  ;; defined in simple.el
   (defvar pretty-symbol-categories) ;; pretty-symbols.el
   (defvar starter-kit-clojure-trace-face) ;; starter-kit-clojure.org
@@ -67,7 +75,25 @@ installed.
   (defvar swank-clojure-extra-classpaths) ;; slime.el
   (defvar slime-lisp-implementations) ;; slime.el
   (defvar slime-lisp-implementations) ;; slime.el
+  (defvar ffip-patterns) ;;find-file-in-project.el
+  (defvar swank-clojure-extra-vm-args) ;; ???
+
   (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
+  (declare-function sp-wrap-region "smartparens " ())
+  (declare-function sp-wrap-region-init "smartparens" ())
+  (declare-function sp-insert-pair "smartparens" (&optional PAIR))
+  ;; more functions 
+  ;; sp-wrap-region-init
+  ;; sp-wrap-region
+  ;; sp-insert-pair
+  ;; sp-skip-closing-pair
+  ;; smartparens-mode
+  ;; smartparens-strict-mode
+  ;; sp-use-paredit-bindings
+  ;; pretty-symbols-mode
+  ;; slime
+  ;; run-starter-kit-coding-hook
+  ;; swank-clojure-cmd
 
 #+end_src
 
@@ -157,7 +183,6 @@ back, =C-M-u= up, =C-M-d= down)
   ;;                     (directory-expanded-files (expand-file-name "elpa" starter-kit-dir))))
 
   ;;smartparens-config is smartparens + default configuration
-  (require 'smartparens-config)
   (defun turn-on-paredit ()
     "Really we're turning on smartparens, but haven't changed function name yet."
     (smartparens-mode +1)
@@ -251,9 +276,6 @@ available.
 #+end_src
 
 #+begin_src emacs-lisp
-  (require 'clojure-mode)
-  (require 'cl-lib)
-
   (add-hook 'clojure-mode-hook 'run-starter-kit-coding-hook)
 
   (font-lock-add-keywords 'clojure-mode

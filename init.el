@@ -15,6 +15,10 @@
     (load-file (expand-file-name "cedet-devel-load.el" cedet-home))
     (load-file (expand-file-name "cedet-contrib-load.el" (expand-file-name "contrib" cedet-home)))))
 
+(require 'package)
+(add-to-list 'package-archives
+             '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+
 ;; Add further minor-modes to be enabled by semantic-mode.
 ;; See doc-string of `semantic-default-submodes' for other things
 ;; you can use here.
@@ -29,10 +33,30 @@
 ;; Enable EDE (Project Management) features
 (global-ede-mode 1)
 
+(declare-function -difference "dash.el" (list list2))
+(declare-function semantic-add-system-include "semantic/dep.el" (DIR &optional MODE))
+
+(add-hook 'after-init-hook
+          (lambda ()
+	    (let ((arduino-library-base "/usr/share/arduino/libraries"))
+	      ;; don't set up arduino if arduino libraries not present
+	      (when (file-directory-p arduino-library-base)
+                (require 'dash)
+                (mapc (lambda (dirname) (semantic-add-system-include dirname 'c++-mode))
+		      (-difference  (directory-files arduino-library-base) '("." "..")))
+		(semantic-add-system-include "/usr/share/arduino/hardware/arduino/cores/arduino" 'c++-mode)
+		(semantic-add-system-include "/usr/share/arduino/hardware/arduino/variants/standard" 'c++-mode)))))
+
+(defun require-report-errors (feature &optional filename)
+ "If FEATURE is not loaded, load it from FILENAME. If an error occurs, report and continue"
+(report-errors (concat (format "[init] Error loading %s: " (symbol-name feature))
+                        "%s")
+           (require feature filename)))
+               
 (require 'semantic/bovine/c)
 (require 'semantic/bovine/gcc)
 (require 'semantic/bovine/el)
-(require 'semantic/wisent/python)
+(require-report-errors 'semantic/wisent/python)
 
 ;; load Org-mode from source when the ORG_HOME environment variable is set
 (when (getenv "ORG_HOME")
