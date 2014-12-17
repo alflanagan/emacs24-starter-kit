@@ -46,6 +46,7 @@ everybody.
 #+begin_src emacs-lisp
   (defconst lloyds-installed-packages
     '(
+      async ;; Asynchronous processing in Emacs
       coffee-fof ;; A coffee-mode configuration for `ff-find-other-file'.
       coffee-mode ;; Major mode to edit CoffeeScript files in Emacs
       creole ;; for emacswiki
@@ -56,6 +57,7 @@ everybody.
       ;; e2wm  ;; emacs window manager -- somewhat experimental
       elpy ;; Emacs Python Development Environment
       el-spice ;; extra functions -- TODO: fix key overlaps
+      emr ;; Emacs refactoring system.
       exec-path-from-shell ;; utility funcs to get environment variables
       expand-region ;; expand selected region semantically
       f  ;; file system utilities
@@ -70,10 +72,13 @@ everybody.
       org-bullets ;; replace bullets with pleasing UTF-8 chars
       org-toc ;;table of contents for org-mode
       paradox ;; enhanced package listing, future std.
-      pinboard ;; display pinboard entries in buffer
+      ;; pinboard ;; display pinboard entries in buffer
       pinboard-api ;; call pinboard API from emacs lisp
       pony-mode ;; django-admin interaction (nice)
       s  ;; The long lost Emacs string manipulation library.
+      ;; smartparens is also loaded by starter-kit-lisp, but I do setup in
+      ;; this file so it has to install earlier.
+      smartparens
       ;; smex  ;; M-x interface with Ido-style fuzzy matching.
 
       thingatpt+
