@@ -63,6 +63,9 @@ installed.
   ;; package won't be initialized if we're compiling
   (eval-when-compile (package-initialize))
 
+  (starter-kit-install-if-needed 'smartparens)
+  (starter-kit-install-if-needed 'clojure-mode)
+
   (require 'smartparens-config)
   (require 'clojure-mode)
 
@@ -155,9 +158,6 @@ lisp a much more comfortable experience.  This is especially useful in
 combination with the sexp movement functions (=C-M-f= forward, =C-M-b=
 back, =C-M-u= up, =C-M-d= down)
 
-#+begin_src emacs-lisp
-  (starter-kit-install-if-needed 'smartparens)
-#+end_src
 
 #+begin_src emacs-lisp
   ;; (defun list-difference (a b)
