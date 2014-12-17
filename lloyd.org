@@ -72,7 +72,7 @@ everybody.
       org-bullets ;; replace bullets with pleasing UTF-8 chars
       org-toc ;;table of contents for org-mode
       paradox ;; enhanced package listing, future std.
-      ;; pinboard ;; display pinboard entries in buffer
+      pinboard ;; display pinboard entries in buffer
       pinboard-api ;; call pinboard API from emacs lisp
       pony-mode ;; django-admin interaction (nice)
       s  ;; The long lost Emacs string manipulation library.
