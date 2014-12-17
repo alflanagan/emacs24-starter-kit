@@ -17,6 +17,7 @@
 	(load-file (expand-file-name "cedet-contrib-load.el" (expand-file-name "contrib" cedet-home)))
       ((debug error) (message "[init] ERROR Probably need to re-compile contrib\ directory: %s" (cdr some-error))))))
 
+
 (require 'package)
 (add-to-list 'package-archives
              '("elpy" . "http://jorgenschaefer.github.io/packages/"))
@@ -33,7 +34,15 @@
 (semantic-mode 1)
 
 ;; Enable EDE (Project Management) features
+(require 'ede/emacs)
+(require 'ede/cpp-root)
+(require 'ede/speedbar)
+(require 'ede/linux)
+(require 'ede/proj-elisp)
+
 (global-ede-mode 1)
+(semantic-load-enable-code-helpers)      ; Enable prototype help and smart completion 
+(global-srecode-minor-mode 1)            ; Enable template insertion menu
 
 (declare-function -difference "dash.el" (list list2))
 (declare-function semantic-add-system-include "semantic/dep.el" (DIR &optional MODE))
