@@ -6,5 +6,7 @@ do   CFILE=${EFILE}c
          if [[ ${EFILE} -nt ${CFILE} ]]; then
              echo ${EFILE}
          fi
+     else
+         echo ${CFILE} missing.
      fi
 done

@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+# -*- python-indent-offset: 4; indent-tabs-mode: nil; -*-
+
+import subprocess
+import os
+
+ELDIRS = ["~/.emacs.d", "~/.emacs.d/src"]
+
+IGNORED = {"ede-projects.el", "srecode-map.el"}
+
+for ELDIR in ELDIRS:
+    for ELFILE in [os.path.join(ELDIR, fname) for fname
+                   in os.listdir(os.path.expanduser(ELDIR))
+                   if fname.endswith(".el")]:
+        if os.path.basename(ELFILE) not in IGNORED:
+            subprocess.call(["emacs", "--batch", "-f", "batch-byte-compile", ELFILE])
+            # if [[ ${OS} == Windows_NT ]]; then
+            #     #apparently required??
+            #     chmod u+x ${ELFILE}c
