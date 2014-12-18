@@ -237,6 +237,22 @@ is probably safe to stop reading at this point unless you are
 interested in the actual code implementing the starter kit.
 
 ** Starter kit basics
+- Preamble: comments
+  #+name: starter-kit-code-preamble
+  #+header: :padline no
+  #+begin_src emacs-lisp
+    ;;; starter-kit.el --- Basic emacs setup -*- lexical-binding: t; encoding: utf-8-unix;  -*-
+    ;;
+    ;; Part of the Emacs Starter Kit
+    ;;
+    ;;; Commentary:
+    ;; This is automatically generated from the file =starter-kit.org=,
+    ;;see there for additional commentary in a literate-programming style.
+    ;;
+    ;;; Code:
+
+  #+end_src
+
 - Load path etc.
   #+name: starter-kit-load-paths
   #+begin_src emacs-lisp
@@ -445,6 +461,14 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
 #+name: m-x-customize-customizations
 #+begin_src emacs-lisp
   (load custom-file 'noerror)
+#+end_src
+
+*** Standard code postscript
+This is not really necessary, but I like to be consistent.
+#+begin_src emacs-lisp
+  (provide 'starter-kit)
+
+  ;;; starter-kit.el ends here
 #+end_src
 
 * Footnotes
