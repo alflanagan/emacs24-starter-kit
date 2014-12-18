@@ -1,4 +1,4 @@
-;;; init.el --- Where all the magic begins
+;;; init.el --- Where all the magic begins  -*- lexical-binding: t; encoding: utf-8-unix; -*-
 ;;
 ;; Part of the Emacs Starter Kit
 ;;
@@ -41,8 +41,10 @@
 (require 'ede/proj-elisp)
 
 (global-ede-mode 1)
-(semantic-load-enable-code-helpers)      ; Enable prototype help and smart completion 
-(global-srecode-minor-mode 1)            ; Enable template insertion menu
+(if (fboundp 'semantic-load-enable-code-helpers)
+    (semantic-load-enable-code-helpers)) ; Enable prototype help and smart completion 
+(if (fboundp 'global-srecode-minor-mode)
+    (global-srecode-minor-mode 1)) ; Enable template insertion menu
 
 (declare-function -difference "dash.el" (list list2))
 (declare-function semantic-add-system-include "semantic/dep.el" (DIR &optional MODE))
@@ -97,12 +99,14 @@
         (conversion-factor (* 1.618  (/ (frame-char-height) (frame-char-width)))))
     (set-frame-size the-frame width (floor (/ width conversion-factor)))))
 
+;; remember this directory
+(defvar starter-kit-dir
+  (file-name-directory (or load-file-name (buffer-file-name)))
+  "Directory containing source for starter-kit package.")
+
 ;; load the starter kit from the `after-init-hook' so all packages are loaded
 (add-hook 'after-init-hook
  `(lambda ()
-    ;; remember this directory
-    (setq starter-kit-dir
-          ,(file-name-directory (or load-file-name (buffer-file-name))))
     ;; only load org-mode later if we didn't load it just now
     ,(unless (and (getenv "ORG_HOME")
                   (file-directory-p (expand-file-name "lisp"
