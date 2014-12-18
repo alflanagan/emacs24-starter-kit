@@ -63,6 +63,12 @@ installed.
   ;; package won't be initialized if we're compiling
   (eval-when-compile (package-initialize))
 
+  (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
+  (declare-function run-starter-kit-coding-hook "starter-kit" ())
+  (declare-function sp-wrap-region "smartparens " ())
+  (declare-function sp-wrap-region-init "smartparens" ())
+  (declare-function sp-insert-pair "smartparens" (&optional PAIR))
+
   (starter-kit-install-if-needed 'smartparens)
   (starter-kit-install-if-needed 'clojure-mode)
 
@@ -81,10 +87,6 @@ installed.
   (defvar ffip-patterns) ;;find-file-in-project.el
   (defvar swank-clojure-extra-vm-args) ;; ???
 
-  (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
-  (declare-function sp-wrap-region "smartparens " ())
-  (declare-function sp-wrap-region-init "smartparens" ())
-  (declare-function sp-insert-pair "smartparens" (&optional PAIR))
   ;; more functions 
   ;; sp-wrap-region-init
   ;; sp-wrap-region
@@ -320,7 +322,8 @@ available.
             (project-root (locate-dominating-file default-directory "src/")))
         (find-file (format "%s/src/%s.clj" project-root
                            (mapconcat 'identity ns-path "/")))
-        (goto-line line))))
+        (goto-char (point-min))
+        (forward-line line))))
 
   (eval-after-load 'slime
     '(progn
@@ -357,7 +360,8 @@ available.
                     (if (file-exists-p lib)
                         (directory-files lib t ".jar$"))))
           slime-lisp-implementations
-          (cons `(clojure ,(swank-clojure-cmd) :init swank-clojure-init)
+          (cons (if (fboundp 'swank-clojure-cmd)
+                    `(clojure ,(swank-clojure-cmd) :init swank-clojure-init))
                 (cl-remove-if #'(lambda (x) (eq (car x) 'clojure))
                            slime-lisp-implementations)))
     (save-window-excursion
