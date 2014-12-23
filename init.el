@@ -22,6 +22,9 @@
 (add-to-list 'package-archives
              '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 
+;; preload arduino-mode for cedet (possibly not required)
+;; (require 'arduino-mode)
+
 ;; Add further minor-modes to be enabled by semantic-mode.
 ;; See doc-string of `semantic-default-submodes' for other things
 ;; you can use here.
@@ -39,6 +42,7 @@
 (require 'ede/speedbar)
 (require 'ede/linux)
 (require 'ede/proj-elisp)
+(require 'ede/arduino)
 
 (global-ede-mode 1)
 (if (fboundp 'semantic-load-enable-code-helpers)
@@ -46,25 +50,11 @@
 (if (fboundp 'global-srecode-minor-mode)
     (global-srecode-minor-mode 1)) ; Enable template insertion menu
 
-(declare-function -difference "dash.el" (list list2))
-(declare-function semantic-add-system-include "semantic/dep.el" (DIR &optional MODE))
-
-(add-hook 'after-init-hook
-          (lambda ()
-	    (let ((arduino-library-base "/usr/share/arduino/libraries"))
-	      ;; don't set up arduino if arduino libraries not present
-	      (when (file-directory-p arduino-library-base)
-                (require 'dash)
-                (mapc (lambda (dirname) (semantic-add-system-include dirname 'c++-mode))
-		      (-difference  (directory-files arduino-library-base) '("." "..")))
-		(semantic-add-system-include "/usr/share/arduino/hardware/arduino/cores/arduino" 'c++-mode)
-		(semantic-add-system-include "/usr/share/arduino/hardware/arduino/variants/standard" 'c++-mode)))))
-
 (defun require-report-errors (feature &optional filename)
- "If FEATURE is not loaded, load it from FILENAME. If an error occurs, report and continue"
-(report-errors (concat (format "[init] Error loading %s: " (symbol-name feature))
-                        "%s")
-           (require feature filename)))
+  "If FEATURE is not loaded, load it from FILENAME. If an error occurs, report and continue"
+  (report-errors (concat (format "[init] Error loading %s: " (symbol-name feature))
+                         "%s")
+    (require feature filename)))
                
 (require 'semantic/bovine/c)
 (require 'semantic/bovine/gcc)
@@ -109,8 +99,8 @@
  `(lambda ()
     ;; only load org-mode later if we didn't load it just now
     ,(unless (and (getenv "ORG_HOME")
-                  (file-directory-p (expand-file-name "lisp"
-                                                      (getenv "ORG_HOME"))))
+                (file-directory-p (expand-file-name "lisp"
+                                                    (getenv "ORG_HOME"))))
        '(require 'org))
     ;; load up the starter kit
     (org-babel-load-file (expand-file-name "starter-kit.org" starter-kit-dir))))
