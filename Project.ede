@@ -8,4 +8,16 @@
     (ede-proj-target-elisp "elisp-files"
       :name "elisp-files"
       :path ""
-      :source '("starter-kit-lisp.el" "lloyd.el" "ede-projects.el" "init.el"))))
+      :source '("init.el" "custom.el" "literate-starter-kit-pkg.el" "constants.el"))
+    (ede-proj-target-makefile-miscelaneous "org-files"
+      :name "org-files"
+      :path ""
+      :source '("lloyd.org" "starter-kit-defuns.org" "starter-kit-haskell.org" "starter-kit-misc.org" "starter-kit-org.org" "starter-kit-registers.org" "lloyd-ThinkPad-R400.org" "starter-kit-eshell.org" "starter-kit-js.org" "starter-kit-misc-recommended.org" "starter-kit-perl.org" "starter-kit-ruby.org" "secret-data.org" "starter-kit-g-client.org" "starter-kit-latex.org" "starter-kit-nodejs.org" "starter-kit-publish.org" "starter-kit-scala.org" "starter-kit-bindings.org" "starter-kit-gnus.org" "starter-kit-lisp.org" "starter-kit.org" "starter-kit-python.org" "starter-kit-yasnippet.org"))
+    (ede-proj-target-elisp "derived-elisp-files"
+      :name "derived-elisp-files"
+      :path ""
+      :source '("lloyd.el" "starter-kit-defuns.el" "starter-kit-haskell.el" "starter-kit-misc.el" "starter-kit-org.el" "starter-kit-registers.el" "lloyd-ThinkPad-R400.el" "starter-kit-eshell.el" "starter-kit-js.el" "starter-kit-misc-recommended.el" "starter-kit-perl.el" "starter-kit-ruby.el" "secret-data.el" "starter-kit-g-client.el" "starter-kit-latex.el" "starter-kit-nodejs.el" "starter-kit-publish.el" "starter-kit-scala.el" "starter-kit-bindings.el" "starter-kit-gnus.el" "starter-kit-lisp.el" "starter-kit.el" "starter-kit-python.el" "starter-kit-yasnippet.el"))
+    (ede-proj-target-makefile-miscelaneous "admin"
+      :name "admin"
+      :path ""
+      :source '(".gitattributes" ".gitignore" "Makefile" "README.md" "ede-projects.el"))))
