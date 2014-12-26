@@ -22,8 +22,16 @@
 (add-to-list 'package-archives
              '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 
+(defun require-report-errors (feature &optional filename)
+  "If FEATURE is not loaded, load it from FILENAME. If an error occurs, report and continue"
+  (report-errors (concat (format "[init] Error loading %s: " (symbol-name feature))
+                         "%s")
+    (require feature filename)))
+               
 ;; preload arduino-mode for cedet (possibly not required)
-;; (require 'arduino-mode)
+(unless
+    (require 'arduino-mode (expand-file-name "~/Devel/arduino-mode/arduino-mode.el") t)
+  (require-report-errors 'arduino-mode))
 
 ;; Add further minor-modes to be enabled by semantic-mode.
 ;; See doc-string of `semantic-default-submodes' for other things
@@ -50,12 +58,6 @@
 (if (fboundp 'global-srecode-minor-mode)
     (global-srecode-minor-mode 1)) ; Enable template insertion menu
 
-(defun require-report-errors (feature &optional filename)
-  "If FEATURE is not loaded, load it from FILENAME. If an error occurs, report and continue"
-  (report-errors (concat (format "[init] Error loading %s: " (symbol-name feature))
-                         "%s")
-    (require feature filename)))
-               
 (require 'semantic/bovine/c)
 (require 'semantic/bovine/gcc)
 (require 'semantic/bovine/el)
