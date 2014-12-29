@@ -3,17 +3,41 @@
 
 import subprocess
 import os
+import sys
 
 ELDIRS = ["~/.emacs.d", "~/.emacs.d/src"]
 
-IGNORED = {"ede-projects.el", "srecode-map.el"}
+IGNORED = {"ede-projects.el", "srecode-map.el", "constants.el"}
 
-for ELDIR in ELDIRS:
-    for ELFILE in [os.path.join(ELDIR, fname) for fname
-                   in os.listdir(os.path.expanduser(ELDIR))
-                   if fname.endswith(".el")]:
-        if os.path.basename(ELFILE) not in IGNORED:
-            subprocess.call(["emacs", "--batch", "-f", "batch-byte-compile", ELFILE])
-            # if [[ ${OS} == Windows_NT ]]; then
-            #     #apparently required??
-            #     chmod u+x ${ELFILE}c
+
+def byte_compile(el_file):
+    if not os.path.exists(os.path.expanduser(el_file)):
+        sys.stderr.write("ERROR: Can't compile {}, the file does not exist.\n".format(el_file))
+    else:
+        try:
+            subprocess.check_call(["emacs", "--batch", "-f", "batch-byte-compile", el_file])
+        except subprocess.CalledProcessError as cpe:
+            sys.stderr.write("ERROR: compile failed for {}:\n".format(el_file))
+            sys.stderr.write("    {}\n".format(cpe))
+            # if compile failed, remove old compiled version
+            try:
+                os.remove(os.path.expanduser(el_file + "c"))
+            except OSError as ose:
+                # probably file not found
+                sys.stderr.write("WARNING: {}\n".format(ose))
+
+
+def main():
+    for ELDIR in ELDIRS:
+        for ELFILE in [os.path.join(ELDIR, fname) for fname
+                       in os.listdir(os.path.expanduser(ELDIR))
+                       if fname.endswith(".el")]:
+            if os.path.basename(ELFILE) not in IGNORED:
+                byte_compile(ELFILE)
+                # if [[ ${OS} == Windows_NT ]]; then
+                #     #apparently required??
+                #     chmod u+x ${ELFILE}c
+
+
+if __name__ == '__main__':
+    main()
