@@ -21,7 +21,7 @@ standards and contain any needed copyright info. It should pass elint.
   ;; Version:
   ;; Keywords:
 
-  ;; This file is not part of GNU Emacs.
+  ;; This file is NOT part of GNU Emacs.
 
   ;; starter-kit-lisp.el is free software: you can redistribute it and/or
   ;; modify it under the terms of the GNU General Public License as
@@ -71,6 +71,7 @@ installed.
 
   (starter-kit-install-if-needed 'smartparens)
   (starter-kit-install-if-needed 'clojure-mode)
+  (starter-kit-install-if-needed 'form-feed)
 
   (require 'smartparens-config)
   (require 'clojure-mode)
@@ -102,37 +103,6 @@ installed.
 
 #+end_src
 
-** Make sure =starter-kit-install-if-needed= is defined.
-Gee, there should be a cleaner way to pull this in.
-#+begin_src emacs-lisp
-  ;; (unless (fboundp 'starter-kit-install-if-needed)
-  ;;   (defun starter-kit-loadable-p (package)
-  ;;     "Check if PACKAGE is loadable from a directory in `load-path'."
-  ;;     (let ((load-file (concat (symbol-name package) ".el")))
-  ;;       (catch 'file-found
-  ;;         (dolist (dir load-path)
-  ;;           (let ((path (expand-file-name load-file dir)))
-  ;;             (when (file-exists-p path)
-  ;;               (throw 'file-found path)))))))
-
-  ;;   (setq package-archives
-  ;;         '(("gnu"         . "http://elpa.gnu.org/packages/")
-  ;;           ("org"         . "http://orgmode.org/elpa/")
-  ;;           ("melpa"       . "http://melpa.milkbox.net/packages/")
-  ;;           ("marmalade"   . "http://marmalade-repo.org/packages/")))
-  ;;   (package-initialize)
-
-  ;;   (defun starter-kit-install-if-needed (&rest packages)
-  ;;     "Install PACKAGES using ELPA if they are not loadable or installed locally."
-  ;;     (when packages
-  ;;       (unless package-archive-contents
-  ;;         (package-refresh-contents))
-  ;;       (dolist (package packages)
-  ;;         (unless (or (starter-kit-loadable-p package)
-  ;;                    (package-installed-p package))
-  ;;           (package-install package))))))
-#+end_src
-
 ** Define keys
    :PROPERTIES:
    :CUSTOM_ID: keys
@@ -162,28 +132,6 @@ back, =C-M-u= up, =C-M-d= down)
 
 
 #+begin_src emacs-lisp
-  ;; (defun list-difference (a b)
-  ;;   "Returns a list composed of all elements of A not contained in B. Uses `equal' test."
-  ;;   (if (null a)
-  ;;       nil
-  ;;     (if (not (member (car a) b))
-  ;;         (cons  (car a) (list-difference (cdr a) b))
-  ;;       (list-difference (cdr a) b))))
-
-  ;; (defun directory-expanded-files (dir-name)
-  ;;   "Return the contents of directory DIR-NAME as fully-expanded names (omits . and ..)"
-  ;;   (mapcar (lambda (fname) (expand-file-name fname dir-name))
-  ;;           (list-difference  (directory-files dir-name) '("." ".."))))
-
-  ;; ;; add every subdirectory of "elpa" to `load-path'.
-  ;; ;; in normal startup, starter-kit-org did this; however, during
-  ;; ;; compile we need to be able to find installed packages.
-  ;; (require 'cl-lib)
-  ;; ;; does nothing if dirs already in `load-path'.
-  ;; (mapc (lambda (dir-name) (add-to-list 'load-path dir-name))
-  ;;       (cl-remove-if (lambda (fname) (not (file-directory-p fname)))
-  ;;                     (directory-expanded-files (expand-file-name "elpa" starter-kit-dir))))
-
   ;;smartparens-config is smartparens + default configuration
   (defun turn-on-paredit ()
     "Really we're turning on smartparens, but haven't changed function name yet."
@@ -201,6 +149,8 @@ character strings with Unicode glyphs.
 
 #+begin_src emacs-lisp
   (starter-kit-install-if-needed 'pretty-symbols)
+  (defun turn-on-pretty-symbols ()
+    (pretty-symbols-mode 1))
 #+end_src
 
 It only replaces certain symbols by default, so turn on a couple of
@@ -208,6 +158,15 @@ more categories.
 
 #+begin_src emacs-lisp
   (setq pretty-symbol-categories '(lambda relational logical))
+#+end_src
+
+** form-feed-mode
+A wonderfully simple package to turn ^L characters into horizontal
+lines.
+
+#+begin_src emacs-lisp
+  (defun turn-on-form-feed ()
+    (form-feed-mode 1))
 #+end_src
 
 ** Non-obtrusive parenthesis faces
@@ -254,12 +213,16 @@ available.
   (add-hook 'emacs-lisp-mode-hook (lambda () (eldoc-mode +1)))
   (add-hook 'emacs-lisp-mode-hook #'run-starter-kit-coding-hook)
   (add-hook 'emacs-lisp-mode-hook #'starter-kit-remove-elc-on-save)
+  (add-hook 'emacs-lisp-mode-hook #'turn-on-form-feed)
+
   ;; (add-hook 'emacs-lisp-mode-hook 'idle-highlight)
   (add-hook 'emacs-lisp-mode-hook #'turn-on-paredit)
   (define-key emacs-lisp-mode-map (kbd "C-c v") #'eval-buffer)
   ;; for indentation, use spaces, not tabs
-  (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil)))
-  (add-hook 'emacs-lisp-mode-hook (lambda () (pretty-symbols-mode +1)))
+  (defun turn-off-indent-tabs ()
+    (setq indent-tabs-mode nil))
+  (add-hook 'emacs-lisp-mode-hook #'turn-off-indent-tabs)
+  (add-hook 'emacs-lisp-mode-hook #'turn-on-pretty-symbols)
 #+end_src
 
 *** font-lock setup
