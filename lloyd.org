@@ -61,9 +61,11 @@ everybody.
       exec-path-from-shell ;; utility funcs to get environment variables
       expand-region ;; expand selected region semantically
       f  ;; file system utilities
+      form-feed  ;; diplay ^L characters as horizontal line
       flycheck
       golden-ratio ;; resize windows, aesthetically
       ;; ipretty ;; interactive lisp pretty-print
+      irfc  ;; look up IETF RFC's and display in buffer
       js2-mode ;; improved JavaScript support
       json-mode
       kv ;; should be specified by pinboard, but isn't
