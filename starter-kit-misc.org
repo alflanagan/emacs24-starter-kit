@@ -6,6 +6,11 @@ This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
 * Starter Kit Misc
 Things that don't fit anywhere else.
 
+** Declare external defuns
+#+begin_src emacs-lisp
+  (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
+#+end_src
+
 ** Check Dependencies
 
 Determine whether required packages are installed. If not, use ELPA to
