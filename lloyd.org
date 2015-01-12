@@ -372,6 +372,29 @@ starter-kit file.
   (add-hooks-for-packages)
 #+end_src
 
+*** My version of zap-to-char
+This version deletes chars up to but *not* including the character
+typed, which I find far more intuitive/useful.
+
+#+begin_src emacs-lisp
+  (defun zap-up-to-char (arg char)
+    "Kill up to but not including ARGth occurrence of CHAR.
+  Case is ignored if `case-fold-search' is non-nil in the current buffer.
+  Goes backward if ARG is negative; error if CHAR not found."
+    (interactive (list (prefix-numeric-value current-prefix-arg)
+                       (read-char "Zap up to char: " t)))
+    ;; Avoid "obsolete" warnings for translation-table-for-input.
+    (with-no-warnings
+      (if (char-table-p translation-table-for-input)
+          (setq char (or (aref translation-table-for-input char) char))))
+    (kill-region (point) (progn
+                           (search-forward (char-to-string char) nil nil arg)
+                           (backward-char (cl-signum arg))
+                           (point))))
+
+  (global-set-key "\M-z" #'zap-up-to-char)
+#+end_src
+
 *** Set `debug-on-error' back to original value.
 #+begin_src emacs-lisp
   (setq debug-on-error lloyd-org-orig-debug-on-error)
