@@ -10,7 +10,7 @@
 ;; load from source when the CEDET_HOME environment variable is set
 (let ((cedet-home (getenv "CEDET_HOME")))
   (when (not (null cedet-home))
-    ;; IMPORTANT: Tou must place this *before* any CEDET component (including
+    ;; IMPORTANT: You must place this *before* any CEDET component (including
     ;; EIEIO) gets activated by another package (Gnus, auth-source, ...).
     (load-file (expand-file-name "cedet-devel-load.el" cedet-home))
     (condition-case some-error
@@ -38,8 +38,8 @@
 ;; you can use here.
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
-;; (if (boundp 'global-cedet-m3-minor-mode)
-;;     (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t))
+(if (fboundp 'global-cedet-m3-minor-mode)
+    (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t))
 
 ;; Enable Semantic
 (semantic-mode 1)
