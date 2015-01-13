@@ -78,6 +78,7 @@ everybody.
       pinboard-api ;; call pinboard API from emacs lisp
       pony-mode ;; django-admin interaction (nice)
       s  ;; The long lost Emacs string manipulation library.
+      seq  ;; functions to manipulate sequences of multiple types
       ;; smartparens is also loaded by starter-kit-lisp, but I do setup in
       ;; this file so it has to install earlier.
       smartparens
@@ -230,7 +231,9 @@ the flymake checker with flycheck.
     "Enable `elpy` package and set up options."
     (when (functionp 'elpy-enable)
       (declare-function elpy-enable "elpy"  (&optional skip-initialize-variables))
-      (elpy-enable))
+      (condition-case err-var
+          (elpy-enable)
+        (error (message "[Init] (elpy-enable) failed: %s" err-var))))
       ;;(elpy-use-ipython)
 
     ;;https://github.com/jorgenschaefer/elpy/issues/137
