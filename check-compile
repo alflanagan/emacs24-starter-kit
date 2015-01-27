@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8-unix; -*-
+#why don't i just do this in python?
 for EFILE in *.el
-do   CFILE=${EFILE}c
-     if [[ -f ${CFILE} ]]; then
-         if [[ ${EFILE} -nt ${CFILE} ]]; then
-             echo ${EFILE}
-         fi
-     else
-         echo ${CFILE} missing.
-     fi
+do
+    case ${EFILE} in
+        ede-projects.el | srecode-map.el | constants.el) ;;
+        *) CFILE=${EFILE}c
+            if [[ -f ${CFILE} ]]; then
+                if [[ ${EFILE} -nt ${CFILE} ]]; then
+                    echo ${EFILE}
+                fi
+            else
+                echo ${CFILE} missing.
+             fi;;
+     esac
 done
