@@ -1,8 +1,12 @@
 # Auto detect text files and perform LF normalization
-*.bash text=unix
 * text=auto
-check-compile text=unix
-check-tangle text=unix
+# shell scripts need to stay unix so cygwin can run
+byte-compile-all text eol=lf
+check-compile text eol=lf
+check-tangle text eol=lf
+e text eol=lf
+org-tangle text eol=lf
+*.bash text eol=lf
 
 # Standard to msysgit
 *.doc	 diff=astextplain
