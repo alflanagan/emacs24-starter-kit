@@ -10,7 +10,6 @@ FILES = starter-kit.org				\
 	starter-kit-registers.org		\
 	starter-kit-eshell.org			\
 	starter-kit-nodejs.org			\
-	starter-kit-semantic.org		\
 	starter-kit-lisp.org			\
 	starter-kit-misc-recommended.org	\
 	starter-kit-org.org
