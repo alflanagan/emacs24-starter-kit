@@ -7,6 +7,8 @@ check-tangle text eol=lf
 e text eol=lf
 org-tangle text eol=lf
 *.bash text eol=lf
+# and apparently, so do emacs-lisp files?
+*.el text eol=lf
 
 # Standard to msysgit
 *.doc	 diff=astextplain
