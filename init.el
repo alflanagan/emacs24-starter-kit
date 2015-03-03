@@ -50,7 +50,7 @@
 (require 'ede/speedbar)
 (require 'ede/linux)
 (require 'ede/proj-elisp)
-(require 'ede/arduino)
+(require-report-errors 'ede/arduino)
 
 (global-ede-mode 1)
 (if (fboundp 'semantic-load-enable-code-helpers)
