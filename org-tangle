@@ -1,5 +1,5 @@
 #!/bin/sh
-# -*- mode: shell-script; coding: utf-8; -*-
+# -*- mode: shell-script; coding: utf-8-unix; -*-
 #
 # tangle files with org-mode
 #
@@ -14,9 +14,10 @@ done
 emacs -Q --batch \
 --eval "(progn
 (add-to-list 'load-path (expand-file-name \"~/.emacs.d/\"))
-(require 'init)(require 'org)(require 'org-exp)(require 'ob)(require 'ob-tangle)
+;; (require 'init)(require 'org)(require 'org-exp)(require 'ob)(require 'ob-tangle)
+(require 'org)(require 'ob)(require 'ob-tangle)
 (mapc (lambda (file)
 (find-file (expand-file-name file \"$DIR\"))
 (org-babel-tangle)
-(kill-buffer)) '($FILES)))" 2>&1 |grep tangled
+(kill-buffer)) '($FILES)))"  #  2>&1 |grep tangled
 
