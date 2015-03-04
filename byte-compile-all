@@ -7,11 +7,11 @@ import sys
 
 ELDIRS = ["~/.emacs.d", "~/.emacs.d/src"]
 
-IGNORED = {"ede-projects.el", "srecode-map.el", "constants.el", "custom.el"}
+IGNORED = {"ede-projects.el", "srecode-map.el", "custom.el"}
 
 
 def byte_compile(el_file):
-    if not os.path.exists(os.path.expanduser(el_file)):
+    if not os.path.exists(el_file):
         sys.stderr.write("ERROR: Can't compile {}, the file does not exist.\n".format(el_file))
     else:
         try:
@@ -21,7 +21,7 @@ def byte_compile(el_file):
             sys.stderr.write("    {}\n".format(cpe))
             # if compile failed, remove old compiled version
             try:
-                os.remove(os.path.expanduser(el_file + "c"))
+                os.remove(el_file + "c")
             except OSError as ose:
                 # probably file not found
                 sys.stderr.write("WARNING: {}\n".format(ose))
@@ -33,7 +33,10 @@ def main():
                        in os.listdir(os.path.expanduser(ELDIR))
                        if fname.endswith(".el")]:
             if os.path.basename(ELFILE) not in IGNORED:
-                byte_compile(ELFILE)
+                ELFILE = os.path.expanduser(ELFILE)
+                ECFILE = "{}c".format(ELFILE)
+                if not os.path.exists(ECFILE) or os.stat(ELFILE).st_mtime > os.stat(ECFILE).st_mtime:
+                    byte_compile(ELFILE)
                 # if [[ ${OS} == Windows_NT ]]; then
                 #     #apparently required??
                 #     chmod u+x ${ELFILE}c
