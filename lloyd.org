@@ -58,7 +58,6 @@ everybody.
       elpy ;; Emacs Python Development Environment
       ;;el-spice ;; extra functions -- TODO: fix key overlaps
       ;;emr ;; Emacs refactoring system.
-      ergoemacs-mode ;; complete rethink of keyboard bindings
       ;;exec-path-from-shell ;; utility funcs to get environment variables
       ;;expand-region ;; expand selected region semantically
       f  ;; file system utilities
@@ -133,14 +132,6 @@ These functions set up various aspects of the system.
     (when (functionp 'global-undo-tree-mode)
       (global-undo-tree-mode)))
 
-#+end_src
-
-*** Initialize ergoemacs
-#+begin_src emacs-lisp
-  (setq ergoemacs-theme nil)
-  (setq ergoemacs-keyboard-layout "us")
-  (require 'ergoemacs-mode)
-  (ergoemacs-mode 1)
 #+end_src
 
 *** Start emacs server process if not already started
