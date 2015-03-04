@@ -10,7 +10,7 @@ This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
   (setq eshell-cmpl-cycle-completions nil
         eshell-save-history-on-exit t
         eshell-cmpl-dir-ignore "\\`\\(\\.\\.?\\|CVS\\|\\.svn\\|\\.git\\)/\\'")
-  
+
   (eval-after-load 'esh-opt
     '(progn
        (require 'em-cmpl)
@@ -29,7 +29,9 @@ This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
                     '("gunzip" "gz\\'"))
        (add-to-list 'eshell-command-completions-alist
                     '("tar" "\\(\\.tar|\\.tgz\\|\\.tar\\.gz\\)\\'"))
-       (add-to-list 'eshell-output-filter-functions 'eshell-handle-ansi-color)))
+       ;; looks like eshell-output-filter-functions no longer exists
+       ;; (add-to-list 'eshell-output-filter-functions 'eshell-handle-ansi-color)
+       ))
 #+end_src
 
 The =eshell= directory holds alias definitions and history
