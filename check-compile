@@ -4,7 +4,7 @@
 for EFILE in *.el
 do
     case ${EFILE} in
-        ede-projects.el | srecode-map.el | constants.el) ;;
+        ede-projects.el | srecode-map.el | custom.el) ;;
         *) CFILE=${EFILE}c
             if [[ -f ${CFILE} ]]; then
                 if [[ ${EFILE} -nt ${CFILE} ]]; then
