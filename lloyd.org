@@ -64,8 +64,8 @@ everybody.
       ;;form-feed  ;; diplay ^L characters as horizontal line
       flycheck
       golden-ratio ;; resize windows, aesthetically
-      ;; ipretty ;; interactive lisp pretty-print
-      ;;irfc  ;; look up IETF RFCs and display in buffer
+      ipretty ;; interactive lisp pretty-print
+      irfc  ;; look up IETF RFCs and display in buffer
       js2-mode ;; improved JavaScript support
       json-mode
       kv ;; should be specified by pinboard, but isn't
