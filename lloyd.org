@@ -46,36 +46,37 @@ everybody.
 #+begin_src emacs-lisp
   (defconst lloyds-installed-packages
     '(
-      async ;; Asynchronous processing in Emacs
+      ;;async ;; Asynchronous processing in Emacs
       coffee-fof ;; A coffee-mode configuration for `ff-find-other-file'.
       coffee-mode ;; Major mode to edit CoffeeScript files in Emacs
-      creole ;; for emacswiki
-      creole-mode ;; a markup mode for creole
+      ;;creole ;; for emacswiki
+      ;;creole-mode ;; a markup mode for creole
       dash ;; essential functional programming lib
       dash-functional ;; Collection of useful combinators for Emacs Lisp
       dropdown-list ;; Drop-down menu interface
       ;; e2wm  ;; emacs window manager -- somewhat experimental
       elpy ;; Emacs Python Development Environment
-      el-spice ;; extra functions -- TODO: fix key overlaps
-      emr ;; Emacs refactoring system.
-      exec-path-from-shell ;; utility funcs to get environment variables
-      expand-region ;; expand selected region semantically
+      ;;el-spice ;; extra functions -- TODO: fix key overlaps
+      ;;emr ;; Emacs refactoring system.
+      ergoemacs-mode ;; complete rethink of keyboard bindings
+      ;;exec-path-from-shell ;; utility funcs to get environment variables
+      ;;expand-region ;; expand selected region semantically
       f  ;; file system utilities
-      form-feed  ;; diplay ^L characters as horizontal line
+      ;;form-feed  ;; diplay ^L characters as horizontal line
       flycheck
       golden-ratio ;; resize windows, aesthetically
       ;; ipretty ;; interactive lisp pretty-print
-      irfc  ;; look up IETF RFC's and display in buffer
+      ;;irfc  ;; look up IETF RFCs and display in buffer
       js2-mode ;; improved JavaScript support
       json-mode
       kv ;; should be specified by pinboard, but isn't
       literate-coffee-mode
       markdown-mode
-      org-bullets ;; replace bullets with pleasing UTF-8 chars
+      ;;org-bullets ;; replace bullets with pleasing UTF-8 chars
       org-toc ;;table of contents for org-mode
       paradox ;; enhanced package listing, future std.
-      pinboard ;; display pinboard entries in buffer
-      pinboard-api ;; call pinboard API from emacs lisp
+      ;;pinboard ;; display pinboard entries in buffer
+      ;;pinboard-api ;; call pinboard API from emacs lisp
       pony-mode ;; django-admin interaction (nice)
       s  ;; The long lost Emacs string manipulation library.
       seq  ;; functions to manipulate sequences of multiple types
@@ -84,7 +85,7 @@ everybody.
       smartparens
       ;; smex  ;; M-x interface with Ido-style fuzzy matching.
 
-      thingatpt+
+      ;;thingatpt+
       undo-tree ;; Treat undo history as a tree (very nice)
       web ;; useful HTTP client
       web-beautify ;; Format HTML, CSS and JavaScript/JSON by js-beautify
@@ -124,6 +125,7 @@ everybody.
 
 ** Setup functions
 These functions set up various aspects of the system.
+
 *** Enable undo-tree globally
 #+begin_src emacs-lisp
   (defun set-up-global-undo-tree ()
@@ -131,6 +133,14 @@ These functions set up various aspects of the system.
     (when (functionp 'global-undo-tree-mode)
       (global-undo-tree-mode)))
 
+#+end_src
+
+*** Initialize ergoemacs
+#+begin_src emacs-lisp
+  (setq ergoemacs-theme nil)
+  (setq ergoemacs-keyboard-layout "us")
+  (require 'ergoemacs-mode)
+  (ergoemacs-mode 1)
 #+end_src
 
 *** Start emacs server process if not already started
@@ -241,6 +251,7 @@ the flymake checker with flycheck.
       (setq elpy-default-minor-modes (delete 'flymake-mode elpy-default-minor-modes))
       (add-to-list 'elpy-default-minor-modes 'flycheck-mode)))
 #+end_src
+
 *** Set up web-beautify hotkeys
 The `web-beautify` package provides a useful function for several
 modes. For each one, we bind it to "Ctrl-C b".
