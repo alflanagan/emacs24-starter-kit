@@ -88,8 +88,18 @@
   ;; character position
   ;;TODO: investigate get-frame-fringe, etc. for better values
   (let ((the-frame (first-non-null (list frame (selected-frame))))
-        (conversion-factor (* 1.618  (/ (frame-char-height) (frame-char-width)))))
+        (conversion-factor (* 1.618  (/ (float (frame-char-height)) (float (frame-char-width))))))
     (set-frame-size the-frame width (floor (/ width conversion-factor)))))
+
+;; the same function except sets height > width
+(defun set-portrait-size-by-golden-ratio (width &optional frame)
+  "Set the width of the current frame to WIDTH (in characters) and the height to the reciprocal golden ratio."
+  ;; our conversion factor is the golden ratio * the aspect ratio of a
+  ;; character position
+  ;;TODO: investigate get-frame-fringe, etc. for better values
+  (let ((the-frame (first-non-null (list frame (selected-frame))))
+        (conversion-factor (* 1.618  (/ (float (frame-char-width)) (float (frame-char-height))))))
+    (set-frame-size the-frame width (floor (* width conversion-factor)))))
 
 ;; remember this directory
 (defvar starter-kit-dir
