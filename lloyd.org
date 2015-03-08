@@ -46,6 +46,13 @@ everybody.
 #+begin_src emacs-lisp
   (defconst lloyds-installed-packages
     '(
+      ;; new packages
+      ;; these packages are "on probation"
+      ;; will be moved to standard list if they work out
+      pep8
+      slime-repl
+      org-blog
+      ;; standard list:
       ;;async ;; Asynchronous processing in Emacs
       coffee-fof ;; A coffee-mode configuration for `ff-find-other-file'.
       coffee-mode ;; Major mode to edit CoffeeScript files in Emacs
@@ -85,6 +92,7 @@ everybody.
       ;; smex  ;; M-x interface with Ido-style fuzzy matching.
 
       ;;thingatpt+
+      unicode-fonts ;; customize fonts for specific Unicode blocks
       undo-tree ;; Treat undo history as a tree (very nice)
       web ;; useful HTTP client
       web-beautify ;; Format HTML, CSS and JavaScript/JSON by js-beautify
