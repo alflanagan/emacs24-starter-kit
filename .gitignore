@@ -15,6 +15,7 @@ smex-items
 ido.last
 bookmarks
 TAGS
+ede-projects.el
 
 ## directories
 backups/*
@@ -34,7 +35,10 @@ server/*
 
 ## exported and encrypted files
 *gpg
-*el
+# *el
+starter-kit*.el
+lloyd.el
+secret-data.el
 *elc
 *html
 *tex
@@ -59,6 +63,7 @@ scratch
 secret.org
 .emacs.desktop*
 .*~
+*~
 agent/*
 
 ## package directory
@@ -67,3 +72,6 @@ literate-starter-kit/
 literate-starter-kit.tar
 WME03370.org
 aflanaga.org
+RHODAN.el
+
+recentf
