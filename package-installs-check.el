@@ -32,7 +32,7 @@
     (mapcar #'car package-alist))
 
 ;; package-directory-list shows site/local elpa dirs, but not user's elpa
-(mapcar #'directory-files package-directory-list)
+(mapcar #'directory-files (cl-remove-if-not #'file-readable-p package-directory-list))
 
 (defun elpa-subdir (subdir-name)
   (if (member subdir-name '("." ".." "archives"))
@@ -45,4 +45,59 @@
 ;; (elpa-subdir "..")
 ;; (elpa-subdir "clojure-mode-20150305.715")
 ;; (elpa-subdir ".gitignore")
+
+
+(let ((installed-packages (mapcar #'car package-alist)))
+  (set-difference installed-packages lloyds-installed-packages))
+
+(mapcar #'package-desc-reqs (mapcar #'car (mapcar #'cdr package-alist)))
+;; make list of all dependency specs -- will look like
+
+(defun begins-with-atom (some-list)
+  ""
+  (atom-p (car some-list)))
+
+(defun get-lists-starting-with-atoms(some-list)
+  
+  (if (atom (car some-list))
+      (cons  some-list (get-lists-starting-with-atoms (cdr some-list)))
+    (let ((car-lists (get-lists-starting-with-atoms (car some-list)))
+          (cdr-lists (get-lists-starting-with-atoms (cdr some-list))))
+      (if (not (null car-lists))
+          (cons car-lists cdr-lists)
+        cdr-lists))))
+
+(get-lists-starting-with-atoms nil)
+(get-lists-starting-with-atoms '(1 2 3))
+(get-lists-starting-with-atoms '(nil (1 2 3)((3 4)(5 6))))
+(nil (1 2 3) ((3 4) (5 6)))
+
+(car-if-not-list nil)
+(car-if-not-list '(nil nil nil ((dash (2 9 0)) (s (1 5 0))) ((font-utils (0 7 2))) (ucs-utils (0 8 0)) (list-utils (0 4 2)) (persistent-soft (0 8 10))))
+
+;; (nil nil nil ((dash (2 9 0)) (s (1 5 0))) ((font-utils (0 7 2))
+;; (ucs-utils (0 8 0)) (list-utils (0 4 2)) (persistent-soft (0 8 10))
+;; (pcache (0 3 1))) nil ((persistent-soft (0 8 8)) (pcache (0 2 3))
+;; (list-utils (0 4 2))) ((cl-lib (0 3)) (dash (2 10 0))) ((slime
+;; (20100404))) ((cl-lib (0 5))) nil nil ...);; ((dash (2 9 0)) (s (1
+;; 5 0))) ((font-utils (0 7 2)) (ucs-utils (0 8 0)) (list-utils (0 4
+;; 2)) (persistent-soft (0 8 10)) (pcache (0 3 1))) nil
+;; ((persistent-soft (0 8 8)) (pcache (0 2 3)) (list-utils (0 4 2)))
+;; ((cl-lib (0 3)) (dash (2 10 0))) ((slime (20100404))) ((cl-lib (0
+;; 5))) nil nil nil nil nil ((epl (0 4))) ((pcache (0 3 1))
+;; (list-utils (0 4 2))) nil ((eieio (1 3))) ((emacs (24 4)) (dash (2
+;; 6 0)) (cl-lib (0 5)) (json (1 3)) (let-alist (1 0 3))) nil nil ((s
+;; (1 8 0)) (dash (2 4 0)) (f (0 14 0))) nil nil ((cl-lib (0 3))
+;; (git-commit-mode (0 14 0)) (git-rebase-mode (0 14 0)))
+;; ((coffee-mode (0 5 0))) nil nil nil ((emacs (24))) nil
+;; ((json-reformat (20141009 1155)) (json-snatcher (20131110 1107)))
+;; ((emacs (24 1)) (cl-lib (0 5))) nil nil nil nil nil nil nil
+;; ((persistent-soft (0 8 8)) (pcache (0 2 3))) ((dash (2 4 0))
+;; (pkg-info (0 4)) (let-alist (1 0 1)) (cl-lib (0 3)) (emacs (24 1)))
+;; nil ((s (1 7 0)) (dash (2 2 0))) ((cl-lib (0 3))) ((company (0 8
+;; 2)) (find-file-in-project (3 3)) (highlight-indentation (0 5 0))
+;; (pyvenv (1 3)) (yasnippet (0 8 0))) nil ((dash (2 0 0)) (emacs
+;; (24))) nil ((emacs (24 1)) (cl-lib (0 5))) ((emacs (24 1)) (cl-lib
+;; (0 5))) ((coffee-mode (0 4 1))) ((emacs (24 1))))
+
 
