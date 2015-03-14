@@ -12,7 +12,7 @@ The main advantages of this Emacs Starter Kit are
 - git provides for version control, backup, and sharing
 - easy installation with no need to compile external packages
 
-[![Build Status](https://travis-ci.org/alflanagan/emacs24-starter-kit.svg?branch=lloyd-custom)](https://travis-ci.org/alflanagan/emacs24-starter-kit)
+The latest build status at [Travis CI](http://travis-ci.org): [![Build Status](https://travis-ci.org/alflanagan/emacs24-starter-kit.svg?branch=lloyd-custom)](https://travis-ci.org/alflanagan/emacs24-starter-kit)
 
 The latest version is at http://github.com/eschulte/emacs24-starter-kit/
 
