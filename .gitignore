@@ -2,7 +2,7 @@
 .starter-kit-*.part.*.org
 
 ## misc
-loaddefs.el*
+loaddefs.el
 auto-save-list
 custom.el
 places
@@ -16,6 +16,7 @@ ido.last
 bookmarks
 TAGS
 ede-projects.el
+srecode-map.el
 
 ## directories
 backups/*
@@ -75,6 +76,7 @@ aflanaga.org
 RHODAN.el
 Godzilla.org
 Godzilla.el
+mgvwdm003.wme.owhc.net.el
 
 recentf
 \#*
