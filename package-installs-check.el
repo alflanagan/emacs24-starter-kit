@@ -24,33 +24,42 @@
 ;; along with package-installs-check.  If not, see
 ;; <http://www.gnu.org/licenses/>.
 
-(require 'cl-lib)
+(eval-when-compile (require 'cl-lib))
 (require 'package)
 
 (defun extra-installed-packages ()
   "List packages which are installed (not including built-in)."
     (mapcar #'car package-alist))
 
-;; package-directory-list shows site/local elpa dirs, but not user's elpa
-(mapcar #'directory-files (cl-remove-if-not #'file-readable-p package-directory-list))
-
 (defun elpa-subdir (subdir-name)
+  "Return SUBDIR-NAME if it is the name of an ELPA install directory, else nil."
   (if (member subdir-name '("." ".." "archives"))
       nil
     (let ((full-file-name (expand-file-name subdir-name (expand-file-name "elpa" user-emacs-directory))))
       (if (file-directory-p full-file-name) full-file-name nil))))
 
-
 ;; (elpa-subdir "archives")
 ;; (elpa-subdir "..")
-;; (elpa-subdir "clojure-mode-20150305.715")
+;; (elpa-subdir "json-mode-20141105.138")
 ;; (elpa-subdir ".gitignore")
 
 
-(let ((installed-packages (mapcar #'car package-alist)))
-  (set-difference installed-packages lloyds-installed-packages))
+;; here's a simple difference between installed packages and packages
+;; expected
+;; PROBLEM: lists packages installed because they are dependency of an
+;; installed package. We want to filter those
+(defun unexpected-packages (expected-packages)
+  "Return a list of installed packages which are not in EXPECTED-PACKAGES. Does not check dependencies, but should."
+  (let ((installed-packages (mapcar #'car package-alist)))
+    (set-difference installed-packages expected-packages)))
 
-(mapcar #'package-desc-reqs (mapcar #'car (mapcar #'cdr package-alist)))
+;; (unexpected-packages lloyds-installed-packages)
+
+(defun get-requirements-list ()
+  "Get a data structure containing requirements of installed packages"
+  ;;package-alist is an alist associating package names with
+  ;; a cl-struct-package-desc structure
+  (mapcar #'package-desc-reqs (mapcar #'car (mapcar #'cdr package-alist))))
 ;; make list of all dependency specs -- will look like
 
 (defun begins-with-atom (some-list)
