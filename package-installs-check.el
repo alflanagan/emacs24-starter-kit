@@ -6,7 +6,7 @@
 ;; Created: 09 Mar 2015
 ;; Version: 0.1
 ;; Keywords: tools
-;; Package-Requires: 
+;; Package-Requires:
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -24,7 +24,7 @@
 ;; along with package-installs-check.  If not, see
 ;; <http://www.gnu.org/licenses/>.
 
-(eval-when-compile (require 'cl-lib))
+(require 'cl-lib)
 (require 'package)
 
 (defun extra-installed-packages ()
@@ -51,62 +51,38 @@
 (defun unexpected-packages (expected-packages)
   "Return a list of installed packages which are not in EXPECTED-PACKAGES. Does not check dependencies, but should."
   (let ((installed-packages (mapcar #'car package-alist)))
-    (set-difference installed-packages expected-packages)))
+    (cl-set-difference installed-packages expected-packages)))
 
 ;; (unexpected-packages lloyds-installed-packages)
 
+(defun filter-alist-by-car (a-list list-of-cars)
+  "Returns an alist consisting of all members of A-LIST whose first element is a member of LIST-OF-CARS."
+  (if (member (caar a-list) list-of-cars)
+      (cons (car a-list) (filter-alist-by-car (cdr a-list) list-of-cars))
+    (if (null a-list) nil (filter-alist-by-car (cdr a-list) list-of-cars))))
+
+
+
 (defun get-requirements-list ()
-  "Get a data structure containing requirements of installed packages"
+  "Get a nested list tructure containing requirements of installed packages in form (package-name (version-list))."
   ;;package-alist is an alist associating package names with
   ;; a cl-struct-package-desc structure
-  (mapcar #'package-desc-reqs (mapcar #'car (mapcar #'cdr package-alist))))
-;; make list of all dependency specs -- will look like
+  (cl-remove-duplicates
+   (cl-remove-if #'null
+                 (mapcar #'car
+                         (mapcar #'car
+                                 (mapcar #'package-desc-reqs
+                                         (mapcar #'cadr
+                                                 ;; we only care about packages that are dependencies of members of lloyds-installed-packages
+                                                 ;; or dependencies of those dependencies, which we don't get yet. yuck.
+                                                 (filter-alist-by-car package-alist lloyds-installed-packages))))))))
 
-(defun begins-with-atom (some-list)
-  ""
-  (atom-p (car some-list)))
+(defun get-installed-packages-and-dependents ()
+  "Returns the set of all installed packages, and all packages upon which they depend."
+  (cl-remove-duplicates
+   (append (mapcar #'car package-alist)
+           (get-requirements-list))))
 
-(defun get-lists-starting-with-atoms(some-list)
-  
-  (if (atom (car some-list))
-      (cons  some-list (get-lists-starting-with-atoms (cdr some-list)))
-    (let ((car-lists (get-lists-starting-with-atoms (car some-list)))
-          (cdr-lists (get-lists-starting-with-atoms (cdr some-list))))
-      (if (not (null car-lists))
-          (cons car-lists cdr-lists)
-        cdr-lists))))
-
-(get-lists-starting-with-atoms nil)
-(get-lists-starting-with-atoms '(1 2 3))
-(get-lists-starting-with-atoms '(nil (1 2 3)((3 4)(5 6))))
-(nil (1 2 3) ((3 4) (5 6)))
-
-(car-if-not-list nil)
-(car-if-not-list '(nil nil nil ((dash (2 9 0)) (s (1 5 0))) ((font-utils (0 7 2))) (ucs-utils (0 8 0)) (list-utils (0 4 2)) (persistent-soft (0 8 10))))
-
-;; (nil nil nil ((dash (2 9 0)) (s (1 5 0))) ((font-utils (0 7 2))
-;; (ucs-utils (0 8 0)) (list-utils (0 4 2)) (persistent-soft (0 8 10))
-;; (pcache (0 3 1))) nil ((persistent-soft (0 8 8)) (pcache (0 2 3))
-;; (list-utils (0 4 2))) ((cl-lib (0 3)) (dash (2 10 0))) ((slime
-;; (20100404))) ((cl-lib (0 5))) nil nil ...);; ((dash (2 9 0)) (s (1
-;; 5 0))) ((font-utils (0 7 2)) (ucs-utils (0 8 0)) (list-utils (0 4
-;; 2)) (persistent-soft (0 8 10)) (pcache (0 3 1))) nil
-;; ((persistent-soft (0 8 8)) (pcache (0 2 3)) (list-utils (0 4 2)))
-;; ((cl-lib (0 3)) (dash (2 10 0))) ((slime (20100404))) ((cl-lib (0
-;; 5))) nil nil nil nil nil ((epl (0 4))) ((pcache (0 3 1))
-;; (list-utils (0 4 2))) nil ((eieio (1 3))) ((emacs (24 4)) (dash (2
-;; 6 0)) (cl-lib (0 5)) (json (1 3)) (let-alist (1 0 3))) nil nil ((s
-;; (1 8 0)) (dash (2 4 0)) (f (0 14 0))) nil nil ((cl-lib (0 3))
-;; (git-commit-mode (0 14 0)) (git-rebase-mode (0 14 0)))
-;; ((coffee-mode (0 5 0))) nil nil nil ((emacs (24))) nil
-;; ((json-reformat (20141009 1155)) (json-snatcher (20131110 1107)))
-;; ((emacs (24 1)) (cl-lib (0 5))) nil nil nil nil nil nil nil
-;; ((persistent-soft (0 8 8)) (pcache (0 2 3))) ((dash (2 4 0))
-;; (pkg-info (0 4)) (let-alist (1 0 1)) (cl-lib (0 3)) (emacs (24 1)))
-;; nil ((s (1 7 0)) (dash (2 2 0))) ((cl-lib (0 3))) ((company (0 8
-;; 2)) (find-file-in-project (3 3)) (highlight-indentation (0 5 0))
-;; (pyvenv (1 3)) (yasnippet (0 8 0))) nil ((dash (2 0 0)) (emacs
-;; (24))) nil ((emacs (24 1)) (cl-lib (0 5))) ((emacs (24 1)) (cl-lib
-;; (0 5))) ((coffee-mode (0 4 1))) ((emacs (24 1))))
-
+(defun extra-packages-installed (expected-list)
+  "")
 
