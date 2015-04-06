@@ -29,9 +29,9 @@
     (require feature filename)))
                
 ;; preload arduino-mode for cedet (possibly not required)
-(unless
-    (require 'arduino-mode (expand-file-name "~/Devel/arduino-mode/arduino-mode.el") t)
-  (require-report-errors 'arduino-mode))
+;; (unless
+;;     (require 'arduino-mode (expand-file-name "~/Devel/arduino-mode/arduino-mode.el") t)
+;;   (require-report-errors 'arduino-mode))
 
 ;; Add further minor-modes to be enabled by semantic-mode.
 ;; See doc-string of `semantic-default-submodes' for other things
@@ -50,7 +50,7 @@
 (require 'ede/speedbar)
 (require 'ede/linux)
 (require 'ede/proj-elisp)
-(require-report-errors 'ede/arduino)
+;; (require-report-errors 'ede/arduino)
 
 (global-ede-mode 1)
 (if (fboundp 'semantic-load-enable-code-helpers)
