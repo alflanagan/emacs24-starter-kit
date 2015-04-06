@@ -91,7 +91,7 @@ everybody.
       slime-repl ;; Read-Eval-Print Loop written in Emacs Lisp 
 
       ;;thingatpt+
-      unicode-fonts ;; customize fonts for specific Unicode blocks
+      ;; unicode-fonts ;; customize fonts for specific Unicode blocks
       undo-tree ;; Treat undo history as a tree (very nice)
       web ;; useful HTTP client
       web-beautify ;; Format HTML, CSS and JavaScript/JSON by js-beautify
