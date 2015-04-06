@@ -83,3 +83,5 @@ recentf
 lloyd-ThinkPad-R400.org
 test/*.el
 lloyd-ThinkPad-R400.el
+# another app directory
+var/
