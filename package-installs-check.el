@@ -27,33 +27,13 @@
 (require 'cl-lib)
 (require 'package)
 
-(defun extra-installed-packages ()
-  "List packages which are installed (not including built-in)."
-    (mapcar #'car package-alist))
+;; needed for batch mode.
 
-(defun elpa-subdir (subdir-name)
-  "Return SUBDIR-NAME if it is the name of an ELPA install directory, else nil."
-  (if (member subdir-name '("." ".." "archives"))
-      nil
-    (let ((full-file-name (expand-file-name subdir-name (expand-file-name "elpa" user-emacs-directory))))
-      (if (file-directory-p full-file-name) full-file-name nil))))
-
-;; (elpa-subdir "archives")
-;; (elpa-subdir "..")
-;; (elpa-subdir "json-mode-20141105.138")
-;; (elpa-subdir ".gitignore")
-
-
-;; here's a simple difference between installed packages and packages
-;; expected
-;; PROBLEM: lists packages installed because they are dependency of an
-;; installed package. We want to filter those
-(defun unexpected-packages (expected-packages)
-  "Return a list of installed packages which are not in EXPECTED-PACKAGES. Does not check dependencies, but should."
-  (let ((installed-packages (mapcar #'car package-alist)))
-    (cl-set-difference installed-packages expected-packages)))
-
-;; (unexpected-packages lloyds-installed-packages)
+(unless (boundp 'lloyds-installed-packages)
+  (load-file "init.el")
+  (run-hooks 'after-init-hook))
+
+;; utility functions
 
 (defun filter-alist-by-car (a-list list-of-cars)
   "Returns an alist consisting of all members of A-LIST whose first element is a member of LIST-OF-CARS."
@@ -61,28 +41,78 @@
       (cons (car a-list) (filter-alist-by-car (cdr a-list) list-of-cars))
     (if (null a-list) nil (filter-alist-by-car (cdr a-list) list-of-cars))))
 
+(defun search-tree (some-car some-seq)
+  "Recursively search for SOME-CAR as an element SOME-SEQ, which is treated as a tree."
+  (if (null some-seq)
+      nil
+    (if (atom some-seq)
+        (equal some-car some-seq)
+      (or (search-tree some-car (car some-seq))
+         (search-tree some-car (cdr some-seq))))))
+
+;; (search-tree 'fred '(fred)) -> t
+;; (search-tree 'fred '(alice fred)) -> t
+;; (search-tree 'fred '((bob (carol (fred alice)) (wilma (betty barney))))) -> t
+;; (search-tree 'fred '((bob (carol (ted alice)) (wilma (betty barney))))) -> nil
+
+(defun digit-p (maybe-digit)
+  "Returns t if MAYBE-DIGIT is a symbol or string consisting of a single digit 0-9."
+  ;; FIXME this seems less than ideal
+  (or (member maybe-digit '(0 1 2 3 4 5 6 7 8 9 ))
+     (member maybe-digit (string-to-list "0123456789"))
+     (member (string-to-char maybe-digit) (string-to-list "0123456789"))))
 
 
-(defun get-requirements-list ()
-  "Get a nested list tructure containing requirements of installed packages in form (package-name (version-list))."
+
+;; package-related functions
+(defun get-requirements-list (expected-packages)
+  "Get a nested list structure containing requirements of installed packages in list EXPECTED-PACKAGES in form (package-name (version-list))."
   ;;package-alist is an alist associating package names with
   ;; a cl-struct-package-desc structure
   (cl-remove-duplicates
-   (cl-remove-if #'null
-                 (mapcar #'car
-                         (mapcar #'car
-                                 (mapcar #'package-desc-reqs
-                                         (mapcar #'cadr
-                                                 ;; we only care about packages that are dependencies of members of lloyds-installed-packages
-                                                 ;; or dependencies of those dependencies, which we don't get yet. yuck.
-                                                 (filter-alist-by-car package-alist lloyds-installed-packages))))))))
+   (cl-remove-if (lambda (x) (member x '(0 1 2 3 4 5 6 7 8 9)))
+                 (-flatten
+                  (mapcar #'package-desc-reqs
+                          (mapcar #'cadr
+                                  ;; we only care about packages that are dependencies of members of expected-packages
+                                  ;; or dependencies of those dependencies, which we don't get yet. yuck. FIXME
+                                  (filter-alist-by-car package-alist expected-packages)))))))
 
-(defun get-installed-packages-and-dependents ()
-  "Returns the set of all installed packages, and all packages upon which they depend."
+(defun get-packages-and-dependents (package-list)
+  "Returns a set of packages in PACKAGE-LIST and any dependent packages found."
   (cl-remove-duplicates
-   (append (mapcar #'car package-alist)
-           (get-requirements-list))))
+   (append package-list (get-requirements-list package-list))))
 
 (defun extra-packages-installed (expected-list)
-  "")
+  "Lists packages which are installed but not members of EXPECTED-LIST or a dependency thereof."
+  (cl-set-difference (mapcar #'car package-alist) (get-packages-and-dependents expected-list)))
+
+(print (extra-packages-installed lloyds-installed-packages))
+
+
+;; various debug code -- TOOD: make proper unit tests
+
+;; (assert (member 'magit lloyds-installed-packages))
+;; (assert (member 'magit (mapcar #'car  (filter-alist-by-car package-alist lloyds-installed-packages))))
+;; ;; are second element of structure package-desc?
+;; (assert (and (mapcar #'package-desc-p (mapcar #'cadr  (filter-alist-by-car package-alist lloyds-installed-packages)))))
+;; ;; is magit's cl-struct-package-desc present
+;; (assert (member 'magit (mapcar #'package-desc-name (mapcar #'cadr  (filter-alist-by-car package-alist lloyds-installed-packages)))))
+;; ;; is git-commit-mode in one of the dependencies we pull?
+;; (assert (search-tree 'git-commit-mode
+;;                      (mapcar #'package-desc-reqs
+;;                              (mapcar #'cadr
+;;                                      (filter-alist-by-car package-alist lloyds-installed-packages)))))
+;; (assert (member 'git-commit-mode (get-requirements-list lloyds-installed-packages)))
+;; (assert (member 'git-commit-mode (get-packages-and-dependents lloyds-installed-packages)))
+;; (assert (member 'git-rebase-mode (get-packages-and-dependents lloyds-installed-packages)))
+
+;; FIXME -- yep, we don't handle dependencies of dependencies. epl is a dependency
+;; of pkg-info, which is a dependency of flycheck
+;; and pretty-symbols is from starter-kit-install-if-needed call in starter-kit-lisp
+;;(extra-packages-installed lloyds-installed-packages)
+;; ==> (darktooth-theme epl flymake-less form-feed list-utils nvm pretty-symbols ucs-utils)
+
+;; next step -- create package buffer window allowing me to uninstall packages found?
+;; modify lloyd.org to add packages?
 
