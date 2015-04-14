@@ -123,4 +123,7 @@
     ;; load up the starter kit
     (org-babel-load-file (expand-file-name "starter-kit.org" starter-kit-dir))))
 
+;; tell magit not to give us a warning about new feature
+(setq magit-last-seen-setup-instructions "1.4.0")
+
 ;;; init.el ends here

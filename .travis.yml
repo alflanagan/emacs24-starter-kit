@@ -7,7 +7,6 @@ env:
 # - EVM_EMACS=emacs-24.3-bin
 - EVM_EMACS=emacs-24.4-bin
 install:
-- evm list
 - export EMBATCH="emacs --batch --eval \"(require 'org)\""
 - echo $SHELL
 - sudo apt-get install aspell  # for ispell
@@ -15,6 +14,7 @@ install:
 - sudo chown $(id -u):$(id -g) /usr/local/evm
 - curl -fsSkL https://raw.github.com/rejeep/evm/master/go | bash
 - export PATH="$HOME/.evm/bin:$PATH"
+- evm list
 - evm install $EVM_EMACS --use > /dev/null
 # verify that we're using the right f'ing Emacs
 - emacs --version
