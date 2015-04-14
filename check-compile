@@ -8,7 +8,7 @@ do
         *) CFILE=${EFILE}c
             if [[ -f ${CFILE} ]]; then
                 if [[ ${EFILE} -nt ${CFILE} ]]; then
-                    echo ${EFILE}
+                    echo ${EFILE} is newer than ${CFILE}.
                 fi
             else
                 echo ${CFILE} missing.
