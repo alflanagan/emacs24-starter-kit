@@ -52,7 +52,7 @@ everybody.
       pep8
       org-blog
       ;; standard list:
-      ;;async ;; Asynchronous processing in Emacs
+      async ;; Asynchronous processing in Emacs (optional paradox dependency)
       clojure-mode
       coffee-fof ;; A coffee-mode configuration for `ff-find-other-file'.
       coffee-mode ;; Major mode to edit CoffeeScript files in Emacs
