@@ -50,7 +50,9 @@ everybody.
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
       pep8
-      org-blog
+      ;; org-blog code is obsolete, requires separate org-publish
+      ;; package (now part of org-mode)
+      ;; org-blog
       ;; standard list:
       async ;; Asynchronous processing in Emacs (optional paradox dependency)
       clojure-mode
