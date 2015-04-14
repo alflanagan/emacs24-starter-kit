@@ -3,9 +3,11 @@ language: emacs-lisp
 env:
 # don't neeed emacs-git-snapshot, don't want to add dependencies
 # that are not part of standard Emacs install
-- EVM_EMACS=emacs-24.3-bin
+# packages that require emacs 24.4 are now used
+# - EVM_EMACS=emacs-24.3-bin
 - EVM_EMACS=emacs-24.4-bin
 install:
+- evm list
 - export EMBATCH="emacs --batch --eval \"(require 'org)\""
 - echo $SHELL
 - sudo apt-get install aspell  # for ispell
