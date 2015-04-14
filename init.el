@@ -5,6 +5,12 @@
 ;; This is the first thing to get loaded.
 ;;
 
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 ;; Load CEDET.
 ;; See cedet/common/cedet.info for configuration details.
 ;; load from source when the CEDET_HOME environment variable is set
