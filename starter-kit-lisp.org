@@ -4,6 +4,12 @@
 This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
 
 * Starter Kit Lisp
+  :PROPERTIES:
+  :tangle:   yes
+  :comments: noweb
+  :noweb:    yes
+  :END:
+
 Support for editing list dialects including [[* Emacs Lisp][Emacs Lisp]], [[* Scheme][Scheme]],
 [[* Common Lisp][Common Lisp]], and [[* Clojure][Clojure]].
 
@@ -64,10 +70,13 @@ installed.
   (eval-when-compile (package-initialize))
 
   (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
-  (declare-function run-starter-kit-coding-hook "starter-kit" ())
-  (declare-function sp-wrap-region "smartparens " ())
-  (declare-function sp-wrap-region-init "smartparens" ())
-  (declare-function sp-insert-pair "smartparens" (&optional PAIR))
+  (declare-function run-starter-kit-coding-hook "starter-kit-defuns" ())
+  (declare-function smartparens-mode "smartparens" (&optional arg))
+  (declare-function smartparens-strict-mode "smartparens" (&optional arg))
+  (declare-function sp-use-paredit-bindings "smartparens" ())
+  (declare-function pretty-symbols-mode "pretty-symbols" (&optional arg))
+  (declare-function form-feed-mode "form-feed" (&optional arg))
+  (declare-function slime "slime" (&optional command coding-system))
 
   (starter-kit-install-if-needed 'smartparens)
   (starter-kit-install-if-needed 'clojure-mode)
@@ -189,6 +198,7 @@ available.
 
 #+begin_src emacs-lisp
   (starter-kit-install-if-needed 'slime)
+  (starter-kit-install-if-needed 'slime-repl) ;; Read-Eval-Print Loop written in Emacs Lisp 
 
 #+end_src
 

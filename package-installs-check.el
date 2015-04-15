@@ -32,6 +32,9 @@
 (unless (boundp 'lloyds-installed-packages)
   (load-file "init.el")
   (run-hooks 'after-init-hook))
+
+(declare-function -flatten "dash")
+
 
 ;; utility functions
 
@@ -81,13 +84,27 @@
 (defun get-packages-and-dependents (package-list)
   "Returns a set of packages in PACKAGE-LIST and any dependent packages found."
   (cl-remove-duplicates
-   (append package-list (get-requirements-list package-list))))
+   ;; recurse this adding found packages to package-list until no new
+   ;; ones are found?
+   (let ((requirements-list (get-requirements-list package-list)))
+     (append package-list
+             requirements-list
+             ;; and get 1st-level dependencies of dependencies
+             (get-requirements-list requirements-list)))))
 
 (defun extra-packages-installed (expected-list)
   "Lists packages which are installed but not members of EXPECTED-LIST or a dependency thereof."
   (cl-set-difference (mapcar #'car package-alist) (get-packages-and-dependents expected-list)))
 
-(print (extra-packages-installed lloyds-installed-packages))
+(defun build-expected-packages ()
+  "Returns a list of packages expected to be present."
+  ;; some packages are installed by starter-kit outside of
+  ;; lloyds-installed-packages variable
+  (append '(pretty-symbols form-feed slime-repl) ;; starter-kit-lisp
+          '(nodejs-repl nvm) ;; starter-kit-nodejs
+          lloyds-installed-packages))
+
+(print (extra-packages-installed (build-expected-packages)))
 
 
 ;; various debug code -- TOOD: make proper unit tests
