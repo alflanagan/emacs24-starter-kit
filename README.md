@@ -14,6 +14,11 @@ The main advantages of this Emacs Starter Kit are
 
 The latest build status at [Travis CI](http://travis-ci.org): [![Build Status](https://travis-ci.org/alflanagan/emacs24-starter-kit.svg?branch=lloyd-custom)](https://travis-ci.org/alflanagan/emacs24-starter-kit)
 
+NOTE: The build status, unfortunately, all-too-frequently fails due to
+problems with one of the many third-party packages installed by the
+starter kit. TODO: make tests discriminate between a package's failure
+to install, and failure of the package (require) statement.
+
 The latest version is at http://github.com/eschulte/emacs24-starter-kit/
 
 For more information including use and installation instructions see
