@@ -50,9 +50,7 @@ everybody.
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
       pep8
-      ;; org-blog code is obsolete, requires separate org-publish
-      ;; package (now part of org-mode)
-      ;; org-blog
+      ;; (sr-speedbar projectile flx flx-ido codesearch projectile-codesearch)
       ;; standard list:
       async ;; Asynchronous processing in Emacs (optional paradox dependency)
       clojure-mode
@@ -63,8 +61,8 @@ everybody.
       dropdown-list ;; Drop-down menu interface
       elpy ;; Emacs Python Development Environment
       f  ;; file system utilities
-      font-utils
-      flycheck
+      ;; font-utils
+      flycheck ;; big improvement over flymake, apparently
       golden-ratio ;; resize windows, aesthetically
       ipretty ;; interactive lisp pretty-print
       irfc  ;; look up IETF RFCs and display in buffer
@@ -74,9 +72,9 @@ everybody.
       json-snatcher
       kv ;; should be specified by pinboard, but isn't
       less-css-mode ;; Major mode for editing LESS CSS files (lesscss.org)
-      literate-coffee-mode ;; major-mode for Literate CoffeeScript 
-      magit
-      markdown-mode ;; Emacs Major mode for Markdown-formatted text files 
+      literate-coffee-mode ;; major-mode for Literate CoffeeScript
+      magit ;; capable git support
+      markdown-mode ;; Emacs Major mode for Markdown-formatted text files
       ;;org-bullets ;; replace bullets with pleasing UTF-8 chars
       org-toc ;;table of contents for org-mode
       paradox ;; enhanced package listing, future std.
@@ -88,9 +86,7 @@ everybody.
       ;; smartparens is also loaded by starter-kit-lisp, but I do setup in
       ;; this file so it has to install earlier.
       smartparens
-      ;; smex  ;; M-x interface with Ido-style fuzzy matching.
 
-      ;;thingatpt+
       ;; unicode-fonts ;; customize fonts for specific Unicode blocks
       undo-tree ;; Treat undo history as a tree (very nice)
       web ;; useful HTTP client
@@ -242,12 +238,14 @@ the flymake checker with flycheck.
       (condition-case err-var
           (elpy-enable)
         (error (message "[Init] (elpy-enable) failed: %s" err-var))))
-      ;;(elpy-use-ipython)
 
     ;;https://github.com/jorgenschaefer/elpy/issues/137
-    (when (and (boundp 'elpy-default-minor-modes) (functionp 'flycheck-mode))
-      (setq elpy-default-minor-modes (delete 'flymake-mode elpy-default-minor-modes))
-      (add-to-list 'elpy-default-minor-modes 'flycheck-mode)))
+    ;; and this doesn't work any more (elpy-default-minor-modes gone?)
+    ;;better to turn off flymake in elpy, then enable flycheck after?
+    ;; (when (and (boundp 'elpy-default-minor-modes) (functionp 'flycheck-mode))
+    ;;   (setq elpy-default-minor-modes (delete 'flymake-mode elpy-default-minor-modes))
+    ;;   (add-to-list 'elpy-default-minor-modes 'flycheck-mode))
+    )
 #+end_src
 
 *** Set up web-beautify hotkeys
@@ -292,7 +290,7 @@ modes. For each one, we bind it to "Ctrl-C b".
 #+begin_src emacs-lisp
   ;; (error-into-message (smex-initialize))
 #+end_src
-    
+
 ** Set up major mode hooks
 *** JavaScript
 **** TODO Move this to starter-kit-js.org
@@ -405,6 +403,19 @@ typed, which I find far more intuitive/useful.
                            (point))))
 
   (global-set-key "\M-z" #'zap-up-to-char)
+#+end_src
+
+*** Stuff I haven't organized yet
+
+#+begin_src emacs-lisp
+  (require 're-builder)
+  ;; default reader for re-builder inserts \\s
+  (setq reb-re-syntax 'string)
+  ;;left side seems more intuitive to me
+  (require 'sr-speedbar)
+  (setq sr-speedbar-right-side nil)
+  ;; turn off automatic auto-fill
+  ;; (remove-hook 'text-mode-hook 'turn-on-auto-fill)
 #+end_src
 
 *** Set `debug-on-error' back to original value.
