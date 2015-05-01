@@ -50,7 +50,14 @@ everybody.
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
       pep8
-      ;; (sr-speedbar projectile flx flx-ido codesearch projectile-codesearch)
+      projectile
+      sr-speedbar
+      flx
+      flx-ido
+      list-utils
+      pcache
+      persistent-soft
+
       ;; standard list:
       async ;; Asynchronous processing in Emacs (optional paradox dependency)
       clojure-mode
@@ -75,11 +82,7 @@ everybody.
       literate-coffee-mode ;; major-mode for Literate CoffeeScript
       magit ;; capable git support
       markdown-mode ;; Emacs Major mode for Markdown-formatted text files
-      ;;org-bullets ;; replace bullets with pleasing UTF-8 chars
-      org-toc ;;table of contents for org-mode
       paradox ;; enhanced package listing, future std.
-      ;;pinboard ;; display pinboard entries in buffer
-      ;;pinboard-api ;; call pinboard API from emacs lisp
       pony-mode ;; django-admin interaction (nice)
       s  ;; The long lost Emacs string manipulation library.
       seq  ;; functions to manipulate sequences of multiple types
