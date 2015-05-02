@@ -100,7 +100,7 @@
   "Returns a list of packages expected to be present."
   ;; some packages are installed by starter-kit outside of
   ;; lloyds-installed-packages variable
-  (append '(pretty-symbols form-feed slime-repl) ;; starter-kit-lisp
+  (append '(form-feed slime-repl slime) ;; starter-kit-lisp
           '(nodejs-repl nvm) ;; starter-kit-nodejs
           lloyds-installed-packages))
 

@@ -20,11 +20,8 @@ To make compiler happy, declare functions defined in other files.
   (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
   (declare-function starter-kit-load "starter-kit" (file &optional header-or-tag))
   (declare-function secret-data-get-key "secret-data"  (some-key &optional file-name))
-  ;; (declare-function smex-initialize "smex" nil)
-  (declare-function flycheck-mode "flycheck" (&optional arg))
-  (declare-function pretty-symbols-mode "pretty-symbols" (&optional arg))
+  (declare-function pretty-symbols-mode "pretty-symbols" (&optional arg))  ;; starter-kit-lisp
   (defvar starter-kit-dir)
-  ;;  ido-ubiquitous-mode
 
 #+end_src
 
@@ -40,8 +37,6 @@ To make compiler happy, declare functions defined in other files.
 There are a whole bunch of packages I use which may not be useful to
 everybody.
 
-*** TODO check for local install of arduino-mode and install from package if not present.
-
 #+name: my-installed-packages
 #+begin_src emacs-lisp
   (defconst lloyds-installed-packages
@@ -51,25 +46,20 @@ everybody.
       ;; will be moved to standard list if they work out
       pep8
       projectile
-      sr-speedbar
       flx
       flx-ido
       list-utils
-      pcache
-      persistent-soft
+      flymake-jshint
 
       ;; standard list:
       async ;; Asynchronous processing in Emacs (optional paradox dependency)
       clojure-mode
       coffee-fof ;; A coffee-mode configuration for `ff-find-other-file'.
-      coffee-mode ;; Major mode to edit CoffeeScript files in Emacs
       dash ;; essential functional programming lib
       dash-functional ;; Collection of useful combinators for Emacs Lisp
       dropdown-list ;; Drop-down menu interface
       elpy ;; Emacs Python Development Environment
       f  ;; file system utilities
-      ;; font-utils
-      flycheck ;; big improvement over flymake, apparently
       golden-ratio ;; resize windows, aesthetically
       ipretty ;; interactive lisp pretty-print
       irfc  ;; look up IETF RFCs and display in buffer
@@ -77,20 +67,14 @@ everybody.
       json-mode
       json-reformat
       json-snatcher
-      kv ;; should be specified by pinboard, but isn't
       less-css-mode ;; Major mode for editing LESS CSS files (lesscss.org)
-      literate-coffee-mode ;; major-mode for Literate CoffeeScript
       magit ;; capable git support
       markdown-mode ;; Emacs Major mode for Markdown-formatted text files
       paradox ;; enhanced package listing, future std.
       pony-mode ;; django-admin interaction (nice)
+      pretty-symbols ;; also in starter-kit-lisp, useful elsewhere
       s  ;; The long lost Emacs string manipulation library.
-      seq  ;; functions to manipulate sequences of multiple types
-      ;; smartparens is also loaded by starter-kit-lisp, but I do setup in
-      ;; this file so it has to install earlier.
-      smartparens
-
-      ;; unicode-fonts ;; customize fonts for specific Unicode blocks
+      smartparens  ;; also in starter-kit-lisp
       undo-tree ;; Treat undo history as a tree (very nice)
       web ;; useful HTTP client
       web-beautify ;; Format HTML, CSS and JavaScript/JSON by js-beautify
@@ -172,23 +156,6 @@ switching to a major mode.
                           (car ',body)))))
 #+end_src
 
-*** Load constants and set up keys
-#+begin_src emacs-lisp
-  (defun set-up-constants ()
-    (require 'constants (expand-file-name "constants.el" starter-kit-dir))
-    ;;
-    (autoload 'constants-insert "constants" "Insert constants into source." t)
-    (autoload 'constants-get "constants" "Get the value of a constant." t)
-    (autoload 'constants-replace "constants" "Replace name of a constant." t)
-    (define-key global-map "\C-cci" 'constants-insert)
-    (define-key global-map "\C-ccg" 'constants-get)
-    (define-key global-map "\C-ccr" 'constants-replace)
-    (defvar constants-unit-system 'SI)   ;  this is the default
-    ;;
-    ;; A default list of constants to insert when none are specified
-    (defvar constants-default-list "cc,bk,hp"))
-#+end_src
-
 *** Set up my global key bindings
 #+begin_src emacs-lisp
   (global-set-key [<F5>] 'semantic-ia-fast-jump)
@@ -205,7 +172,7 @@ file and set up the paradox environment.
     (require 'paradox)
     (org-babel-load-file (concat starter-kit-dir "/secret-data.org"))
     (when (functionp 'paradox-list-packages)
-      (defvar paradox-github-token)
+      (defvar paradox-github-token) ;;defvars to make compiler happy
       (defvar paradox-automatically-star)
       ;; token "paradox emacs packages" (github.com)
       (setq paradox-github-token (secret-data-get-key "paradox-github-token"))
@@ -225,12 +192,9 @@ to use `dropdown-list' instead.
                                  yas-completing-prompt)))
 #+end_src
 
-
 *** Set up elpy mode for python programming
-**** TODO Move this to starter-kit-python.org
 "elpy" mode is great for python programming. Because it runs a server
-in the background, you have to enable it. I also set it up to replace
-the flymake checker with flycheck.
+in the background, you have to enable it.
 
 #+begin_src emacs-lisp
   (require 'elpy nil t)
@@ -240,16 +204,9 @@ the flymake checker with flycheck.
       (declare-function elpy-enable "elpy"  (&optional skip-initialize-variables))
       (condition-case err-var
           (elpy-enable)
-        (error (message "[Init] (elpy-enable) failed: %s" err-var))))
-
-    ;;https://github.com/jorgenschaefer/elpy/issues/137
-    ;; and this doesn't work any more (elpy-default-minor-modes gone?)
-    ;;better to turn off flymake in elpy, then enable flycheck after?
-    ;; (when (and (boundp 'elpy-default-minor-modes) (functionp 'flycheck-mode))
-    ;;   (setq elpy-default-minor-modes (delete 'flymake-mode elpy-default-minor-modes))
-    ;;   (add-to-list 'elpy-default-minor-modes 'flycheck-mode))
-    )
+        (error (message "[Init] (elpy-enable) failed: %s" err-var)))))
 #+end_src
+**** TODO Move this to starter-kit-python.org
 
 *** Set up web-beautify hotkeys
 The `web-beautify` package provides a useful function for several
@@ -276,6 +233,17 @@ modes. For each one, we bind it to "Ctrl-C b".
             (define-key css-mode-map (kbd "C-c b") 'web-beautify-css)))))
 
 #+end_src
+*** Set up re-builder package
+The default reader for re-builder is not actually the most useful
+one. See re-builder docs for details.
+
+#+begin_src emacs-lisp
+  (defun fix-re-builder ()
+    "Changes annoying default for re-builder package."
+    (require 're-builder)
+    ;; default reader for re-builder inserts \\s
+    (setq reb-re-syntax 'string))
+#+end_src
 
 *** Actually call the setup functions
 #+begin_src emacs-lisp
@@ -284,14 +252,8 @@ modes. For each one, we bind it to "Ctrl-C b".
   (error-into-message (set-up-global-undo-tree))
   (error-into-message (set-up-elpy))
   (error-into-message (set-up-web-beautify))
-  ;; (error-into-message (set-up-constants))
   (error-into-message (set-up-yas-snippets))
-#+end_src
-
-*** Initialize packages if necessary
-
-#+begin_src emacs-lisp
-  ;; (error-into-message (smex-initialize))
+  (error-into-message (fix-re-builder))
 #+end_src
 
 ** Set up major mode hooks
@@ -338,6 +300,7 @@ associations for file extensions.
            (setf (cdr (rassoc 'javascript-mode auto-mode-alist)) 'js2-mode))))
 
   (defun turn-off-electric-indent-local()
+    "Disable electric-indent for js2-mode. It fails epically."
     (electric-indent-local-mode 0))
 
   (if (functionp 'js2-mode)
@@ -350,10 +313,6 @@ Adds setup hooks to various modes that don't have a separate
 starter-kit file.
 
 #+begin_src emacs-lisp
-  (defun turn-on-flycheck ()
-    "Turns on `flycheck-mode.' Exists to prevent use of `lambda' in `add-hook'."
-    (flycheck-mode 1))
-
   (defun turn-on-hs ()
     "Enables `hs-minor-mode'. Exists to prevent use of `lambda' in `add-hook'."
     (hs-minor-mode 1))
@@ -364,8 +323,6 @@ starter-kit file.
 
   (defun add-python-mode-hooks ()
     "Add various useful things to `python-mode-hook`"
-    (if (fboundp 'flycheck-mode)
-        (add-hook 'python-mode-hook 'turn-on-flycheck))
     (if (fboundp 'hs-minor-mode)
         (add-hook 'python-mode-hook 'turn-on-hs))
     (add-hook 'python-mode-hook 'enable-delete-trailing-ws))
@@ -412,19 +369,6 @@ typed, which I find far more intuitive/useful.
                            (point))))
 
   (global-set-key "\M-z" #'zap-up-to-char)
-#+end_src
-
-*** Stuff I haven't organized yet
-
-#+begin_src emacs-lisp
-  (require 're-builder)
-  ;; default reader for re-builder inserts \\s
-  (setq reb-re-syntax 'string)
-  ;;left side seems more intuitive to me
-  (require 'sr-speedbar)
-  (setq sr-speedbar-right-side nil)
-  ;; turn off automatic auto-fill
-  ;; (remove-hook 'text-mode-hook 'turn-on-auto-fill)
 #+end_src
 
 *** Set `debug-on-error' back to original value.
