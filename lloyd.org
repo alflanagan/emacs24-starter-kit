@@ -45,15 +45,16 @@ everybody.
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
       pep8
-      projectile
       flx
       flx-ido
       list-utils
       flymake-jshint
+      ocodo-svg-modelines        ;;A collection of beautiful SVG modelines
 
       ;; standard list:
       async ;; Asynchronous processing in Emacs (optional paradox dependency)
-      clojure-mode
+      ;; clojure-mode
+      cider
       coffee-fof ;; A coffee-mode configuration for `ff-find-other-file'.
       dash ;; essential functional programming lib
       dash-functional ;; Collection of useful combinators for Emacs Lisp
