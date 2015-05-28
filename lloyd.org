@@ -44,23 +44,23 @@ everybody.
       ;; new packages
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
-      pep8
-      flx
-      flx-ido
-      list-utils
       flymake-jshint
+      jira-markup-mode   ;;Emacs Major mode for JIRA-markup-formatted text files 
+      list-utils
       ocodo-svg-modelines        ;;A collection of beautiful SVG modelines
+      pep8  ;; provides pep8 command to run pep8 checker on file in buffer
 
       ;; standard list:
       async ;; Asynchronous processing in Emacs (optional paradox dependency)
-      ;; clojure-mode
-      cider
+      cider ;; major mode for clojure integration
       coffee-fof ;; A coffee-mode configuration for `ff-find-other-file'.
       dash ;; essential functional programming lib
       dash-functional ;; Collection of useful combinators for Emacs Lisp
       dropdown-list ;; Drop-down menu interface
       elpy ;; Emacs Python Development Environment
       f  ;; file system utilities
+      flx
+      flx-ido
       golden-ratio ;; resize windows, aesthetically
       ipretty ;; interactive lisp pretty-print
       irfc  ;; look up IETF RFCs and display in buffer
