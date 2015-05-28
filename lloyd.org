@@ -49,6 +49,8 @@ everybody.
       list-utils
       ocodo-svg-modelines        ;;A collection of beautiful SVG modelines
       pep8  ;; provides pep8 command to run pep8 checker on file in buffer
+      totd ;; Display a random daily emacs command.
+      ;; xah-elisp-mode ;; Major mode for editing emacs lisp.
 
       ;; standard list:
       async ;; Asynchronous processing in Emacs (optional paradox dependency)
@@ -59,8 +61,7 @@ everybody.
       dropdown-list ;; Drop-down menu interface
       elpy ;; Emacs Python Development Environment
       f  ;; file system utilities
-      flx
-      flx-ido
+      flx-ido ;; flex integration for ido (better choices for fuzzy match)
       golden-ratio ;; resize windows, aesthetically
       ipretty ;; interactive lisp pretty-print
       irfc  ;; look up IETF RFCs and display in buffer
@@ -255,6 +256,7 @@ one. See re-builder docs for details.
   (error-into-message (set-up-web-beautify))
   (error-into-message (set-up-yas-snippets))
   (error-into-message (fix-re-builder))
+  (error-into-message (totd-start))
 #+end_src
 
 ** Set up major mode hooks
