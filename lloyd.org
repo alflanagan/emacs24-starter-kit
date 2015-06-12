@@ -49,7 +49,9 @@ everybody.
       list-utils
       ocodo-svg-modelines        ;;A collection of beautiful SVG modelines
       pep8  ;; provides pep8 command to run pep8 checker on file in buffer
-      totd ;; Display a random daily emacs command.
+      php-eldoc
+      php-mode
+      shrink-whitespace
       ;; xah-elisp-mode ;; Major mode for editing emacs lisp.
 
       ;; standard list:
@@ -77,6 +79,7 @@ everybody.
       pretty-symbols ;; also in starter-kit-lisp, useful elsewhere
       s  ;; The long lost Emacs string manipulation library.
       smartparens  ;; also in starter-kit-lisp
+      totd;; Display a random daily emacs command.
       undo-tree ;; Treat undo history as a tree (very nice)
       web ;; useful HTTP client
       web-beautify ;; Format HTML, CSS and JavaScript/JSON by js-beautify
@@ -161,6 +164,7 @@ switching to a major mode.
 *** Set up my global key bindings
 #+begin_src emacs-lisp
   (global-set-key [<F5>] 'semantic-ia-fast-jump)
+  (global-set-key (kbd "M-\\") 'shrink-whitespace)
 #+end_src
 
 *** Set up paradox package listing features
