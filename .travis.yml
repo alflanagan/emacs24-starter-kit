@@ -1,5 +1,9 @@
 language: emacs-lisp
 # until github supports elisp, actual "language" is ruby
+addons:
+  apt:
+    packages:
+    - aspell
 env:
 # don't neeed emacs-git-snapshot, don't want to add dependencies
 # that are not part of standard Emacs install
@@ -9,7 +13,6 @@ env:
 install:
 - export EMBATCH="emacs --batch --eval \"(require 'org)\""
 - echo $SHELL
-- sudo apt-get install aspell  # for ispell
 - sudo mkdir /usr/local/evm
 - sudo chown $(id -u):$(id -g) /usr/local/evm
 - curl -fsSkL https://raw.github.com/rejeep/evm/master/go | bash
