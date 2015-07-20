@@ -1,9 +1,10 @@
-language: emacs-lisp
-# until github supports elisp, actual "language" is ruby
+# language: emacs-lisp
+# should (now) get less ruby setup, still no elisp support
 addons:
   apt:
     packages:
     - aspell
+    - git
 env:
 # don't neeed emacs-git-snapshot, don't want to add dependencies
 # that are not part of standard Emacs install
