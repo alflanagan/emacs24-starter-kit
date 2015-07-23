@@ -1,21 +1,28 @@
-language: emacs-lisp
-# until github supports elisp, actual "language" is ruby
+# language: emacs-lisp
+# should (now) get less ruby setup, still no elisp support
+addons:
+  apt:
+    packages:
+    - aspell
+    - emacs
 env:
 # don't neeed emacs-git-snapshot, don't want to add dependencies
 # that are not part of standard Emacs install
 # packages that require emacs 24.4 are now used
 # - EVM_EMACS=emacs-24.3-bin
-- EVM_EMACS=emacs-24.4-bin
+# - EVM_EMACS=emacs-24.4-bin
+# TODO: Build our own emacs binaries, download from cloud
+# evm requires /usr/local/evm, so requires sudo, so travis-ci
+# can't use their new Docker-based architecture
 install:
 - export EMBATCH="emacs --batch --eval \"(require 'org)\""
 - echo $SHELL
-- sudo apt-get install aspell  # for ispell
-- sudo mkdir /usr/local/evm
-- sudo chown $(id -u):$(id -g) /usr/local/evm
-- curl -fsSkL https://raw.github.com/rejeep/evm/master/go | bash
-- export PATH="$HOME/.evm/bin:$PATH"
-- evm list
-- evm install $EVM_EMACS --use > /dev/null
+#- mkdir /usr/local/evm
+#- chown $(id -u):$(id -g) /usr/local/evm
+#- curl -fsSkL https://raw.github.com/rejeep/evm/master/go | bash
+#- export PATH="$HOME/.evm/bin:$PATH"
+#- evm list
+#- evm install $EVM_EMACS --use > /dev/null
 # verify that we're using the right f'ing Emacs
 - emacs --version
 # user-specific files need to be under name of travis user
