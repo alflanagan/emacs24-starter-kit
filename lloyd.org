@@ -44,15 +44,15 @@ everybody.
       ;; new packages
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
-      flymake-jshint
-      jira-markup-mode   ;;Emacs Major mode for JIRA-markup-formatted text files 
-      list-utils
-      ocodo-svg-modelines        ;;A collection of beautiful SVG modelines
-      pep8  ;; provides pep8 command to run pep8 checker on file in buffer
+      cinspect ;; Use cinspect to look at the CPython source of builtins and other C objects! 
+      flymake-jshint ;; making flymake work with JSHint 
+      jedi  ;; undeclared dependency of cinspect
+      jira-markup-mode ;;Emacs Major mode for JIRA-markup-formatted text files 
+      list-utils ;; List-manipulation utility functions 
+      ocodo-svg-modelines ;;A collection of beautiful SVG modelines
+      pep8 ;; provides pep8 command to run pep8 checker on file in buffer
       php-eldoc
-      php-mode
-      shrink-whitespace
-      ;; xah-elisp-mode ;; Major mode for editing emacs lisp.
+      string-utils ;; undeclared dependency of list-utils
 
       ;; standard list:
       async ;; Asynchronous processing in Emacs (optional paradox dependency)
@@ -75,9 +75,11 @@ everybody.
       magit ;; capable git support
       markdown-mode ;; Emacs Major mode for Markdown-formatted text files
       paradox ;; enhanced package listing, future std.
+      php-mode
       pony-mode ;; django-admin interaction (nice)
       pretty-symbols ;; also in starter-kit-lisp, useful elsewhere
       s  ;; The long lost Emacs string manipulation library.
+      shrink-whitespace
       smartparens  ;; also in starter-kit-lisp
       totd;; Display a random daily emacs command.
       undo-tree ;; Treat undo history as a tree (very nice)
@@ -251,6 +253,14 @@ one. See re-builder docs for details.
     (setq reb-re-syntax 'string))
 #+end_src
 
+*** Enable pretty modelines
+
+#+begin_src emacs-lisp
+  (defun set-up-pretty-modeline ()
+    (eval-after-load 'svg-modeline-themes
+     (eval-after-load 'ocodo-svg-modelines (ocodo-svg-modelines-init))))
+#+end_src
+
 *** Actually call the setup functions
 #+begin_src emacs-lisp
   (error-into-message (start-server-if-none))
@@ -261,6 +271,9 @@ one. See re-builder docs for details.
   (error-into-message (set-up-yas-snippets))
   (error-into-message (fix-re-builder))
   (error-into-message (totd-start))
+  ;; setting up modeline not working in init, due to dependence
+  ;; on themes (need to solve this)
+  ;;(error-into-message (set-up-pretty-modeline))
 #+end_src
 
 ** Set up major mode hooks
