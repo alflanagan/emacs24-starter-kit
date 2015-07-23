@@ -61,9 +61,9 @@
 (defun digit-p (maybe-digit)
   "Returns t if MAYBE-DIGIT is a symbol or string consisting of a single digit 0-9."
   ;; FIXME this seems less than ideal
-  (or (member maybe-digit '(0 1 2 3 4 5 6 7 8 9 ))
-     (member maybe-digit (string-to-list "0123456789"))
-     (member (string-to-char maybe-digit) (string-to-list "0123456789"))))
+  (or (member maybe-digit '(0 1 2 3 4 5 6 7 8 9 ))   ;; actual digit
+     (member maybe-digit (string-to-list "0123456789"))   ;; character
+     (member (string-to-char maybe-digit) (string-to-list "0123456789"))))  ;;string
 
 
 
