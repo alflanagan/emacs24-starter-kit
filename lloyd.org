@@ -167,6 +167,9 @@ switching to a major mode.
 #+begin_src emacs-lisp
   (global-set-key [<F5>] 'semantic-ia-fast-jump)
   (global-set-key (kbd "M-\\") 'shrink-whitespace)
+  ;; reminder: \C-cl is org-store-link
+  (global-set-key "\C-cL" 'org-insert-link-global)
+  (global-set-key "\C-co" 'org-open-at-point-global)
 #+end_src
 
 *** Set up paradox package listing features
@@ -215,7 +218,6 @@ in the background, you have to enable it.
         (error (message "[Init] (elpy-enable) failed: %s" err-var)))))
 #+end_src
 **** TODO Move this to starter-kit-python.org
-
 *** Set up web-beautify hotkeys
 The `web-beautify` package provides a useful function for several
 modes. For each one, we bind it to "Ctrl-C b".
@@ -273,6 +275,7 @@ one. See re-builder docs for details.
   (error-into-message (totd-start))
   ;; setting up modeline not working in init, due to dependence
   ;; on themes (need to solve this)
+  ;; see ocodo-mesh-retro-aqua-smt, or ocodo-minimal-light-smt
   ;;(error-into-message (set-up-pretty-modeline))
 #+end_src
 
