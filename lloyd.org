@@ -51,7 +51,7 @@ everybody.
       list-utils ;; List-manipulation utility functions 
       ocodo-svg-modelines ;;A collection of beautiful SVG modelines
       pep8 ;; provides pep8 command to run pep8 checker on file in buffer
-      php-eldoc
+      ;; php-eldoc
       string-utils ;; undeclared dependency of list-utils
 
       ;; standard list:
@@ -75,7 +75,7 @@ everybody.
       magit ;; capable git support
       markdown-mode ;; Emacs Major mode for Markdown-formatted text files
       paradox ;; enhanced package listing, future std.
-      php-mode
+      ;; php-mode ;; brain-dead: use web-mode instead
       pony-mode ;; django-admin interaction (nice)
       pretty-symbols ;; also in starter-kit-lisp, useful elsewhere
       s  ;; The long lost Emacs string manipulation library.
@@ -329,6 +329,20 @@ associations for file extensions.
   (if (functionp 'js2-mode)
       (add-hook 'js2-mode-hook 'turn-off-electric-indent-local))
 
+#+end_src
+
+*** web-mode
+#+begin_src emacs-lisp
+  (eval-after-load 'web-mode
+    (lambda ()
+      (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))))
 #+end_src
 
 *** Add hooks to various modes
