@@ -1,5 +1,6 @@
 # language: emacs-lisp
 # should (now) get less ruby setup, still no elisp support
+sudo: false
 addons:
   apt:
     packages:
