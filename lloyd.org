@@ -44,14 +44,21 @@ everybody.
       ;; new packages
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
+      ac-js2 ;; Auto-complete source for Js2-mode, with navigation 
+      buttercup
       cinspect ;; Use cinspect to look at the CPython source of builtins and other C objects! 
+      common-lisp-snippets
+      concurrent
+      ctable
+      elisp-lint
       flymake-jshint ;; making flymake work with JSHint 
+      jasminejs-mode ;; A minor mode for manipulating jasmine test files 
       jedi  ;; undeclared dependency of cinspect
       jira-markup-mode ;;Emacs Major mode for JIRA-markup-formatted text files 
+      js-doc ;; Insert JsDoc style comment easily 
+      js2-refactor ;; A JavaScript refactoring library for emacs
       list-utils ;; List-manipulation utility functions 
-      ocodo-svg-modelines ;;A collection of beautiful SVG modelines
       pep8 ;; provides pep8 command to run pep8 checker on file in buffer
-      ;; php-eldoc
       string-utils ;; undeclared dependency of list-utils
 
       ;; standard list:
@@ -74,6 +81,7 @@ everybody.
       less-css-mode ;; Major mode for editing LESS CSS files (lesscss.org)
       magit ;; capable git support
       markdown-mode ;; Emacs Major mode for Markdown-formatted text files
+      org ;; newer version of builtin package
       paradox ;; enhanced package listing, future std.
       ;; php-mode ;; brain-dead: use web-mode instead
       pony-mode ;; django-admin interaction (nice)
@@ -170,6 +178,11 @@ switching to a major mode.
   ;; reminder: \C-cl is org-store-link
   (global-set-key "\C-cL" 'org-insert-link-global)
   (global-set-key "\C-co" 'org-open-at-point-global)
+  ;; set up with-editor package to set $EDITOR value in children
+  (define-key (current-global-map)
+    [remap async-shell-command] 'with-editor-async-shell-command)
+  (define-key (current-global-map)
+    [remap shell-command] 'with-editor-shell-command)
 #+end_src
 
 *** Set up paradox package listing features
@@ -180,14 +193,14 @@ file and set up the paradox environment.
 #+begin_src emacs-lisp
   (defun set-up-paradox-variables ()
     "Set up config variables for paradox package ratings."
-    (require 'paradox)
-    (org-babel-load-file (concat starter-kit-dir "/secret-data.org"))
-    (when (functionp 'paradox-list-packages)
-      (defvar paradox-github-token) ;;defvars to make compiler happy
-      (defvar paradox-automatically-star)
-      ;; token "paradox emacs packages" (github.com)
-      (setq paradox-github-token (secret-data-get-key "paradox-github-token"))
-      (setq paradox-automatically-star nil)))
+    (if (not (null (require 'paradox nil t)))
+        (org-babel-load-file (concat starter-kit-dir "/secret-data.org"))
+      (when (functionp 'paradox-list-packages)
+        (defvar paradox-github-token) ;;defvars to make compiler happy
+        (defvar paradox-automatically-star)
+        ;; token "paradox emacs packages" (github.com)
+        (setq paradox-github-token (secret-data-get-key "paradox-github-token"))
+        (setq paradox-automatically-star nil))))
 #+end_src
 
 *** Set up alternate interface for yas-snippet
