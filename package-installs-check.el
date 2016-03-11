@@ -68,6 +68,12 @@
 
 
 ;; package-related functions
+
+(defun package-get-deps (a-package)
+  "Get a list of packages which are listed as dependencies of installed package A-PACKAGE."
+  (let ((astruct (car (alist-get a-package package-alist))))
+    (mapcar #'car (package-desc-reqs astruct))))
+
 (defun get-requirements-list (expected-packages)
   "Get a nested list structure containing requirements of installed packages in list EXPECTED-PACKAGES in form (package-name (version-list))."
   ;;package-alist is an alist associating package names with
