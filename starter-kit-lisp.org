@@ -74,7 +74,6 @@ installed.
   (declare-function smartparens-mode "smartparens" (&optional arg))
   (declare-function smartparens-strict-mode "smartparens" (&optional arg))
   (declare-function sp-use-paredit-bindings "smartparens" ())
-  (declare-function pretty-symbols-mode "pretty-symbols" (&optional arg))
   (declare-function form-feed-mode "form-feed" (&optional arg))
   (declare-function slime "slime" (&optional command coding-system))
 
@@ -86,7 +85,6 @@ installed.
   ;; (require 'clojure-mode)
 
   (defvar read-expression-map)  ;; defined in simple.el
-  (defvar pretty-symbol-categories) ;; pretty-symbols.el
   ;; (defvar starter-kit-clojure-trace-face) ;; starter-kit-clojure.org
   (defvar slime-lisp-implementations) ;; slime.el
   (defvar swank-clojure-binary) ;; slime.el
@@ -105,7 +103,6 @@ installed.
   ;; smartparens-mode
   ;; smartparens-strict-mode
   ;; sp-use-paredit-bindings
-  ;; pretty-symbols-mode
   ;; slime
   ;; run-starter-kit-coding-hook
   ;; swank-clojure-cmd
@@ -142,31 +139,13 @@ back, =C-M-u= up, =C-M-d= down)
 
 #+begin_src emacs-lisp
   ;;smartparens-config is smartparens + default configuration
-  (defun turn-on-paredit ()
-    "Really we're turning on smartparens, but haven't changed function name yet."
+  (defun turn-on-smartparens ()
     (smartparens-mode +1)
     ;; also emulate paredit's refusal to delete one delimiter in a pair
     (smartparens-strict-mode +1)
     ;; I find paredit bindings more convenient w/PC keyboards
     (sp-use-paredit-bindings))
 
-#+end_src
-
-** pretty-symbols
-Pretty-symbols is an enhanced mode for automatically replacing
-character strings with Unicode glyphs.
-
-#+begin_src emacs-lisp
-  (starter-kit-install-if-needed 'pretty-symbols)
-  (defun turn-on-pretty-symbols ()
-    (pretty-symbols-mode 1))
-#+end_src
-
-It only replaces certain symbols by default, so turn on a couple of
-more categories.
-
-#+begin_src emacs-lisp
-  (setq pretty-symbol-categories '(lambda relational logical))
 #+end_src
 
 ** form-feed-mode
@@ -198,9 +177,13 @@ available.
 
 #+begin_src emacs-lisp
   (starter-kit-install-if-needed 'slime)
-  (starter-kit-install-if-needed 'slime-repl) ;; Read-Eval-Print Loop written in Emacs Lisp 
-
 #+end_src
+
+*** SLIME setup
+
+#+BEGIN_SRC emacs-lisp
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+#+END_SRC
 
 ** Emacs Lisp
    :PROPERTIES:
@@ -225,14 +208,11 @@ available.
   (add-hook 'emacs-lisp-mode-hook #'starter-kit-remove-elc-on-save)
   (add-hook 'emacs-lisp-mode-hook #'turn-on-form-feed)
 
-  ;; (add-hook 'emacs-lisp-mode-hook 'idle-highlight)
-  (add-hook 'emacs-lisp-mode-hook #'turn-on-paredit)
   ;; (define-key emacs-lisp-mode-map (kbd "C-c v") #'eval-buffer)
   ;; for indentation, use spaces, not tabs
   (defun turn-off-indent-tabs ()
     (setq indent-tabs-mode nil))
   (add-hook 'emacs-lisp-mode-hook #'turn-off-indent-tabs)
-  (add-hook 'emacs-lisp-mode-hook #'turn-on-pretty-symbols)
 #+end_src
 
 *** font-lock setup
@@ -308,9 +288,6 @@ available.
   (eval-after-load 'find-file-in-project
     '(add-to-list 'ffip-patterns "*.clj"))
 
-  ;; You might like this, but it's a bit disorienting at first:
-  ;; (add-hook 'clojure-mode-hook 'turn-on-paredit)
-
   ;; (defun clojure-project (path)
   ;;   "Setup classpaths for a clojure project and starts a new SLIME session.
 
@@ -375,7 +352,7 @@ pretty \lambda's in clojure
 #+begin_src emacs-lisp
   (add-hook 'lisp-mode-hook 'run-starter-kit-coding-hook)
   ;; (add-hook 'lisp-mode-hook 'idle-highlight)
-  (add-hook 'lisp-mode-hook 'turn-on-paredit)
+  (add-hook 'lisp-mode-hook 'turn-on-smartparens)
   (font-lock-add-keywords 'lisp-mode
                           '(("(\\|)" . 'starter-kit-paren-face)))
 #+end_src
