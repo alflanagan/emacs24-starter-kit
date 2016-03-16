@@ -280,7 +280,8 @@ available.
 
   (eval-after-load 'slime
     '(progn
-       (defalias 'sldb-toggle-details 'slime-jump-to-trace)
+       ;; (defalias 'sldb-toggle-details 'slime-jump-to-trace)
+       ;; ^ see https://github.com/eschulte/emacs24-starter-kit/issues/68
        (defun sldb-prune-initial-frames (frames)
          "Show all stack trace lines by default."
          frames)))
