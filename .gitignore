@@ -12,11 +12,12 @@ tramp
 .smex-items
 smex-items
 *.dat
-ido.last
 bookmarks
 TAGS
 ede-projects.el
 srecode-map.el
+ac-comphist.dat
+ido.last
 
 ## directories
 backups/*
