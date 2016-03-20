@@ -28,7 +28,7 @@
 
 (defun require-report-errors (feature &optional filename)
   "If FEATURE is not loaded, load it from FILENAME. If an error occurs, report and continue"
-  (report-errors (concat (format "[init] Error loading %s: " (symbol-name feature))
+  (with-demoted-errors (concat (format "[init] Error loading %s: " (symbol-name feature))
                          "%s")
     (require feature filename)))
                
