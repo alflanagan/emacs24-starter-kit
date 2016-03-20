@@ -177,6 +177,7 @@ available.
 
 #+begin_src emacs-lisp
   (starter-kit-install-if-needed 'slime)
+  (starter-kit-install-if-needed 'slime-repl) ;; Read-Eval-Print Loop written in Emacs Lisp 
 #+end_src
 
 *** SLIME setup
