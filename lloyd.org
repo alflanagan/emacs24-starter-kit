@@ -20,9 +20,7 @@ To make compiler happy, declare functions defined in other files.
   (declare-function starter-kit-install-if-needed "starter-kit" (&rest packages))
   (declare-function starter-kit-load "starter-kit" (file &optional header-or-tag))
   (declare-function secret-data-get-key "secret-data"  (some-key &optional file-name))
-  (declare-function pretty-symbols-mode "pretty-symbols" (&optional arg))  ;; starter-kit-lisp
   (defvar starter-kit-dir)
-
 #+end_src
 
 ** Setup debug-on-error for my customizations
@@ -45,11 +43,13 @@ everybody.
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
       ac-js2 ;; Auto-complete source for Js2-mode, with navigation 
+      bison-mode ;;Major mode for editing bison, yacc and lex files.
       buttercup
       cinspect ;; Use cinspect to look at the CPython source of builtins and other C objects! 
       common-lisp-snippets
       concurrent
       ctable
+      doctags  ;; generate doxygen-style doc comments
       elisp-lint
       flymake-jshint ;; making flymake work with JSHint 
       jasminejs-mode ;; A minor mode for manipulating jasmine test files 
@@ -57,6 +57,7 @@ everybody.
       jira-markup-mode ;;Emacs Major mode for JIRA-markup-formatted text files 
       js-doc ;; Insert JsDoc style comment easily 
       js2-refactor ;; A JavaScript refactoring library for emacs
+      lex ;;Lexical analyser construction
       list-utils ;; List-manipulation utility functions 
       pep8 ;; provides pep8 command to run pep8 checker on file in buffer
       string-utils ;; undeclared dependency of list-utils
@@ -83,13 +84,12 @@ everybody.
       markdown-mode ;; Emacs Major mode for Markdown-formatted text files
       org ;; newer version of builtin package
       paradox ;; enhanced package listing, future std.
-      ;; php-mode ;; brain-dead: use web-mode instead
       pony-mode ;; django-admin interaction (nice)
-      pretty-symbols ;; also in starter-kit-lisp, useful elsewhere
       s  ;; The long lost Emacs string manipulation library.
       shrink-whitespace
       smartparens  ;; also in starter-kit-lisp
-      totd;; Display a random daily emacs command.
+      ;; totd;; Display a random daily emacs command.
+      ;; totd overwrites clipboard on startup (?!?)
       undo-tree ;; Treat undo history as a tree (very nice)
       web ;; useful HTTP client
       web-beautify ;; Format HTML, CSS and JavaScript/JSON by js-beautify
@@ -268,14 +268,6 @@ one. See re-builder docs for details.
     (setq reb-re-syntax 'string))
 #+end_src
 
-*** Enable pretty modelines
-
-#+begin_src emacs-lisp
-  (defun set-up-pretty-modeline ()
-    (eval-after-load 'svg-modeline-themes
-     (eval-after-load 'ocodo-svg-modelines (ocodo-svg-modelines-init))))
-#+end_src
-
 *** Actually call the setup functions
 #+begin_src emacs-lisp
   (error-into-message (start-server-if-none))
@@ -285,11 +277,6 @@ one. See re-builder docs for details.
   (error-into-message (set-up-web-beautify))
   (error-into-message (set-up-yas-snippets))
   (error-into-message (fix-re-builder))
-  (error-into-message (totd-start))
-  ;; setting up modeline not working in init, due to dependence
-  ;; on themes (need to solve this)
-  ;; see ocodo-mesh-retro-aqua-smt, or ocodo-minimal-light-smt
-  ;;(error-into-message (set-up-pretty-modeline))
 #+end_src
 
 ** Set up major mode hooks
@@ -377,11 +364,6 @@ starter-kit file.
         (add-hook 'python-mode-hook 'turn-on-hs))
     (add-hook 'python-mode-hook 'enable-delete-trailing-ws))
 
-  (defun turn-on-pretty-symbols ()
-    "Enables `pretty-symbols-mode' for current buffer."
-    (if (fboundp 'pretty-symbols-mode)
-        (pretty-symbols-mode 1)))
-
   (defun turn-on-electric-pair-mode ()
     "Enables `electric-pair-mode' for the current buffer."
     (if (fboundp 'electric-pair-mode)
@@ -392,7 +374,6 @@ starter-kit file.
     (add-python-mode-hooks)
     ;; because ido-ubiquitous doesn't get options right
     (add-hook 'ert-simple-view-mode-hook (lambda () (if (fboundp 'ido-ubiquitous-mode) (ido-ubiquitous-mode 0))))
-    (add-hook 'js2-mode-hook 'turn-on-pretty-symbols)
     (add-hook 'js2-mode-hook 'turn-on-electric-pair-mode))
 
   (add-hooks-for-packages)
@@ -425,4 +406,3 @@ typed, which I find far more intuitive/useful.
 #+begin_src emacs-lisp
   (setq debug-on-error lloyd-org-orig-debug-on-error)
 #+end_src
-
