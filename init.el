@@ -118,5 +118,8 @@
 ;; tell magit not to give us a warning about new feature
 (setq magit-last-seen-setup-instructions "1.4.0")
 
-(load-file (concat user-emacs-directory "/local_projects.el"))
+
+(let ((projects-file (concat user-emacs-directory "/local_projects.el")))
+  (if (file-exists-p projects-file)
+      (load-file projects-file)))
 ;;; init.el ends here
