@@ -32,11 +32,6 @@
                          "%s")
     (require feature filename)))
                
-;; preload arduino-mode for cedet (possibly not required)
-;; (unless
-;;     (require 'arduino-mode (expand-file-name "~/Devel/arduino-mode/arduino-mode.el") t)
-;;   (require-report-errors 'arduino-mode))
-
 ;; Add further minor-modes to be enabled by semantic-mode.
 ;; See doc-string of `semantic-default-submodes' for other things
 ;; you can use here.
@@ -54,7 +49,6 @@
 (require 'ede/speedbar)
 (require 'ede/linux)
 (require 'ede/proj-elisp)
-;; (require-report-errors 'ede/arduino)
 
 (global-ede-mode 1)
 (if (fboundp 'semantic-load-enable-code-helpers)
@@ -124,4 +118,5 @@
 ;; tell magit not to give us a warning about new feature
 (setq magit-last-seen-setup-instructions "1.4.0")
 
+(load-file (concat user-emacs-directory "/local_projects.el"))
 ;;; init.el ends here

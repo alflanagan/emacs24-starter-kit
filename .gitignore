@@ -89,3 +89,4 @@ var/
 # projectile files
 projectile*.eld
 network-security.data
+local_projects.el
