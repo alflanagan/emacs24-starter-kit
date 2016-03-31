@@ -42,23 +42,24 @@ everybody.
       ;; new packages
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
-      ac-js2 ;; Auto-complete source for Js2-mode, with navigation 
+      ac-js2 ;; Auto-complete source for Js2-mode, with navigation
       bison-mode ;;Major mode for editing bison, yacc and lex files.
       buttercup
-      cinspect ;; Use cinspect to look at the CPython source of builtins and other C objects! 
+      cinspect ;; Use cinspect to look at the CPython source of builtins and other C objects!
       common-lisp-snippets
       concurrent
       ctable
       doctags  ;; generate doxygen-style doc comments
       elisp-lint
-      flymake-jshint ;; making flymake work with JSHint 
-      jasminejs-mode ;; A minor mode for manipulating jasmine test files 
+      flymake-jshint ;; making flymake work with JSHint
+      fold-dwim-org  ;; Fold DWIM bound to org key-strokes. 
+      jasminejs-mode ;; A minor mode for manipulating jasmine test files
       jedi  ;; undeclared dependency of cinspect
-      jira-markup-mode ;;Emacs Major mode for JIRA-markup-formatted text files 
-      js-doc ;; Insert JsDoc style comment easily 
+      jira-markup-mode ;;Emacs Major mode for JIRA-markup-formatted text files
+      js-doc ;; Insert JsDoc style comment easily
       js2-refactor ;; A JavaScript refactoring library for emacs
       lex ;;Lexical analyser construction
-      list-utils ;; List-manipulation utility functions 
+      list-utils ;; List-manipulation utility functions
       pep8 ;; provides pep8 command to run pep8 checker on file in buffer
       string-utils ;; undeclared dependency of list-utils
 
