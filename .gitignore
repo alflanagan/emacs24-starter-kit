@@ -90,3 +90,5 @@ var/
 projectile*.eld
 network-security.data
 local_projects.el
+# local customization on work laptop
+mgvw0003.*
