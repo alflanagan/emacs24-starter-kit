@@ -42,59 +42,58 @@ everybody.
       ;; new packages
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
-      ac-js2 ;; Auto-complete source for Js2-mode, with navigation
-      bison-mode ;;Major mode for editing bison, yacc and lex files.
-      buttercup
-      cinspect ;; Use cinspect to look at the CPython source of builtins and other C objects!
-      common-lisp-snippets
-      concurrent
-      ctable
-      doctags  ;; generate doxygen-style doc comments
-      elisp-lint
-      flymake-jshint ;; making flymake work with JSHint
-      fold-dwim-org  ;; Fold DWIM bound to org key-strokes. 
-      jasminejs-mode ;; A minor mode for manipulating jasmine test files
-      jedi  ;; undeclared dependency of cinspect
-      jira-markup-mode ;;Emacs Major mode for JIRA-markup-formatted text files
-      js-doc ;; Insert JsDoc style comment easily
-      js2-refactor ;; A JavaScript refactoring library for emacs
-      lex ;;Lexical analyser construction
-      list-utils ;; List-manipulation utility functions
-      pep8 ;; provides pep8 command to run pep8 checker on file in buffer
-      string-utils ;; undeclared dependency of list-utils
+      ac-js2                  ;; Auto-complete source for Js2-mode, with navigation
+      bison-mode              ;; Major mode for editing bison, yacc and lex files.
+      buttercup               ;; Behavior-Driven Emacs Lisp Testing 
+      cinspect                ;; Use cinspect to look at the CPython source of builtins and other C objects!
+      common-lisp-snippets    ;; Yasnippets for Common Lisp 
+      doctags                 ;; generate doxygen-style doc comments
+      ecb                     ;; a code browser for Emacs 
+      elisp-lint              ;; basic linting for Emacs Lisp 
+      fold-dwim-org           ;; Fold DWIM bound to org key-strokes. 
+      jasminejs-mode          ;; A minor mode for manipulating jasmine test files
+      jira-markup-mode        ;; Emacs Major mode for JIRA-markup-formatted text files
+      js-doc                  ;; Insert JsDoc style comment easily
+      js2-refactor            ;; A JavaScript refactoring library for emacs
+      lex                     ;; Lexical analyser construction
+      list-utils              ;; List-manipulation utility functions
+      niceify-info            ;; improve usability of Info pages
+      pep8                    ;; provides pep8 command to run pep8 checker on file in buffer
+      projectile              ;; Manage and navigate projects in Emacs easily
+      projectile-speedbar     ;; projectile integration for speedbar
+      string-utils            ;; String-manipulation utilities
 
       ;; standard list:
-      async ;; Asynchronous processing in Emacs (optional paradox dependency)
-      cider ;; major mode for clojure integration
-      coffee-fof ;; A coffee-mode configuration for `ff-find-other-file'.
-      dash ;; essential functional programming lib
-      dash-functional ;; Collection of useful combinators for Emacs Lisp
-      dropdown-list ;; Drop-down menu interface
-      elpy ;; Emacs Python Development Environment
-      f  ;; file system utilities
-      flx-ido ;; flex integration for ido (better choices for fuzzy match)
-      golden-ratio ;; resize windows, aesthetically
-      ipretty ;; interactive lisp pretty-print
-      irfc  ;; look up IETF RFCs and display in buffer
-      js2-mode ;; improved JavaScript support
-      json-mode
-      json-reformat
-      json-snatcher
-      less-css-mode ;; Major mode for editing LESS CSS files (lesscss.org)
-      magit ;; capable git support
-      markdown-mode ;; Emacs Major mode for Markdown-formatted text files
-      org ;; newer version of builtin package
-      paradox ;; enhanced package listing, future std.
-      pony-mode ;; django-admin interaction (nice)
-      s  ;; The long lost Emacs string manipulation library.
-      shrink-whitespace
-      smartparens  ;; also in starter-kit-lisp
-      ;; totd;; Display a random daily emacs command.
-      ;; totd overwrites clipboard on startup (?!?)
-      undo-tree ;; Treat undo history as a tree (very nice)
-      web ;; useful HTTP client
-      web-beautify ;; Format HTML, CSS and JavaScript/JSON by js-beautify
-      web-mode) ;; major mode for editing html templates
+      async                   ;; Asynchronous processing in Emacs (optional paradox dependency)
+      cider                   ;; major mode for clojure integration
+      coffee-fof              ;; A coffee-mode configuration for `ff-find-other-file'.
+      dash                    ;; essential functional programming lib
+      dash-functional         ;; Collection of useful combinators for Emacs Lisp
+      dropdown-list           ;; Drop-down menu interface
+      elpy                    ;; Emacs Python Development Environment
+      f                       ;; file system utilities
+      flx-ido                 ;; flex integration for ido (better choices for fuzzy match)
+      flymake-jshint          ;; making flymake work with JSHint
+      golden-ratio            ;; resize windows, aesthetically
+      ipretty                 ;; interactive lisp pretty-print
+      irfc                    ;; look up IETF RFCs and display in buffer
+      jedi                    ;; a Python auto-completion for Emacs
+      js2-mode                ;; improved JavaScript support
+      json-mode               ;; Major mode for editing JSON files 
+      less-css-mode           ;; Major mode for editing LESS CSS files (lesscss.org)
+      magit                   ;; capable git support
+      markdown-mode           ;; Emacs Major mode for Markdown-formatted text files
+      org                     ;; newer version of builtin package
+      paradox                 ;; enhanced package listing, future std.
+      pony-mode               ;; django-admin interaction (nice)
+      python-mode             ;; Python major mode 
+      s                       ;; The long lost Emacs string manipulation library.
+      shrink-whitespace       ;; Whitespace removal DWIM key 
+      smartparens             ;; also in starter-kit-lisp
+      undo-tree               ;; Treat undo history as a tree (very nice)
+      web                     ;; useful HTTP client
+      web-beautify            ;; Format HTML, CSS and JavaScript/JSON by js-beautify
+      web-mode)               ;; major mode for editing html templates
     "The set of packages to be automatically installed for me."
     )
 
