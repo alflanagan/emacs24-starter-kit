@@ -58,9 +58,11 @@ everybody.
       lex                     ;; Lexical analyser construction
       list-utils              ;; List-manipulation utility functions
       niceify-info            ;; improve usability of Info pages
+      ob-lisp                 ;; org-babel functions for common lisp evaluation with SLY or SLIME. 
       pep8                    ;; provides pep8 command to run pep8 checker on file in buffer
       projectile              ;; Manage and navigate projects in Emacs easily
       projectile-speedbar     ;; projectile integration for speedbar
+      pycoverage              ;; Support for coverage stats on Python 2.X and 3 
       string-utils            ;; String-manipulation utilities
 
       ;; standard list:
@@ -81,7 +83,7 @@ everybody.
       js2-mode                ;; improved JavaScript support
       json-mode               ;; Major mode for editing JSON files 
       less-css-mode           ;; Major mode for editing LESS CSS files (lesscss.org)
-      magit                   ;; capable git support
+      ;; magit                   ;; capable git support
       markdown-mode           ;; Emacs Major mode for Markdown-formatted text files
       org                     ;; newer version of builtin package
       paradox                 ;; enhanced package listing, future std.
@@ -374,7 +376,8 @@ starter-kit file.
     (add-python-mode-hooks)
     ;; because ido-ubiquitous doesn't get options right
     (add-hook 'ert-simple-view-mode-hook (lambda () (if (fboundp 'ido-ubiquitous-mode) (ido-ubiquitous-mode 0))))
-    (add-hook 'js2-mode-hook 'turn-on-electric-pair-mode))
+    (add-hook 'js2-mode-hook 'turn-on-electric-pair-mode)
+    (add-hook 'Info-selection-hook (lambda () (niceify-info))))
 
   (add-hooks-for-packages)
 #+end_src
