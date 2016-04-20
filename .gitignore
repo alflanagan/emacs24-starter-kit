@@ -34,10 +34,10 @@ url/*
 semanticdb/*
 .cask/*
 server/*
+var/*
 
 ## exported and encrypted files
 *gpg
-# *el
 starter-kit*.el
 lloyd.el
 secret-data.el
@@ -72,27 +72,26 @@ agent/*
 !literate-starter-kit-pkg.el
 literate-starter-kit/
 literate-starter-kit.tar
-WME03370.org
-aflanaga.org
-RHODAN.el
-Godzilla.org
-Godzilla.el
-mgvwdm003.wme.owhc.net.el
 
+# local server files for various hosts.
+Godzilla.*
+RHODAN.*
+WME03370.*
+aflanaga.*
+lloyd-ThinkPad-R400.*
+mgvw0003.*
+mgvwdm003.wme.owhc.net.*
+
+# other
 recentf
 \#*
-lloyd-ThinkPad-R400.org
 test/*.el
-lloyd-ThinkPad-R400.el
-# another app directory
-var/
+
 # projectile files
 projectile*.eld
 network-security.data
-local_projects.el
-# local customization on work laptop
-mgvw0003.*
 projectile.cache
+
 # output of GNU Global
 GPATH
 GRTAGS
