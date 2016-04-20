@@ -97,7 +97,7 @@ everybody.
         ;; PROBLEM CHILDREN: early loading causes process to fail
         ;; ac-js2                  ;; Auto-complete source for Js2-mode, with navigation
         ;; ob-lisp                 ;; org-babel functions for common lisp evaluation with SLY or SLIME. 
-        ;; magit                   ;; capable git support
+        magit                   ;; capable git support
 
         )
       "The set of packages to be automatically installed for me."

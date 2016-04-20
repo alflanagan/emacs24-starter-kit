@@ -108,6 +108,7 @@
   ;; lloyds-installed-packages variable
   (append '(form-feed slime-repl slime) ;; starter-kit-lisp
           '(nodejs-repl nvm) ;; starter-kit-nodejs
+          '(ctable concurrent)  ;; dependencies of ecb -- why not found??
           lloyds-installed-packages))
 
 (print (extra-packages-installed (build-expected-packages)))
