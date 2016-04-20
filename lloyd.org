@@ -360,22 +360,30 @@ associations for file extensions.
 
 #+name: set-up-javascript
 #+begin_src emacs-lisp
-   (if (functionp 'js2-mode)
-       (let ((interp-list '("node" "nodejs" "gjs" "rhino")))
-         (mapc (lambda (interp-name)
-                 (lloyd-set-interpreter-mode (purecopy interp-name) 'js2-mode))
-               interp-list)
-         ;; replace all the existing file extension associations with 'js2-mode
-         (while (rassoc 'javascript-mode auto-mode-alist)
-           (setf (cdr (rassoc 'javascript-mode auto-mode-alist)) 'js2-mode))))
+  (if (functionp 'js2-mode)
+      (let ((interp-list '("node" "nodejs" "gjs" "rhino")))
+        (mapc (lambda (interp-name)
+                (lloyd-set-interpreter-mode (purecopy interp-name) 'js2-mode))
+              interp-list)
+        ;; replace all the existing file extension associations with 'js2-mode
+        (while (rassoc 'javascript-mode auto-mode-alist)
+          (setf (cdr (rassoc 'javascript-mode auto-mode-alist)) 'js2-mode))))
 
-  (defun turn-off-electric-indent-local()
-    "Disable electric-indent for js2-mode. It fails epically."
-    (electric-indent-local-mode 0))
+    (defun turn-on-electric-pair-mode ()
+      "Enables `electric-pair-mode' for the current buffer."
+      (if (fboundp 'electric-pair-mode)
+          (electric-pair-mode 1)))
+
+  (defun set-up-js2-mode ()
+    "Enable options for js2 (Javascript) mode."
+    (electric-indent-local-mode 0)  ;; fails epically.
+    (turn-on-electric-pair-mode)
+    (company-mode)
+    (js2-refactor-mode)  ;; check out js2r-xxx functions!
+    (hs-minor-mode))
 
   (if (functionp 'js2-mode)
-      (add-hook 'js2-mode-hook 'turn-off-electric-indent-local))
-
+      (add-hook 'js2-mode-hook 'set-up-js2-mode))
 #+end_src
 
 *** web-mode
@@ -411,17 +419,11 @@ starter-kit file.
         (add-hook 'python-mode-hook 'turn-on-hs))
     (add-hook 'python-mode-hook 'enable-delete-trailing-ws))
 
-  (defun turn-on-electric-pair-mode ()
-    "Enables `electric-pair-mode' for the current buffer."
-    (if (fboundp 'electric-pair-mode)
-        (electric-pair-mode 1)))
-
   (defun add-hooks-for-packages ()
     "Set up hooks which depend on packages that need to be initialized by package system."
     (add-python-mode-hooks)
     ;; because ido-ubiquitous doesn't get options right
     (add-hook 'ert-simple-view-mode-hook (lambda () (if (fboundp 'ido-ubiquitous-mode) (ido-ubiquitous-mode 0))))
-    (add-hook 'js2-mode-hook 'turn-on-electric-pair-mode)
     (add-hook 'Info-selection-hook (lambda () (niceify-info))))
 
   (add-hooks-for-packages)
