@@ -21,13 +21,19 @@ To make compiler happy, declare functions defined in other files.
   (declare-function starter-kit-load "starter-kit" (file &optional header-or-tag))
   (declare-function secret-data-get-key "secret-data"  (some-key &optional file-name))
   (defvar starter-kit-dir)
+  (defvar yas-prompt-functions)
+  (defvar reb-re-syntax)
+  (declare-function niceify-info "niceify-info" ())
+  (declare-function js2-refactor-mode "js2-refactor" ())
+  (declare-function company-mode "company" (&optional arg))
+  (declare-function ede-enable-generic-projects "ede/generic" ())
 #+end_src
 
 ** Setup debug-on-error for my customizations
 #+begin_src emacs-lisp
-  (defvar lloyd-org-orig-debug-on-error debug-on-error
-    "Stores locally value of `debug-on-error' so that it may be restored.")
-  (setq debug-on-error t)
+  ;;(defvar lloyd-org-orig-debug-on-error debug-on-error
+  ;;  "Stores locally value of `debug-on-error' so that it may be restored.")
+  ;; (setq debug-on-error t)
 
 #+end_src
 
@@ -454,5 +460,5 @@ typed, which I find far more intuitive/useful.
 
 *** Set `debug-on-error' back to original value.
 #+begin_src emacs-lisp
-  (setq debug-on-error lloyd-org-orig-debug-on-error)
+  ;; (setq debug-on-error lloyd-org-orig-debug-on-error)
 #+end_src
