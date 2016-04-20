@@ -5,6 +5,8 @@
 ;; This is the first thing to get loaded.
 ;;
 
+(eval-when-compile (require 'package))
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -28,8 +30,7 @@
 
 (defun require-report-errors (feature &optional filename)
   "If FEATURE is not loaded, load it from FILENAME. If an error occurs, report and continue"
-  (with-demoted-errors (concat (format "[init] Error loading %s: " (symbol-name feature))
-                         "%s")
+  (with-demoted-errors (concat "[init] Error loading " (symbol-name feature) ": %s")
     (require feature filename)))
                
 ;; Add further minor-modes to be enabled by semantic-mode.
