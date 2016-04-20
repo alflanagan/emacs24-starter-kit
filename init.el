@@ -116,10 +116,7 @@
     (org-babel-load-file (expand-file-name "starter-kit.org" starter-kit-dir))))
 
 ;; tell magit not to give us a warning about new feature
-(setq magit-last-seen-setup-instructions "1.4.0")
 
+;; (setq magit-last-seen-setup-instructions "1.4.0")
 
-(let ((projects-file (concat user-emacs-directory "/local_projects.el")))
-  (if (file-exists-p projects-file)
-      (load-file projects-file)))
 ;;; init.el ends here
