@@ -200,13 +200,13 @@ file and set up the paradox environment.
   (defun set-up-paradox-variables ()
     "Set up config variables for paradox package ratings."
     (if (not (null (require 'paradox nil t)))
-        (org-babel-load-file (concat starter-kit-dir "/secret-data.org"))
-      (when (functionp 'paradox-list-packages)
-        (defvar paradox-github-token) ;;defvars to make compiler happy
-        (defvar paradox-automatically-star)
-        ;; token "paradox emacs packages" (github.com)
-        (setq paradox-github-token (secret-data-get-key "paradox-github-token"))
-        (setq paradox-automatically-star nil))))
+        (org-babel-load-file (concat starter-kit-dir "/secret-data.org")))
+    (when (functionp 'paradox-list-packages)
+      (defvar paradox-github-token) ;;defvars to make compiler happy
+      (defvar paradox-automatically-star)
+      ;; token "paradox emacs packages" (github.com)
+      (setq paradox-github-token (secret-data-get-key "paradox-github-token"))
+      (setq paradox-automatically-star nil)))
 #+end_src
 
 *** Set up alternate interface for yas-snippet
