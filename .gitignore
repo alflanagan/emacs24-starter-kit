@@ -92,3 +92,9 @@ network-security.data
 local_projects.el
 # local customization on work laptop
 mgvw0003.*
+projectile.cache
+# output of GNU Global
+GPATH
+GRTAGS
+GSYMS
+GTAGS
