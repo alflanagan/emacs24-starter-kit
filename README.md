@@ -12,14 +12,16 @@ The main advantages of this Emacs Starter Kit are
 - git provides for version control, backup, and sharing
 - easy installation with no need to compile external packages
 
-The latest build status at [Travis CI](http://travis-ci.org): [![Build Status](https://travis-ci.org/alflanagan/emacs24-starter-kit.svg?branch=lloyd-custom)](https://travis-ci.org/alflanagan/emacs24-starter-kit)
+Previously there was an attempt to test loading these scripts to 
+https://travis-ci.org. This was constantly failing due to problems
+with the third-party packages being loaded.
 
-NOTE: The build status, unfortunately, all-too-frequently fails due to
-problems with one of the many third-party packages installed by the
-starter kit. TODO: make tests discriminate between a package's failure
-to install, and failure of the package (require) statement.
+TODO: Develop tests that are less dependent on loading external
+packages. Substitute our own "stub" packages for testing?
 
-The latest version is at http://github.com/eschulte/emacs24-starter-kit/
+The latest version is at http://github.com/flanagan/emacs24-starter-kit.
+The branch lloyd-custom is most up to date, but also the most
+specific to a single user.
 
 For more information including use and installation instructions see
 http://eschulte.github.com/emacs24-starter-kit/
