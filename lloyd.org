@@ -48,7 +48,6 @@ everybody.
         ;; new packages
         ;; these packages are "on probation"
         ;; will be moved to standard list if they work out
-        ac-js2                  ;; Auto-complete source for Js2-mode, with navigation 
         bison-mode              ;; Major mode for editing bison, yacc and lex files.
         buttercup               ;; Behavior-Driven Emacs Lisp Testing 
         cinspect                ;; Use cinspect to look at the CPython source of builtins and other C objects!
@@ -103,7 +102,6 @@ everybody.
         web-mode                ;; major mode for editing html templates
 
         ;; PROBLEM CHILDREN: early loading causes process to fail
-        ;; ac-js2                  ;; Auto-complete source for Js2-mode, with navigation
         ;; ob-lisp                 ;; org-babel functions for common lisp evaluation with SLY or SLIME. 
         magit                   ;; capable git support
 
@@ -368,14 +366,23 @@ associations for file extensions.
 
 #+name: set-up-javascript
 #+begin_src emacs-lisp
-  (if (functionp 'js2-mode)
-      (let ((interp-list '("node" "nodejs" "gjs" "rhino")))
-        (mapc (lambda (interp-name)
-                (lloyd-set-interpreter-mode (purecopy interp-name) 'js2-mode))
-              interp-list)
-        ;; replace all the existing file extension associations with 'js2-mode
-        (while (rassoc 'javascript-mode auto-mode-alist)
-          (setf (cdr (rassoc 'javascript-mode auto-mode-alist)) 'js2-mode))))
+  (defun make-js2-mode-default ()
+    "Modify emacs script detection to use js2-mode instead of javascript-mode."
+    (if (functionp 'js2-mode)
+        (let ((interp-list '("node" "nodejs" "gjs" "rhino")))
+          (mapc (lambda (interp-name)
+                  (lloyd-set-interpreter-mode (purecopy interp-name) 'js2-mode))
+                interp-list)
+          ;; replace all the existing file extension associations with 'js2-mode
+          (while (rassoc 'javascript-mode auto-mode-alist)
+            (setf (cdr (rassoc 'javascript-mode auto-mode-alist)) 'js2-mode)))))
+
+  (defun set-js2-options ()
+    "Set up formatting options for js-mode to our preference."
+    (setq js2-strict-missing-semi-warning nil)
+    (setq js-indent-level 2)
+    (setq js2-highlight-level 3)
+    (setq js2-mode-indent-ignore-first-tab t))
 
   (defun turn-on-electric-pair-mode ()
     "Enables `electric-pair-mode' for the current buffer."
@@ -391,10 +398,8 @@ associations for file extensions.
     (hs-minor-mode))
 
   (if (functionp 'js2-mode)
-      (progn    (setq js2-strict-missing-semi-warning nil)
-                (setq js-indent-level 2)
-                (setq js2-highlight-level 3)
-                (setq js2-mode-indent-ignore-first-tab t)
+      (progn    (make-js2-mode-default)
+                (set-js2-options)
                 (add-hook 'js2-mode-hook 'set-up-js2-mode)))
 #+end_src
 
