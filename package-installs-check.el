@@ -108,10 +108,23 @@
   ;; lloyds-installed-packages variable
   (append '(form-feed slime-repl slime) ;; starter-kit-lisp
           '(nodejs-repl nvm) ;; starter-kit-nodejs
-          '(ctable concurrent)  ;; dependencies of ecb -- why not found??
+          '(ctable concurrent)  ;; dependencies of ecb -- why not
+   ;; found??
+          '(ivy)  ;; find-file-in-project <- swiper <- ivy
           lloyds-installed-packages))
 
-(print (extra-packages-installed (build-expected-packages)))
+(defun append-string-to-buffer (string buffer)
+  "Append STRING to the end of BUFFER."
+  (with-current-buffer buffer
+    (save-excursion
+      (goto-char (point-max))
+      (insert string))))
+
+(with-current-buffer "*scratch*"
+  (save-excursion
+    (goto-char (point-max))
+    (print (extra-packages-installed (build-expected-packages)) (current-buffer))))
+
 
 
 ;; various debug code -- TOOD: make proper unit tests
