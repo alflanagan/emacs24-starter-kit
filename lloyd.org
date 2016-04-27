@@ -48,10 +48,12 @@ everybody.
         ;; new packages
         ;; these packages are "on probation"
         ;; will be moved to standard list if they work out
+        ac-js2                  ;; Auto-complete source for Js2-mode, with navigation 
         bison-mode              ;; Major mode for editing bison, yacc and lex files.
         buttercup               ;; Behavior-Driven Emacs Lisp Testing 
         cinspect                ;; Use cinspect to look at the CPython source of builtins and other C objects!
         common-lisp-snippets    ;; Yasnippets for Common Lisp 
+        devdocs                 ;; Launch DevDocs search
         doctags                 ;; generate doxygen-style doc comments
         ecb                     ;; a code browser for Emacs 
         elisp-lint              ;; basic linting for Emacs Lisp 
@@ -375,13 +377,13 @@ associations for file extensions.
         (while (rassoc 'javascript-mode auto-mode-alist)
           (setf (cdr (rassoc 'javascript-mode auto-mode-alist)) 'js2-mode))))
 
-    (defun turn-on-electric-pair-mode ()
-      "Enables `electric-pair-mode' for the current buffer."
-      (if (fboundp 'electric-pair-mode)
-          (electric-pair-mode 1)))
+  (defun turn-on-electric-pair-mode ()
+    "Enables `electric-pair-mode' for the current buffer."
+    (if (fboundp 'electric-pair-mode)
+        (electric-pair-mode 1)))
 
   (defun set-up-js2-mode ()
-    "Enable options for js2 (Javascript) mode."
+    "Enable/disable minor modes for js2 (Javascript) mode."
     (electric-indent-local-mode 0)  ;; fails epically.
     (turn-on-electric-pair-mode)
     (company-mode)
@@ -389,8 +391,11 @@ associations for file extensions.
     (hs-minor-mode))
 
   (if (functionp 'js2-mode)
-      (setq js2-strict-missing-semi-warning nil)
-      (add-hook 'js2-mode-hook 'set-up-js2-mode))
+      (progn    (setq js2-strict-missing-semi-warning nil)
+                (setq js-indent-level 2)
+                (setq js2-highlight-level 3)
+                (setq js2-mode-indent-ignore-first-tab t)
+                (add-hook 'js2-mode-hook 'set-up-js2-mode)))
 #+end_src
 
 *** web-mode
