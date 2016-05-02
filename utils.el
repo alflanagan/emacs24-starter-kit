@@ -107,5 +107,5 @@ is present in LST and Y is not (unlike `before')."
       nil
     (let ((val (funcall fn (car lst))))
       (if val
-          (values (car lst) val)
+          (cl-values (car lst) val)
         (find2 fn (cdr lst))))))
