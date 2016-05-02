@@ -24,9 +24,11 @@ To make compiler happy, declare functions defined in other files.
   (defvar yas-prompt-functions)
   (defvar reb-re-syntax)
   (declare-function niceify-info "niceify-info" ())
-  (declare-function js2-refactor-mode "js2-refactor" ())
+  (declare-function js2-refactor-mode "js2-refactor" (&optional arg))
   (declare-function company-mode "company" (&optional arg))
   (declare-function ede-enable-generic-projects "ede/generic" ())
+  (declare-function projectile-global-mode "projectile" (&optional arg))
+
 #+end_src
 
 ** Setup debug-on-error for my customizations
@@ -388,6 +390,10 @@ associations for file extensions.
 
   (defun set-js2-options ()
     "Set up formatting options for js-mode to our preference."
+    (defvar js2-strict-missing-semi-warning)
+    (defvar js-indent-level)
+    (defvar js2-highlight-level)
+    (defvar js2-mode-indent-ignore-first-tab )
     (setq js2-strict-missing-semi-warning nil)
     (setq js-indent-level 2)
     (setq js2-highlight-level 3)
