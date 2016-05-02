@@ -215,6 +215,14 @@ file and set up the paradox environment.
       (setq paradox-automatically-star nil)))
 #+end_src
 
+*** Set up projectile options
+
+#+begin_src emacs-lisp
+  (defun set-up-projectile ()
+    "enable projectile globally, set options"
+    (projectile-global-mode))
+#+end_src
+
 *** Set up alternate interface for yas-snippet
 For whatever reason, currently the default interface for `yas-snippet'
 pops a window ever-so-briefly which then disappears. Useless. Set up
@@ -330,6 +338,7 @@ one. See re-builder docs for details.
   (error-into-message (set-up-web-beautify))
   (error-into-message (set-up-yas-snippets))
   (error-into-message (fix-re-builder))
+  (error-into-message (set-up-projectile))
 #+end_src
 
 ** Set up major mode hooks
@@ -441,7 +450,8 @@ starter-kit file.
     (add-python-mode-hooks)
     ;; because ido-ubiquitous doesn't get options right
     (add-hook 'ert-simple-view-mode-hook (lambda () (if (fboundp 'ido-ubiquitous-mode) (ido-ubiquitous-mode 0))))
-    (add-hook 'Info-selection-hook (lambda () (niceify-info))))
+    (add-hook 'Info-selection-hook (lambda () (niceify-info)))
+    (add-hook 'c-mode-common-hook (lambda () (if (fboundp 'c-turn-on-eldoc-mode) (c-turn-on-eldoc-mode)))))
 
   (add-hooks-for-packages)
 #+end_src
