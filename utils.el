@@ -1,3 +1,5 @@
+;;   -*- lexical-binding: t; coding: utf-8-unix; -*-
+
 (require 'cl-lib)
 
 ;; utility functions from Paul Graham's "On Lisp"
@@ -80,20 +82,23 @@ Differs from `cl-remove-if' as that function does not affect subtrees."
                                    (cons (car tree) acc)))))))
     (rec tree nil)))
 
-(cl-defun before (x y lst &key (test eql))
+(cl-defun before (x y lst &key (test #'eql))
   "Predicate is true if X occurs before Y in list LST (using equality test TEST).
 
-Attempts to return the cdr beginning with X. Will return as true if X is present in LST and Y is not."
+Attempts to return the cdr beginning with X. Will return as true
+if X is present in LST and Y is not."
   (and lst
        (let ((first (car lst)))
          (cond ((funcall test y first) nil)
                ((funcall test x first) lst)
                (t (before x y (cdr lst) :test test))))))
 
-(defun after (x y lst &key (test eql))
-  "Predicate is true if X occurs before Y in list LST (keyword :test specifies equality test TEST)
+(cl-defun after (x y lst &key (test #'eql))
+  "Predicate is true if X occurs before Y in list
+  LST (keyword :test specifies equality test TEST)
 
-Attempts to return the cdr beginning with X. Will return nil if X is present in LST and Y is not (unlike `before')."
+Attempts to return the cdr beginning with X. Will return nil if X
+is present in LST and Y is not (unlike `before')."
   (let ((rest (before y x lst :test test)))
     (and rest (cl-member x rest :test test))))
 
