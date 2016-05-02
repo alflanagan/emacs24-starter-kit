@@ -26,6 +26,7 @@
 
 (require 'cl-lib)
 (require 'package)
+(defvar lloyds-installed-packages)
 
 ;; needed for batch mode.
 
