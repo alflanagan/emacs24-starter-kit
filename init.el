@@ -25,9 +25,6 @@
 	(load-file (expand-file-name "cedet-contrib-load.el" (expand-file-name "contrib" cedet-home)))
       ((debug error) (message "[init] ERROR Probably need to re-compile contrib\ directory: %s" (cdr some-error))))))
 
-(add-to-list 'package-archives
-             '("elpy" . "http://jorgenschaefer.github.io/packages/"))
-
 (defun require-report-errors (feature &optional filename)
   "If FEATURE is not loaded, load it from FILENAME. If an error occurs, report and continue"
   (with-demoted-errors (concat "[init] Error loading " (symbol-name feature) ": %s")
@@ -45,13 +42,13 @@
 (semantic-mode 1)
 
 ;; Enable EDE (Project Management) features
-(require 'ede/emacs)
-(require 'ede/cpp-root)
-(require 'ede/speedbar)
-(require 'ede/linux)
-(require 'ede/proj-elisp)
+;; (require 'ede/emacs)
+;; (require 'ede/cpp-root)
+;; (require 'ede/speedbar)
+;; (require 'ede/linux)
+;; (require 'ede/proj-elisp)
 
-(global-ede-mode 1)
+;; (global-ede-mode 1)
 (if (fboundp 'semantic-load-enable-code-helpers)
     (semantic-load-enable-code-helpers)) ; Enable prototype help and smart completion 
 (if (fboundp 'global-srecode-minor-mode)
@@ -115,9 +112,5 @@
        '(require 'org))
     ;; load up the starter kit
     (org-babel-load-file (expand-file-name "starter-kit.org" starter-kit-dir))))
-
-;; tell magit not to give us a warning about new feature
-
-;; (setq magit-last-seen-setup-instructions "1.4.0")
 
 ;;; init.el ends here
