@@ -45,74 +45,79 @@ everybody.
 
 #+name: my-installed-packages
 #+begin_src emacs-lisp
-    (defconst lloyds-installed-packages
-      '(
-        ;; new packages
-        ;; these packages are "on probation"
-        ;; will be moved to standard list if they work out
-        bison-mode              ;; Major mode for editing bison, yacc and lex files.
-        buttercup               ;; Behavior-Driven Emacs Lisp Testing 
-        cinspect                ;; Use cinspect to look at the CPython source of builtins and other C objects!
-        common-lisp-snippets    ;; Yasnippets for Common Lisp 
-        devdocs                 ;; Launch DevDocs search
-        doctags                 ;; generate doxygen-style doc comments
-        ecb                     ;; a code browser for Emacs 
-        elisp-lint              ;; basic linting for Emacs Lisp 
-        fold-dwim-org           ;; Fold DWIM bound to org key-strokes. 
-        jasminejs-mode          ;; A minor mode for manipulating jasmine test files
-        jira-markup-mode        ;; Emacs Major mode for JIRA-markup-formatted text files
-        js-doc                  ;; Insert JsDoc style comment easily
-        js2-refactor            ;; A JavaScript refactoring library for emacs
-        lex                     ;; Lexical analyser construction
-        list-utils              ;; List-manipulation utility functions
-        niceify-info            ;; improve usability of Info pages
-        pep8                    ;; provides pep8 command to run pep8 checker on file in buffer
-        projectile              ;; Manage and navigate projects in Emacs easily
-        projectile-speedbar     ;; projectile integration for speedbar
-        pycoverage              ;; Support for coverage stats on Python 2.X and 3 
-        string-utils            ;; String-manipulation utilities
+  (defconst lloyds-installed-packages
+    '(
+      ;; new packages
+      ;; these packages are "on probation"
+      ;; will be moved to standard list if they work out
+      bison-mode              ;; Major mode for editing bison, yacc and lex files.
+      buttercup               ;; Behavior-Driven Emacs Lisp Testing
+      cinspect                ;; Use cinspect to look at the CPython source of builtins and other C objects!
+      common-lisp-snippets    ;; Yasnippets for Common Lisp
+      devdocs                 ;; Launch DevDocs search
+      doctags                 ;; generate doxygen-style doc comments
 
-        ;; standard list:
-        async                   ;; Asynchronous processing in Emacs (optional paradox dependency)
-        cider                   ;; major mode for clojure integration
-        coffee-fof              ;; A coffee-mode configuration for `ff-find-other-file'.
-        dash                    ;; essential functional programming lib
-        dash-functional         ;; Collection of useful combinators for Emacs Lisp
-        dropdown-list           ;; Drop-down menu interface
-        elpy                    ;; Emacs Python Development Environment
-        f                       ;; file system utilities
-        flx-ido                 ;; flex integration for ido (better choices for fuzzy match)
-        flymake-jshint          ;; making flymake work with JSHint
-        golden-ratio            ;; resize windows, aesthetically
-        ipretty                 ;; interactive lisp pretty-print
-        irfc                    ;; look up IETF RFCs and display in buffer
-        jedi                    ;; a Python auto-completion for Emacs
-        js2-mode                ;; improved JavaScript support
-        json-mode               ;; Major mode for editing JSON files 
-        less-css-mode           ;; Major mode for editing LESS CSS files (lesscss.org)
-        markdown-mode           ;; Emacs Major mode for Markdown-formatted text files
-        org                     ;; newer version of builtin package
-        paradox                 ;; enhanced package listing, future std.
-        pony-mode               ;; django-admin interaction (nice)
-        python-mode             ;; Python major mode 
-        s                       ;; The long lost Emacs string manipulation library.
-        shrink-whitespace       ;; Whitespace removal DWIM key 
-        smartparens             ;; also in starter-kit-lisp
-        undo-tree               ;; Treat undo history as a tree (very nice)
-        web                     ;; useful HTTP client
-        web-beautify            ;; Format HTML, CSS and JavaScript/JSON by js-beautify
-        web-mode                ;; major mode for editing html templates
+      ;; ecb has ... issues. it breaks use of ido-mode for automatic
+      ;; completions in the mini-buffer, for example.  It hasn't been
+      ;; updated since 2014.  it's still really nice. I've cloned the
+      ;; repo, maybe can fix some of the problems
+      ecb                     ;; a code browser for Emacs
+      elisp-lint              ;; basic linting for Emacs Lisp
+      hideshowvis             ;; Add markers to the fringe for regions foldable by hideshow.el
+      jasminejs-mode          ;; A minor mode for manipulating jasmine test files
+      jira-markup-mode        ;; Emacs Major mode for JIRA-markup-formatted text files
+      js-doc                  ;; Insert JsDoc style comment easily
+      lex                     ;; Lexical analyser construction
+      list-utils              ;; List-manipulation utility functions
+      niceify-info            ;; improve usability of Info pages
+      pep8                    ;; provides pep8 command to run pep8 checker on file in buffer
+      pycoverage              ;; Support for coverage stats on Python 2.X and 3
+      string-utils            ;; String-manipulation utilities
 
-        ;; PROBLEM CHILDREN: early loading causes process to fail
-        ;; ob-lisp                 ;; org-babel functions for common lisp evaluation with SLY or SLIME. 
-        magit                   ;; capable git support
+      ;; standard list:
+      async                   ;; Asynchronous processing in Emacs (optional paradox dependency)
+      cider                   ;; major mode for clojure integration
+      coffee-fof              ;; A coffee-mode configuration for `ff-find-other-file'.
+      dash                    ;; essential functional programming lib
+      dash-functional         ;; Collection of useful combinators for Emacs Lisp
+      dropdown-list           ;; Drop-down menu interface
+      elpy                    ;; Emacs Python Development Environment
+      f                       ;; file system utilities
+      flx-ido                 ;; flex integration for ido (better choices for fuzzy match)
+      flymake-jshint          ;; making flymake work with JSHint
+      golden-ratio            ;; resize windows, aesthetically
+      ipretty                 ;; interactive lisp pretty-print
+      irfc                    ;; look up IETF RFCs and display in buffer
+      jedi                    ;; a Python auto-completion for Emacs
+      js2-mode                ;; improved JavaScript support
+      js2-refactor            ;; A JavaScript refactoring library for emacs
+      json-mode               ;; Major mode for editing JSON files
+      less-css-mode           ;; Major mode for editing LESS CSS files (lesscss.org)
+      markdown-mode           ;; Emacs Major mode for Markdown-formatted text files
+      org                     ;; newer version of builtin package
+      paradox                 ;; enhanced package listing, future std.
+      pony-mode               ;; django-admin interaction (nice)
+      projectile              ;; Manage and navigate projects in Emacs easily
+      projectile-speedbar     ;; projectile integration for speedbar
+      python-mode             ;; Python major mode
+      s                       ;; The long lost Emacs string manipulation library.
+      shrink-whitespace       ;; Whitespace removal DWIM key
+      smartparens             ;; also in starter-kit-lisp
+      undo-tree               ;; Treat undo history as a tree (very nice)
+      web                     ;; useful HTTP client
+      web-beautify            ;; Format HTML, CSS and JavaScript/JSON by js-beautify
+      web-mode                ;; major mode for editing html templates
 
-        )
-      "The set of packages to be automatically installed for me."
+      ;; PROBLEM CHILDREN: early loading causes process to fail
+      ;; ob-lisp                 ;; org-babel functions for common lisp evaluation with SLY or SLIME.
+      magit                   ;; capable git support
+
       )
+    "The set of packages to be automatically installed for me."
+    )
 
-    (mapc 'starter-kit-install-if-needed
-          lloyds-installed-packages)
+  (mapc 'starter-kit-install-if-needed
+        lloyds-installed-packages)
 #+end_src
 
 ** Windows-specific setup
@@ -320,7 +325,7 @@ one. See re-builder docs for details.
     (require 'ede/proj-elisp)
 
     (if (fboundp 'semantic-load-enable-code-helpers)
-        (semantic-load-enable-code-helpers)) ; Enable prototype help and smart completion 
+        (semantic-load-enable-code-helpers)) ; Enable prototype help and smart completion
     (if (fboundp 'global-srecode-minor-mode)
         (global-srecode-minor-mode 1)) ; Enable template insertion menu
 
@@ -330,6 +335,25 @@ one. See re-builder docs for details.
     (require 'semantic/wisent/python)
     )
 #+END_SRC
+
+*** Set up options for ECB
+
+We have to turn off ido-mode (which provides completion functionality
+in the mini-buffer). If ECB is active, the completion buffer replacess
+the mini-buffer (visually if not actually), and I've found no way to
+complete the command in the mini-buffer, or exit the minibuffer
+(!). Fortunately Ctrl-X Ctrl-C still works in that case.
+
+#+BEGIN_SRC emacs-lisp
+  (defun lloyd-turn-off-ido-mode ()
+    "disable ido completion help in the mini-buffer"
+    (ido-mode 0))
+
+  (add-hook 'ecb-activate-hook #'lloyd-turn-off-ido-mode)
+
+  (add-hook 'ecb-deactivate-hook #'ido-mode)
+#+END_SRC
+
 
 *** Actually call the setup functions
 #+begin_src emacs-lisp
