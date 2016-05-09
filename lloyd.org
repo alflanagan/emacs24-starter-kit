@@ -192,8 +192,8 @@ switching to a major mode.
 
 *** Set up my global key bindings
 #+begin_src emacs-lisp
-  (global-set-key [<F5>] 'semantic-ia-fast-jump)
-  (global-set-key (kbd "M-\\") 'shrink-whitespace)
+  (global-set-key [f5] 'recompile)
+  (global-set-key "\M-\\" 'shrink-whitespace)
   ;; reminder: \C-cl is org-store-link
   (global-set-key "\C-cL" 'org-insert-link-global)
   (global-set-key "\C-co" 'org-open-at-point-global)
@@ -456,6 +456,12 @@ associations for file extensions.
       (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))))
 #+end_src
 
+*** C modes
+
+#+begin_src emacs-lisp
+  (add-hook 'c-mode-common-hook #'turn-on-hs)
+#+end_src
+
 *** Add hooks to various modes
 Adds setup hooks to various modes that don't have a separate
 starter-kit file.
@@ -472,8 +478,12 @@ starter-kit file.
   (defun add-python-mode-hooks ()
     "Add various useful things to `python-mode-hook`"
     (if (fboundp 'hs-minor-mode)
-        (add-hook 'python-mode-hook 'turn-on-hs))
+        (add-hook 'python-mode-hook #'turn-on-hs))
     (add-hook 'python-mode-hook 'enable-delete-trailing-ws))
+
+  (defun turn-on-eldoc-mode-for-c ()
+    "turn on eldoc mode for C modes if it is available."
+    (if (fboundp 'c-turn-on-eldoc-mode) (c-turn-on-eldoc-mode)))
 
   (defun add-hooks-for-packages ()
     "Set up hooks which depend on packages that need to be initialized by package system."
@@ -481,7 +491,7 @@ starter-kit file.
     ;; because ido-ubiquitous doesn't get options right
     (add-hook 'ert-simple-view-mode-hook (lambda () (if (fboundp 'ido-ubiquitous-mode) (ido-ubiquitous-mode 0))))
     (add-hook 'Info-selection-hook (lambda () (niceify-info)))
-    (add-hook 'c-mode-common-hook (lambda () (if (fboundp 'c-turn-on-eldoc-mode) (c-turn-on-eldoc-mode)))))
+    (add-hook 'c-mode-common-hook #'turn-on-eldoc-mode-for-c))
 
   (add-hooks-for-packages)
 #+end_src
