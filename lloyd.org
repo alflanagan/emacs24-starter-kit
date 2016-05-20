@@ -69,6 +69,7 @@ everybody.
       js-doc                  ;; Insert JsDoc style comment easily
       lex                     ;; Lexical analyser construction
       list-utils              ;; List-manipulation utility functions
+      modern-cpp-font-lock    ;; Additional font-lock support for new parts of C++ syntax through C++17
       niceify-info            ;; improve usability of Info pages
       pep8                    ;; provides pep8 command to run pep8 checker on file in buffer
       pycoverage              ;; Support for coverage stats on Python 2.X and 3
@@ -460,6 +461,11 @@ associations for file extensions.
 
 #+begin_src emacs-lisp
   (add-hook 'c-mode-common-hook #'turn-on-hs)
+
+  ;; enable new keywords, etc for C++ in c++ mode
+  ;; to enable for other modes, add to variable
+  ;; `modern-c++-font-lock-modes'
+  (modern-c++-font-lock-global-mode)
 #+end_src
 
 *** Add hooks to various modes
