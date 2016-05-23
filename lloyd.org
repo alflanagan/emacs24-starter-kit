@@ -465,7 +465,7 @@ associations for file extensions.
   ;; enable new keywords, etc for C++ in c++ mode
   ;; to enable for other modes, add to variable
   ;; `modern-c++-font-lock-modes'
-  (modern-c++-font-lock-global-mode)
+  (error-into-message (modern-c++-font-lock-global-mode))
 #+end_src
 
 *** Add hooks to various modes
