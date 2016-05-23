@@ -33,13 +33,14 @@
 ;; Add further minor-modes to be enabled by semantic-mode.
 ;; See doc-string of `semantic-default-submodes' for other things
 ;; you can use here.
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
-(if (fboundp 'global-cedet-m3-minor-mode)
-    (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t))
+;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
+;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
+;; (if (fboundp 'global-cedet-m3-minor-mode)
+;;     (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t))
 
 ;; Enable Semantic
 (semantic-mode 1)
+(add-hook 'speedbar-load-hook (lambda () (require 'semantic/sb)))
 
 ;; Enable EDE (Project Management) features
 ;; (require 'ede/emacs)
@@ -49,15 +50,15 @@
 ;; (require 'ede/proj-elisp)
 
 ;; (global-ede-mode 1)
-(if (fboundp 'semantic-load-enable-code-helpers)
-    (semantic-load-enable-code-helpers)) ; Enable prototype help and smart completion 
-(if (fboundp 'global-srecode-minor-mode)
-    (global-srecode-minor-mode 1)) ; Enable template insertion menu
+;; (if (fboundp 'semantic-load-enable-code-helpers)
+;;     (semantic-load-enable-code-helpers)) ; Enable prototype help and smart completion 
+;; (if (fboundp 'global-srecode-minor-mode)
+;;     (global-srecode-minor-mode 1)) ; Enable template insertion menu
 
-(require 'semantic/bovine/c)
-(require 'semantic/bovine/gcc)
-(require 'semantic/bovine/el)
-(require-report-errors 'semantic/wisent/python)
+;; (require 'semantic/bovine/c)
+;; (require 'semantic/bovine/gcc)
+;; (require 'semantic/bovine/el)
+;; (require-report-errors 'semantic/wisent/python)
 
 ;; load Org-mode from source when the ORG_HOME environment variable is set
 (when (getenv "ORG_HOME")
@@ -85,7 +86,8 @@
   ;;TODO: investigate get-frame-fringe, etc. for better values
   (let ((the-frame (first-non-null (list frame (selected-frame))))
         (conversion-factor (* 1.618  (/ (float (frame-char-height)) (float (frame-char-width))))))
-    (set-frame-size the-frame width (floor (/ width conversion-factor)))))
+    (set-frame-size the-frame width (floor (/ width conversion-factor)))
+    (redraw-display)))
 
 ;; the same function except sets height > width
 (defun set-portrait-size-by-golden-ratio (width &optional frame)
