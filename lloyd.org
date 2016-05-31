@@ -203,6 +203,7 @@ switching to a major mode.
     [remap async-shell-command] 'with-editor-async-shell-command)
   (define-key (current-global-map)
     [remap shell-command] 'with-editor-shell-command)
+  (global-set-key "\C-^" 'beginning-of-line-text)
 #+end_src
 
 *** Set up paradox package listing features
