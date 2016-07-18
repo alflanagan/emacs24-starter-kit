@@ -77,7 +77,10 @@ everybody.
       pycoverage              ;; Support for coverage stats on Python 2.X and 3
       smooth-scrolling        ;; Make emacs scroll smoothly
       string-utils            ;; String-manipulation utilities
-      vmd-mode                ;; Fast Github-flavored Markdown preview using a vmd subprocess. 
+      tern                    ;; Tern-powered JavaScript integration
+      tern-auto-complete      ;; Tern Completion by auto-complete.el
+      tern-django             ;; Create tern projects for django applications.
+      vmd-mode                ;; Fast Github-flavored Markdown preview using a vmd subprocess.
                               ;; Note: vmd-mode requires install of node package vmd
 
       ;; standard list:
@@ -440,6 +443,7 @@ associations for file extensions.
     (electric-indent-local-mode 0)  ;; fails epically.
     (turn-on-electric-pair-mode)
     (company-mode)
+    (tern-mode t)
     (js2-refactor-mode)  ;; check out js2r-xxx functions!
     (hs-minor-mode))
 
