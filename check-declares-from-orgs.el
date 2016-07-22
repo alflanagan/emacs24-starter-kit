@@ -1,5 +1,5 @@
 
-(mapcar (lambda (fname)
+(mapc (lambda (fname)
           (check-declare-file fname))
         (cl-remove-if-not (lambda (fname)
                             (file-exists-p fname))

@@ -28,6 +28,10 @@
 (require 'package)
 (defvar lloyds-installed-packages)
 
+;; TODO: remove undeclared dependencies from final list
+(defvar undeclared-dependencies '((ivy swiper))
+  "Package dependencies not properly declared by packages.")
+
 ;; needed for batch mode.
 
 (unless (boundp 'lloyds-installed-packages)

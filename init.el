@@ -13,6 +13,9 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
+;; tell emacs to load .el file if it's newer than .elc file; prevents
+;; surprises from failure to byte-compile
+(setq load-prefer-newer t)
 ;; Load CEDET.
 ;; See cedet/common/cedet.info for configuration details.
 ;; load from source when the CEDET_HOME environment variable is set
