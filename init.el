@@ -6,6 +6,20 @@
 ;;
 
 (eval-when-compile (require 'package))
+(setq package-archives
+      '(("gnu"         . "https://elpa.gnu.org/packages/")
+        ("org"         . "http://orgmode.org/elpa/")
+        ("melpa"       . "https://melpa.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("marmalade"   . "https://marmalade-repo.org/packages/")
+        ("elpy" . "https://jorgenschaefer.github.io/packages/")))
+(setq package-archive-priorities
+      '(("melpa-stable" . 20)
+        ("marmalade" . 20)
+        ("org" . 20)
+        ("elpy" . 20)
+        ("gnu" . 10)
+        ("melpa" . 0)))
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -36,8 +50,8 @@
 ;; Add further minor-modes to be enabled by semantic-mode.
 ;; See doc-string of `semantic-default-submodes' for other things
 ;; you can use here.
-;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
-;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
 ;; (if (fboundp 'global-cedet-m3-minor-mode)
 ;;     (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t))
 
