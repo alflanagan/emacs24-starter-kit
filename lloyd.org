@@ -478,6 +478,16 @@ associations for file extensions.
   (error-into-message (modern-c++-font-lock-global-mode))
 #+end_src
 
+*** Initialize forth mode
+
+#+begin_src emacs-lisp
+  ;; from gforth-init.el, distributed with gforth (https://www.gnu.org/software/gforth/)
+  (autoload 'forth-mode "gforth" "Forth mode" t)
+  (autoload 'run-forth "gforth" "Run Forth" t)
+  (add-to-list 'auto-mode-alist '("\.fs$" . forth-mode))
+
+#+end_src
+
 *** Add hooks to various modes
 Adds setup hooks to various modes that don't have a separate
 starter-kit file.
