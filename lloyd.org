@@ -58,6 +58,7 @@ everybody.
       darkokai-theme          ;; A darker variant on Monokai.
       devdocs                 ;; Launch DevDocs search
       doctags                 ;; generate doxygen-style doc comments
+      info+                   ;; Extensions to `info.el'.
 
       ;; ecb has ... issues. it breaks use of ido-mode for automatic
       ;; completions in the mini-buffer, for example.  It hasn't been
@@ -486,6 +487,16 @@ associations for file extensions.
   (autoload 'run-forth "gforth" "Run Forth" t)
   (add-to-list 'auto-mode-alist '("\.fs$" . forth-mode))
 
+#+end_src
+
+*** Set up linkd mode
+
+`linkd' is a nice package inexplicably not added to elpa. It
+transforms special tags in the buffer into clickable links. I've got a
+local copy.
+
+#+begin_src emacs-lisp
+  (require 'linkd)
 #+end_src
 
 *** Add hooks to various modes
