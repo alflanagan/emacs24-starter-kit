@@ -58,6 +58,7 @@ everybody.
       darkokai-theme          ;; A darker variant on Monokai.
       devdocs                 ;; Launch DevDocs search
       doctags                 ;; generate doxygen-style doc comments
+      hyperbole               ;; GNU Hyperbole: The Everyday Hypertextual Information Manager 
       info+                   ;; Extensions to `info.el'.
 
       ;; ecb has ... issues. it breaks use of ido-mode for automatic
@@ -213,6 +214,9 @@ switching to a major mode.
   (define-key (current-global-map)
     [remap shell-command] 'with-editor-shell-command)
   (global-set-key "\C-^" 'beginning-of-line-text)
+  (if (fboundp 'assist-key)  ;; verify hyperbole loaded
+      (global-set-key [C-M-return] 'assist-key))
+
 #+end_src
 
 *** Set up paradox package listing features
