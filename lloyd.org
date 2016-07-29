@@ -500,6 +500,10 @@ transforms special tags in the buffer into clickable links. I've got a
 local copy.
 
 #+begin_src emacs-lisp
+  (eval-when-compile
+    (cl-pushnew (expand-file-name (concat user-emacs-directory "src"))
+                load-path
+                :test #'equal))
   (require 'linkd)
 #+end_src
 
