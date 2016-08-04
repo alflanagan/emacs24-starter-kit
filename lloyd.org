@@ -58,8 +58,9 @@ everybody.
       darkokai-theme          ;; A darker variant on Monokai.
       devdocs                 ;; Launch DevDocs search
       doctags                 ;; generate doxygen-style doc comments
-      hyperbole               ;; GNU Hyperbole: The Everyday Hypertextual Information Manager 
+      hyperbole               ;; GNU Hyperbole: The Everyday Hypertextual Information Manager
       info+                   ;; Extensions to `info.el'.
+      suggest                 ;; suggest elisp functions that give the output requested
 
       ;; ecb has ... issues. it breaks use of ido-mode for automatic
       ;; completions in the mini-buffer, for example.  It hasn't been
@@ -214,8 +215,11 @@ switching to a major mode.
   (define-key (current-global-map)
     [remap shell-command] 'with-editor-shell-command)
   (global-set-key "\C-^" 'beginning-of-line-text)
+  ;; hyperbole
   (if (fboundp 'assist-key)  ;; verify hyperbole loaded
-      (global-set-key [C-M-return] 'assist-key))
+      (progn (global-set-key [C-M-return] 'assist-key)
+             ;;should be set automatically, isn't?
+             (global-set-key "\C-h h" #'hyperbole)))
 
 #+end_src
 
