@@ -29,6 +29,8 @@ To make compiler happy, declare functions defined in other files.
   (declare-function ede-enable-generic-projects "ede/generic" ())
   (declare-function projectile-global-mode "projectile" (&optional arg))
   (declare-function modern-c++-font-lock-global-mode "modern-cpp-font-lock" (&optional arg))
+  (declare-function hyperbole "hui-mini.el" (&optional menu menu-list doc-flag help-string-flag))
+  (declare-function tern-mode "tern.el" (&optional arg))
 #+end_src
 
 ** Setup debug-on-error for my customizations
