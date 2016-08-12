@@ -55,20 +55,19 @@ everybody.
       buttercup               ;; Behavior-Driven Emacs Lisp Testing
       cinspect                ;; Use cinspect to look at the CPython source of builtins and other C objects!
       common-lisp-snippets    ;; Yasnippets for Common Lisp
-      darkokai-theme          ;; A darker variant on Monokai.
       devdocs                 ;; Launch DevDocs search
       doctags                 ;; generate doxygen-style doc comments
-      hyperbole               ;; GNU Hyperbole: The Everyday Hypertextual Information Manager
-      info+                   ;; Extensions to `info.el'.
-      suggest                 ;; suggest elisp functions that give the output requested
 
       ;; ecb has ... issues. it breaks use of ido-mode for automatic
       ;; completions in the mini-buffer, for example.  It hasn't been
       ;; updated since 2014.  it's still really nice. I've cloned the
       ;; repo, maybe can fix some of the problems
       ecb                     ;; a code browser for Emacs
+
       elisp-lint              ;; basic linting for Emacs Lisp
       hideshowvis             ;; Add markers to the fringe for regions foldable by hideshow.el
+      inferior-spim           ;; inferior mode for spim. 
+      info+                   ;; Extensions to `info.el'.
       jasminejs-mode          ;; A minor mode for manipulating jasmine test files
       jira-markup-mode        ;; Emacs Major mode for JIRA-markup-formatted text files
       js-doc                  ;; Insert JsDoc style comment easily
@@ -80,6 +79,7 @@ everybody.
       pycoverage              ;; Support for coverage stats on Python 2.X and 3
       smooth-scrolling        ;; Make emacs scroll smoothly
       string-utils            ;; String-manipulation utilities
+      suggest                 ;; suggest elisp functions that give the output requested
       tern                    ;; Tern-powered JavaScript integration
       tern-auto-complete      ;; Tern Completion by auto-complete.el
       tern-django             ;; Create tern projects for django applications.
@@ -98,6 +98,7 @@ everybody.
       flx-ido                 ;; flex integration for ido (better choices for fuzzy match)
       flymake-jshint          ;; making flymake work with JSHint
       golden-ratio            ;; resize windows, aesthetically
+      hyperbole               ;; GNU Hyperbole: The Everyday Hypertextual Information Manager
       ipretty                 ;; interactive lisp pretty-print
       irfc                    ;; look up IETF RFCs and display in buffer
       jedi                    ;; a Python auto-completion for Emacs
