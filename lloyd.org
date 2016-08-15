@@ -219,10 +219,10 @@ switching to a major mode.
     [remap shell-command] 'with-editor-shell-command)
   (global-set-key "\C-^" 'beginning-of-line-text)
   ;; hyperbole
-  (if (fboundp 'assist-key)  ;; verify hyperbole loaded
-      (progn (global-set-key [C-M-return] 'assist-key)
-             ;;should be set automatically, isn't?
-             (global-set-key "\C-h h" #'hyperbole)))
+  (eval-after-load "hyperbole"
+    (progn (global-set-key [C-M-return] 'assist-key)
+           ;;should be set automatically, isn't?
+           (global-set-key "\C-h h" #'hyperbole)))
 
 #+end_src
 
