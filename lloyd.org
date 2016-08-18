@@ -45,6 +45,10 @@ To make compiler happy, declare functions defined in other files.
 There are a whole bunch of packages I use which may not be useful to
 everybody.
 
+Note: this whole section needs replacing: there's now a `use-package'
+package, which does much the same thing as all the starter-kit-xxx
+functions for this.
+
 #+name: my-installed-packages
 #+begin_src emacs-lisp
   (defconst lloyds-installed-packages
@@ -58,6 +62,7 @@ everybody.
       cinspect                ;; Use cinspect to look at the CPython source of builtins and other C objects!
       common-lisp-snippets    ;; Yasnippets for Common Lisp
       devdocs                 ;; Launch DevDocs search
+      digit-groups            ;; Highlight place-value positions in numbers 
       doctags                 ;; generate doxygen-style doc comments
 
       ;; ecb has ... issues. it breaks use of ido-mode for automatic
@@ -67,6 +72,7 @@ everybody.
       ecb                     ;; a code browser for Emacs
 
       elisp-lint              ;; basic linting for Emacs Lisp
+      eval-expr               ;; enhanced eval-expression command 
       hideshowvis             ;; Add markers to the fringe for regions foldable by hideshow.el
       inferior-spim           ;; inferior mode for spim. 
       info+                   ;; Extensions to `info.el'.
@@ -77,6 +83,7 @@ everybody.
       list-utils              ;; List-manipulation utility functions
       modern-cpp-font-lock    ;; Additional font-lock support for new parts of C++ syntax through C++17
       niceify-info            ;; improve usability of Info pages
+      org-beautify-theme      ;; A sub-theme to make org-mode more beautiful.
       pep8                    ;; provides pep8 command to run pep8 checker on file in buffer
       pycoverage              ;; Support for coverage stats on Python 2.X and 3
       smooth-scrolling        ;; Make emacs scroll smoothly
@@ -89,42 +96,46 @@ everybody.
                               ;; Note: vmd-mode requires install of node package vmd
 
       ;; standard list:
+      ;; Highly recommended general packages
       async                   ;; Asynchronous processing in Emacs (optional paradox dependency)
-      cider                   ;; major mode for clojure integration
-      coffee-fof              ;; A coffee-mode configuration for `ff-find-other-file'.
-      dash                    ;; essential functional programming lib
-      dash-functional         ;; Collection of useful combinators for Emacs Lisp
-      dropdown-list           ;; Drop-down menu interface
-      elpy                    ;; Emacs Python Development Environment
-      f                       ;; file system utilities
-      flx-ido                 ;; flex integration for ido (better choices for fuzzy match)
-      flymake-jshint          ;; making flymake work with JSHint
-      golden-ratio            ;; resize windows, aesthetically
       hyperbole               ;; GNU Hyperbole: The Everyday Hypertextual Information Manager
-      ipretty                 ;; interactive lisp pretty-print
-      irfc                    ;; look up IETF RFCs and display in buffer
+      org                     ;; newer version of builtin package
+      paradox                 ;; enhanced package listing, future std.
+          ;; CEDET has a project system built in, I've found projectile easier to use and more useful.
+      projectile              ;; Manage and navigate projects in Emacs easily
+      projectile-speedbar     ;; projectile integration for speedbar
+      shrink-whitespace       ;; Whitespace removal DWIM key
+      undo-tree               ;; Treat undo history as a tree (very nice)
+
+      ;; Python programmer
+      elpy                    ;; Emacs Python Development Environment
       jedi                    ;; a Python auto-completion for Emacs
+      pony-mode               ;; django-admin interaction (nice)
+      python-mode             ;; Python major mode
+
+      ;; Web/JS programmer
+      flymake-jshint          ;; making flymake work with JSHint
       js2-mode                ;; improved JavaScript support
       js2-refactor            ;; A JavaScript refactoring library for emacs
       json-mode               ;; Major mode for editing JSON files
       less-css-mode           ;; Major mode for editing LESS CSS files (lesscss.org)
-      markdown-mode           ;; Emacs Major mode for Markdown-formatted text files
-      org                     ;; newer version of builtin package
-      paradox                 ;; enhanced package listing, future std.
-      pony-mode               ;; django-admin interaction (nice)
-      projectile              ;; Manage and navigate projects in Emacs easily
-      projectile-speedbar     ;; projectile integration for speedbar
-      python-mode             ;; Python major mode
-      s                       ;; The long lost Emacs string manipulation library.
-      shrink-whitespace       ;; Whitespace removal DWIM key
-      smartparens             ;; also in starter-kit-lisp
-      undo-tree               ;; Treat undo history as a tree (very nice)
       web                     ;; useful HTTP client
       web-beautify            ;; Format HTML, CSS and JavaScript/JSON by js-beautify
       web-mode                ;; major mode for editing html templates
 
+      ;; Emacs Lisp programmer
+      dropdown-list           ;; Drop-down menu interface
+      ipretty                 ;; interactive lisp pretty-print
+      smartparens             ;; also in starter-kit-lisp
+
+      ;; Other stuff
+      cider                   ;; major mode for clojure integration
+      flx-ido                 ;; flex integration for ido (better choices for fuzzy match)
+      golden-ratio            ;; resize windows, aesthetically
+      irfc                    ;; look up IETF RFCs and display in buffer
+      markdown-mode           ;; Emacs Major mode for Markdown-formatted text files
+
       ;; PROBLEM CHILDREN: early loading causes process to fail
-      ;; ob-lisp                 ;; org-babel functions for common lisp evaluation with SLY or SLIME.
       magit                   ;; capable git support
 
       )
@@ -376,6 +387,14 @@ complete the command in the mini-buffer, or exit the minibuffer
   (add-hook 'ecb-deactivate-hook #'ido-mode)
 #+END_SRC
 
+*** Set up enhanced eval-expr
+
+This package adds some useful minibuffer editing features to Alt-X eval-expr.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'eval-expr)
+  (eval-expr-install)
+#+END_SRC
 
 *** Actually call the setup functions
 #+begin_src emacs-lisp
