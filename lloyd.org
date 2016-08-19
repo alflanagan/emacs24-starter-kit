@@ -392,8 +392,8 @@ complete the command in the mini-buffer, or exit the minibuffer
 This package adds some useful minibuffer editing features to Alt-X eval-expr.
 
 #+BEGIN_SRC emacs-lisp
-  (require 'eval-expr)
-  (eval-expr-install)
+  (require 'eval-expr "eval-expr" t)
+  (eval-after-load "eval-expr" '(eval-expr-install))
 #+END_SRC
 
 *** Actually call the setup functions
