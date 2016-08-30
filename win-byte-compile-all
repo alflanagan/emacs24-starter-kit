@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+# -*- python-indent-offset: 4; indent-tabs-mode: nil; -*-
+
+import subprocess
+import os
+import sys
+
+# ELDIRS = ["~/.emacs.d", "~/.emacs.d/src"]
+
+ELDIRS = ["/cygdrive/c/Users/aflanaga/AppData/Roaming/.emacs.d", "/cygdrive/c/Users/aflanaga/AppData/Roaming/.emacs.d/src"]
+
+IGNORED = {"ede-projects.el", "srecode-map.el", "custom.el"}
+
+PATH_DIRS = ["elpa/dash-20160820.501/", "src", "elpa/smartparens-20160828.1136/"]
+
+def gen_load_args():
+    for dirname in PATH_DIRS:
+        yield "-L"
+        yield "c:/Users/aflanaga/AppData/Roaming/.emacs.d/" + dirname
+
+def byte_compile(el_file):
+    if not os.path.exists(el_file):
+        sys.stderr.write("ERROR: Can't compile {}, the file does not exist.\n".format(el_file))
+    else:
+        try:
+            el_file = el_file.replace("/cygdrive/c", "c:")
+            args = ["emacs", "--batch"] + list(gen_load_args()) + ["-f", "batch-byte-compile", el_file]
+            subprocess.check_call(args)
+        except subprocess.CalledProcessError as cpe:
+            sys.stderr.write("ERROR: compile failed for {}:\n".format(el_file))
+            sys.stderr.write("    {}\n".format(cpe))
+            # if compile failed, remove old compiled version
+            try:
+                os.remove(el_file + "c")
+            except OSError as ose:
+                # probably file not found
+                sys.stderr.write("WARNING: {}\n".format(ose))
+
+
+def main():
+    for ELDIR in ELDIRS:
+        for ELFILE in [os.path.join(ELDIR, fname) for fname
+                       in os.listdir(os.path.expanduser(ELDIR))
+                       if fname.endswith(".el")]:
+            if os.path.basename(ELFILE) not in IGNORED:
+                # ELFILE = os.path.expanduser(ELFILE)
+                ECFILE = "{}c".format(ELFILE)
+                if not os.path.exists(ECFILE) or os.stat(ELFILE).st_mtime > os.stat(ECFILE).st_mtime:
+                    byte_compile(ELFILE)
+                # if [[ ${OS} == Windows_NT ]]; then
+                #     #apparently required??
+                #     chmod u+x ${ELFILE}c
+
+
+if __name__ == '__main__':
+    main()
