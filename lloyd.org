@@ -56,6 +56,8 @@ functions for this.
       ;; new packages
       ;; these packages are "on probation"
       ;; will be moved to standard list if they work out
+
+      all-the-icons           ;; A library for inserting Developer icons
       bison-mode              ;; Major mode for editing bison, yacc and lex files.
       bookmark+               ;; Bookmark+: extensions to standard library `bookmark.el'.
       buttercup               ;; Behavior-Driven Emacs Lisp Testing
@@ -64,14 +66,9 @@ functions for this.
       devdocs                 ;; Launch DevDocs search
       digit-groups            ;; Highlight place-value positions in numbers 
       doctags                 ;; generate doxygen-style doc comments
-
-      ;; ecb has ... issues. it breaks use of ido-mode for automatic
-      ;; completions in the mini-buffer, for example.  It hasn't been
-      ;; updated since 2014.  it's still really nice. I've cloned the
-      ;; repo, maybe can fix some of the problems
-      ecb                     ;; a code browser for Emacs
-
       elisp-lint              ;; basic linting for Emacs Lisp
+      ereader                 ;; Major mode for reading ebooks with org-mode integration
+      eslint-fix              ;; Fix JavaScript files using ESLint
       eval-expr               ;; enhanced eval-expression command 
       hideshowvis             ;; Add markers to the fringe for regions foldable by hideshow.el
       inferior-spim           ;; inferior mode for spim. 
@@ -81,11 +78,10 @@ functions for this.
       js-doc                  ;; Insert JsDoc style comment easily
       lex                     ;; Lexical analyser construction
       list-utils              ;; List-manipulation utility functions
+      mips-mode               ;; Major-mode for MIPS assembly
       modern-cpp-font-lock    ;; Additional font-lock support for new parts of C++ syntax through C++17
       niceify-info            ;; improve usability of Info pages
       org-beautify-theme      ;; A sub-theme to make org-mode more beautiful.
-      pep8                    ;; provides pep8 command to run pep8 checker on file in buffer
-      pycoverage              ;; Support for coverage stats on Python 2.X and 3
       smooth-scrolling        ;; Make emacs scroll smoothly
       string-utils            ;; String-manipulation utilities
       suggest                 ;; suggest elisp functions that give the output requested
@@ -94,6 +90,12 @@ functions for this.
       tern-django             ;; Create tern projects for django applications.
       vmd-mode                ;; Fast Github-flavored Markdown preview using a vmd subprocess.
                               ;; Note: vmd-mode requires install of node package vmd
+
+      ;; ecb has ... issues. it breaks use of ido-mode for automatic
+      ;; completions in the mini-buffer, for example.  It hasn't been
+      ;; updated since 2014.  it's still really nice. I've cloned the
+      ;; repo, maybe can fix some of the problems
+      ecb                     ;; a code browser for Emacs
 
       ;; standard list:
       ;; Highly recommended general packages
@@ -110,7 +112,9 @@ functions for this.
       ;; Python programmer
       elpy                    ;; Emacs Python Development Environment
       jedi                    ;; a Python auto-completion for Emacs
+      pep8                    ;; provides pep8 command to run pep8 checker on file in buffer
       pony-mode               ;; django-admin interaction (nice)
+      pycoverage              ;; Support for coverage stats on Python 2.X and 3
       python-mode             ;; Python major mode
 
       ;; Web/JS programmer
