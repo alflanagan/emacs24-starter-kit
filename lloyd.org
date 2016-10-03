@@ -67,9 +67,12 @@ functions for this.
       digit-groups            ;; Highlight place-value positions in numbers 
       doctags                 ;; generate doxygen-style doc comments
       elisp-lint              ;; basic linting for Emacs Lisp
+      elf-mode                ;; Show symbols in binaries
       ereader                 ;; Major mode for reading ebooks with org-mode integration
       eslint-fix              ;; Fix JavaScript files using ESLint
       eval-expr               ;; enhanced eval-expression command 
+      forth-mode              ;; Programming language mode for Forth
+                              ;; ^ better than gforth.el?
       hideshowvis             ;; Add markers to the fringe for regions foldable by hideshow.el
       inferior-spim           ;; inferior mode for spim. 
       info+                   ;; Extensions to `info.el'.
