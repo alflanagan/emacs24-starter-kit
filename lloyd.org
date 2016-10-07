@@ -71,8 +71,6 @@ functions for this.
       ereader                 ;; Major mode for reading ebooks with org-mode integration
       eslint-fix              ;; Fix JavaScript files using ESLint
       eval-expr               ;; enhanced eval-expression command 
-      forth-mode              ;; Programming language mode for Forth
-                              ;; ^ better than gforth.el?
       hideshowvis             ;; Add markers to the fringe for regions foldable by hideshow.el
       inferior-spim           ;; inferior mode for spim. 
       info+                   ;; Extensions to `info.el'.
@@ -520,9 +518,9 @@ associations for file extensions.
 
 #+begin_src emacs-lisp
   ;; from gforth-init.el, distributed with gforth (https://www.gnu.org/software/gforth/)
-  (autoload 'forth-mode "gforth" "Forth mode" t)
-  (autoload 'run-forth "gforth" "Run Forth" t)
-  (add-to-list 'auto-mode-alist '("\.fs$" . forth-mode))
+  ;; (autoload 'forth-mode "gforth" "Forth mode" t)
+  ;; (autoload 'run-forth "gforth" "Run Forth" t)
+  (require 'forth-mode)
 
 #+end_src
 
@@ -533,10 +531,6 @@ transforms special tags in the buffer into clickable links. I've got a
 local copy.
 
 #+begin_src emacs-lisp
-  (eval-when-compile
-    (cl-pushnew (expand-file-name (concat user-emacs-directory "src"))
-                load-path
-                :test #'equal))
   (require 'linkd)
 #+end_src
 

@@ -6,6 +6,12 @@
 ;;
 
 (eval-when-compile (require 'package))
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (setq package-archives
       '(("gnu"         . "https://elpa.gnu.org/packages/")
         ("org"         . "http://orgmode.org/elpa/")
@@ -21,15 +27,14 @@
         ("gnu" . 10)
         ("melpa" . 0)))
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
 ;; tell emacs to load .el file if it's newer than .elc file; prevents
 ;; surprises from failure to byte-compile
 (setq load-prefer-newer t)
+
+;; add an extra directort to load path, so .emacs.d doesn't get even
+;; more crowded.
+(add-to-list 'load-path (expand-file-name (concat user-emacs-directory "src")))
+
 ;; Load CEDET.
 ;; See cedet/common/cedet.info for configuration details.
 ;; load from source when the CEDET_HOME environment variable is set
