@@ -27,10 +27,11 @@ To make compiler happy, declare functions defined in other files.
   (declare-function js2-refactor-mode "js2-refactor" (&optional arg))
   (declare-function company-mode "company" (&optional arg))
   (declare-function ede-enable-generic-projects "ede/generic" ())
-  (declare-function projectile-global-mode "projectile" (&optional arg))
+  (declare-function projectile-mode "projectile" (&optional arg))
   (declare-function modern-c++-font-lock-global-mode "modern-cpp-font-lock" (&optional arg))
   (declare-function hyperbole "hui-mini.el" (&optional menu menu-list doc-flag help-string-flag))
   (declare-function tern-mode "tern.el" (&optional arg))
+  (declare-function eval-expr-install "eval-expr" ())
 #+end_src
 
 ** Setup debug-on-error for my customizations
@@ -265,7 +266,7 @@ file and set up the paradox environment.
 #+begin_src emacs-lisp
   (defun set-up-projectile ()
     "enable projectile globally, set options"
-    (projectile-global-mode))
+    (projectile-mode))
 #+end_src
 
 *** Set up alternate interface for yas-snippet
@@ -517,9 +518,11 @@ associations for file extensions.
 *** Initialize forth mode
 
 #+begin_src emacs-lisp
-  ;; from gforth-init.el, distributed with gforth (https://www.gnu.org/software/gforth/)
-  ;; (autoload 'forth-mode "gforth" "Forth mode" t)
-  ;; (autoload 'run-forth "gforth" "Run Forth" t)
+  ;; init.el adds "src", but doesn't help when compiling
+  (eval-when-compile
+    (cl-pushnew (expand-file-name (concat user-emacs-directory "src"))
+                load-path
+                :test #'equal))
   (require 'forth-mode)
 
 #+end_src
